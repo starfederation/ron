@@ -1,0 +1,12 @@
+{
+  commaPrefixed [',foo']
+  commaPrefixedKey {',foo' value}
+  quasiquote [` x]
+  quasiquoteKey {` value}
+  quote [''''' x]
+  quoteKey {''''' value}
+  unquote [',' x]
+  unquoteKey {',' value}
+  unquoteSplicing [',@' xs]
+  unquoteSplicingKey {',@' value}
+}

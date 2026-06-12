@@ -1,0 +1,21 @@
+[
+  Ada
+  hello
+  ''
+  ''
+  ''it's fine''
+  'contains "" inside'
+  'a "quoted" phrase'
+  '''contains '' inside'''
+  ''''contains ''' inside''''
+  'contains """ inside and " too'
+  ?name
+  'Ada Lovelace'
+  'true'
+  'null'
+  '123'
+  #_ada
+  -ada
+  '{# 200} [x y]'
+  'She said "hello", then "goodbye".'
+]
