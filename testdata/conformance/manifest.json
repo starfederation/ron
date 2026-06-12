@@ -1,0 +1,432 @@
+{
+  "version": 1,
+  "formatting": {
+    "jsonPrefix": "",
+    "jsonIndent": "  ",
+    "ronIndent": "  ",
+    "prettyRONTrailingNewline": true,
+    "objectKeyOrder": "lexicographic by Unicode code point sequence"
+  },
+  "valid": [
+    {
+      "name": "basic/records",
+      "ronInputs": [
+        "valid/basic/records/input.ron",
+        "valid/basic/records/input_wrapped.ron"
+      ],
+      "jsonInput": "valid/basic/records/input.json",
+      "expectedPrettyJSON": "valid/basic/records/expected.pretty.json",
+      "expectedCompactJSON": "valid/basic/records/expected.compact.json",
+      "expectedPrettyRON": "valid/basic/records/expected.pretty.ron",
+      "expectedCompactRON": "valid/basic/records/expected.compact.ron"
+    },
+    {
+      "name": "basic/strings",
+      "ronInputs": [
+        "valid/basic/strings/input.ron"
+      ],
+      "jsonInput": "valid/basic/strings/input.json",
+      "expectedPrettyJSON": "valid/basic/strings/expected.pretty.json",
+      "expectedCompactJSON": "valid/basic/strings/expected.compact.json",
+      "expectedPrettyRON": "valid/basic/strings/expected.pretty.ron",
+      "expectedCompactRON": "valid/basic/strings/expected.compact.ron"
+    },
+    {
+      "name": "basic/write",
+      "ronInputs": [
+        "valid/basic/write/input.ron",
+        "valid/basic/write/input_wrapped.ron"
+      ],
+      "jsonInput": "valid/basic/write/input.json",
+      "expectedPrettyJSON": "valid/basic/write/expected.pretty.json",
+      "expectedCompactJSON": "valid/basic/write/expected.compact.json",
+      "expectedPrettyRON": "valid/basic/write/expected.pretty.ron",
+      "expectedCompactRON": "valid/basic/write/expected.compact.ron"
+    },
+    {
+      "name": "ported/valid/y_number_negative_zero",
+      "ronInputs": [
+        "valid/ported/valid/y_number_negative_zero/input.ron"
+      ],
+      "jsonInput": "valid/ported/valid/y_number_negative_zero/input.json",
+      "expectedPrettyJSON": "valid/ported/valid/y_number_negative_zero/expected.pretty.json",
+      "expectedCompactJSON": "valid/ported/valid/y_number_negative_zero/expected.compact.json",
+      "expectedPrettyRON": "valid/ported/valid/y_number_negative_zero/expected.pretty.ron",
+      "expectedCompactRON": "valid/ported/valid/y_number_negative_zero/expected.compact.ron"
+    },
+    {
+      "name": "ported/valid/y_number_real_capital_e",
+      "ronInputs": [
+        "valid/ported/valid/y_number_real_capital_e/input.ron"
+      ],
+      "jsonInput": "valid/ported/valid/y_number_real_capital_e/input.json",
+      "expectedPrettyJSON": "valid/ported/valid/y_number_real_capital_e/expected.pretty.json",
+      "expectedCompactJSON": "valid/ported/valid/y_number_real_capital_e/expected.compact.json",
+      "expectedPrettyRON": "valid/ported/valid/y_number_real_capital_e/expected.pretty.ron",
+      "expectedCompactRON": "valid/ported/valid/y_number_real_capital_e/expected.compact.ron"
+    },
+    {
+      "name": "ported/valid/y_root_scalar_false",
+      "ronInputs": [
+        "valid/ported/valid/y_root_scalar_false/input.ron"
+      ],
+      "jsonInput": "valid/ported/valid/y_root_scalar_false/input.json",
+      "expectedPrettyJSON": "valid/ported/valid/y_root_scalar_false/expected.pretty.json",
+      "expectedCompactJSON": "valid/ported/valid/y_root_scalar_false/expected.compact.json",
+      "expectedPrettyRON": "valid/ported/valid/y_root_scalar_false/expected.pretty.ron",
+      "expectedCompactRON": "valid/ported/valid/y_root_scalar_false/expected.compact.ron"
+    },
+    {
+      "name": "ported/valid/y_root_scalar_null",
+      "ronInputs": [
+        "valid/ported/valid/y_root_scalar_null/input.ron"
+      ],
+      "jsonInput": "valid/ported/valid/y_root_scalar_null/input.json",
+      "expectedPrettyJSON": "valid/ported/valid/y_root_scalar_null/expected.pretty.json",
+      "expectedCompactJSON": "valid/ported/valid/y_root_scalar_null/expected.compact.json",
+      "expectedPrettyRON": "valid/ported/valid/y_root_scalar_null/expected.pretty.ron",
+      "expectedCompactRON": "valid/ported/valid/y_root_scalar_null/expected.compact.ron"
+    },
+    {
+      "name": "ported/valid/y_string_non_ascii",
+      "ronInputs": [
+        "valid/ported/valid/y_string_non_ascii/input.ron"
+      ],
+      "jsonInput": "valid/ported/valid/y_string_non_ascii/input.json",
+      "expectedPrettyJSON": "valid/ported/valid/y_string_non_ascii/expected.pretty.json",
+      "expectedCompactJSON": "valid/ported/valid/y_string_non_ascii/expected.compact.json",
+      "expectedPrettyRON": "valid/ported/valid/y_string_non_ascii/expected.pretty.ron",
+      "expectedCompactRON": "valid/ported/valid/y_string_non_ascii/expected.compact.ron"
+    },
+    {
+      "name": "ported/valid/y_structure_array_empty",
+      "ronInputs": [
+        "valid/ported/valid/y_structure_array_empty/input.ron"
+      ],
+      "jsonInput": "valid/ported/valid/y_structure_array_empty/input.json",
+      "expectedPrettyJSON": "valid/ported/valid/y_structure_array_empty/expected.pretty.json",
+      "expectedCompactJSON": "valid/ported/valid/y_structure_array_empty/expected.compact.json",
+      "expectedPrettyRON": "valid/ported/valid/y_structure_array_empty/expected.pretty.ron",
+      "expectedCompactRON": "valid/ported/valid/y_structure_array_empty/expected.compact.ron"
+    },
+    {
+      "name": "ported/valid/y_structure_nested",
+      "ronInputs": [
+        "valid/ported/valid/y_structure_nested/input.ron"
+      ],
+      "jsonInput": "valid/ported/valid/y_structure_nested/input.json",
+      "expectedPrettyJSON": "valid/ported/valid/y_structure_nested/expected.pretty.json",
+      "expectedCompactJSON": "valid/ported/valid/y_structure_nested/expected.compact.json",
+      "expectedPrettyRON": "valid/ported/valid/y_structure_nested/expected.pretty.ron",
+      "expectedCompactRON": "valid/ported/valid/y_structure_nested/expected.compact.ron"
+    },
+    {
+      "name": "ported/valid/y_structure_object_empty",
+      "ronInputs": [
+        "valid/ported/valid/y_structure_object_empty/input.ron"
+      ],
+      "jsonInput": "valid/ported/valid/y_structure_object_empty/input.json",
+      "expectedPrettyJSON": "valid/ported/valid/y_structure_object_empty/expected.pretty.json",
+      "expectedCompactJSON": "valid/ported/valid/y_structure_object_empty/expected.compact.json",
+      "expectedPrettyRON": "valid/ported/valid/y_structure_object_empty/expected.pretty.ron",
+      "expectedCompactRON": "valid/ported/valid/y_structure_object_empty/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/array_empty",
+      "ronInputs": [
+        "valid/ron_only/valid/array_empty/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/array_empty/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/array_empty/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/array_empty/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/array_empty/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/array_empty/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/array_mixed",
+      "ronInputs": [
+        "valid/ron_only/valid/array_mixed/input.ron",
+        "valid/ron_only/valid/array_mixed/input_commas.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/array_mixed/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/array_mixed/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/array_mixed/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/array_mixed/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/array_mixed/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/array_mixed_commas",
+      "ronInputs": [
+        "valid/ron_only/valid/array_mixed_commas/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/array_mixed_commas/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/array_mixed_commas/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/array_mixed_commas/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/array_mixed_commas/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/array_mixed_commas/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/array_nested",
+      "ronInputs": [
+        "valid/ron_only/valid/array_nested/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/array_nested/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/array_nested/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/array_nested/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/array_nested/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/array_nested/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/object_digit_prefixed_string",
+      "ronInputs": [
+        "valid/ron_only/valid/object_digit_prefixed_string/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/object_digit_prefixed_string/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/object_digit_prefixed_string/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/object_digit_prefixed_string/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/object_digit_prefixed_string/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/object_digit_prefixed_string/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/object_empty",
+      "ronInputs": [
+        "valid/ron_only/valid/object_empty/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/object_empty/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/object_empty/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/object_empty/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/object_empty/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/object_empty/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/object_quoted_key",
+      "ronInputs": [
+        "valid/ron_only/valid/object_quoted_key/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/object_quoted_key/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/object_quoted_key/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/object_quoted_key/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/object_quoted_key/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/object_quoted_key/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/object_with_commas",
+      "ronInputs": [
+        "valid/ron_only/valid/object_with_commas/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/object_with_commas/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/object_with_commas/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/object_with_commas/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/object_with_commas/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/object_with_commas/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/punctuation_tokens",
+      "ronInputs": [
+        "valid/ron_only/valid/punctuation_tokens/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/punctuation_tokens/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/punctuation_tokens/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/punctuation_tokens/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/punctuation_tokens/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/punctuation_tokens/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/scalar_boolean_false",
+      "ronInputs": [
+        "valid/ron_only/valid/scalar_boolean_false/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/scalar_boolean_false/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/scalar_boolean_false/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/scalar_boolean_false/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/scalar_boolean_false/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/scalar_boolean_false/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/scalar_boolean_true",
+      "ronInputs": [
+        "valid/ron_only/valid/scalar_boolean_true/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/scalar_boolean_true/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/scalar_boolean_true/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/scalar_boolean_true/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/scalar_boolean_true/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/scalar_boolean_true/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/scalar_null",
+      "ronInputs": [
+        "valid/ron_only/valid/scalar_null/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/scalar_null/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/scalar_null/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/scalar_null/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/scalar_null/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/scalar_null/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/scalar_number_float",
+      "ronInputs": [
+        "valid/ron_only/valid/scalar_number_float/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/scalar_number_float/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/scalar_number_float/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/scalar_number_float/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/scalar_number_float/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/scalar_number_float/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/scalar_number_int",
+      "ronInputs": [
+        "valid/ron_only/valid/scalar_number_int/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/scalar_number_int/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/scalar_number_int/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/scalar_number_int/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/scalar_number_int/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/scalar_number_int/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/scalar_number_uint",
+      "ronInputs": [
+        "valid/ron_only/valid/scalar_number_uint/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/scalar_number_uint/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/scalar_number_uint/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/scalar_number_uint/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/scalar_number_uint/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/scalar_number_uint/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/scalar_query_var",
+      "ronInputs": [
+        "valid/ron_only/valid/scalar_query_var/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/scalar_query_var/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/scalar_query_var/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/scalar_query_var/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/scalar_query_var/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/scalar_query_var/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/scalar_string_bare",
+      "ronInputs": [
+        "valid/ron_only/valid/scalar_string_bare/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/scalar_string_bare/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_bare/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/scalar_string_bare/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/scalar_string_bare/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_bare/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/scalar_string_empty",
+      "ronInputs": [
+        "valid/ron_only/valid/scalar_string_empty/input.ron",
+        "valid/ron_only/valid/scalar_string_empty/input_double.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/scalar_string_empty/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_empty/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/scalar_string_empty/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/scalar_string_empty/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_empty/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/scalar_string_empty_double",
+      "ronInputs": [
+        "valid/ron_only/valid/scalar_string_empty_double/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/scalar_string_empty_double/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_empty_double/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/scalar_string_empty_double/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/scalar_string_empty_double/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_empty_double/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/scalar_string_quad_double_quotes",
+      "ronInputs": [
+        "valid/ron_only/valid/scalar_string_quad_double_quotes/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/scalar_string_quad_double_quotes/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_quad_double_quotes/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/scalar_string_quad_double_quotes/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/scalar_string_quad_double_quotes/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_quad_double_quotes/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/scalar_string_quad_single_quotes",
+      "ronInputs": [
+        "valid/ron_only/valid/scalar_string_quad_single_quotes/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/scalar_string_quad_single_quotes/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_quad_single_quotes/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/scalar_string_quad_single_quotes/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/scalar_string_quad_single_quotes/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_quad_single_quotes/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/scalar_string_repeated_double",
+      "ronInputs": [
+        "valid/ron_only/valid/scalar_string_repeated_double/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/scalar_string_repeated_double/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_repeated_double/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/scalar_string_repeated_double/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/scalar_string_repeated_double/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_repeated_double/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/scalar_string_repeated_single",
+      "ronInputs": [
+        "valid/ron_only/valid/scalar_string_repeated_single/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/scalar_string_repeated_single/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_repeated_single/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/scalar_string_repeated_single/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/scalar_string_repeated_single/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_repeated_single/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/scalar_string_single_quoted",
+      "ronInputs": [
+        "valid/ron_only/valid/scalar_string_single_quoted/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/scalar_string_single_quoted/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_single_quoted/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/scalar_string_single_quoted/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/scalar_string_single_quoted/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_single_quoted/expected.compact.ron"
+    },
+    {
+      "name": "ron_only/valid/top_level_elided_map",
+      "ronInputs": [
+        "valid/ron_only/valid/top_level_elided_map/input.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/top_level_elided_map/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/top_level_elided_map/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/top_level_elided_map/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/top_level_elided_map/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/top_level_elided_map/expected.compact.ron"
+    }
+  ],
+  "invalidRON": [
+    "invalid/ron/ported/invalid/n_object_key_missing_value.ron",
+    "invalid/ron/ported/invalid/n_string_unclosed.ron",
+    "invalid/ron/ported/invalid/n_structure_array_trailing_garbage.ron",
+    "invalid/ron/ported/invalid/n_structure_array_unclosed.ron",
+    "invalid/ron/ported/invalid/n_structure_extra_closing_array.ron",
+    "invalid/ron/ported/invalid/n_structure_object_then_array.ron",
+    "invalid/ron/ported/invalid/n_structure_object_unclosed.ron",
+    "invalid/ron/ron_only/invalid/array_unterminated.ron",
+    "invalid/ron/ron_only/invalid/empty_input.ron",
+    "invalid/ron/ron_only/invalid/object_missing_value.ron",
+    "invalid/ron/ron_only/invalid/object_unterminated.ron",
+    "invalid/ron/ron_only/invalid/string_unterminated.ron",
+    "invalid/ron/ron_only/invalid/trailing_garbage.ron"
+  ],
+  "invalidJSON": [
+    "invalid/json/from_json/malformed_object.json",
+    "invalid/json/from_json/multiple_roots.json",
+    "invalid/json/from_json/trailing_data.json"
+  ]
+}

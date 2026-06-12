@@ -1,0 +1,10 @@
+{
+  users [
+    {id 100 name Ada roles [admin writer] active true}
+    {id 200 name Grace roles [compiler] active false}
+  ]
+  settings {
+    retry {max 3 backoffMs 250}
+    tags [llm json compact]
+  }
+}
