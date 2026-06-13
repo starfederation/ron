@@ -5,9 +5,9 @@
     "jsonIndent": "  ",
     "ronIndent": "  ",
     "prettyRONTrailingNewline": true,
-    "objectKeyOrder": "lexicographic by Unicode code point sequence",
+    "objectKeyOrder": "RFC 8785 UTF-16 code unit order",
     "canonicalRON": "compact RON with isCanonical=true",
-    "canonicalRONHashAlgorithm": "XXH3-64, seed 0, lowercase hex",
+    "canonicalRONHashAlgorithm": "XXH3-128, seed 0, lowercase hex",
     "expectedPrettyOptions": {
       "isPretty": true,
       "isCanonical": true
@@ -15,7 +15,8 @@
     "expectedCompactOptions": {
       "isPretty": false,
       "isCanonical": true
-    }
+    },
+    "canonicalRONHashEncoding": "32 lowercase hexadecimal digits"
   },
   "valid": [
     {
@@ -29,7 +30,7 @@
       "expectedCompactJSON": "valid/basic/records/expected.compact.json",
       "expectedPrettyRON": "valid/basic/records/expected.pretty.ron",
       "expectedCompactRON": "valid/basic/records/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "e90216d438907e1e"
+      "expectedCanonicalRONXXH3": "471387dd843c3a03a06210e6fde8fea6"
     },
     {
       "name": "basic/strings",
@@ -41,7 +42,7 @@
       "expectedCompactJSON": "valid/basic/strings/expected.compact.json",
       "expectedPrettyRON": "valid/basic/strings/expected.pretty.ron",
       "expectedCompactRON": "valid/basic/strings/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "22558398e16e617d"
+      "expectedCanonicalRONXXH3": "517157cd5f8b833422558398e16e617d"
     },
     {
       "name": "basic/write",
@@ -54,7 +55,7 @@
       "expectedCompactJSON": "valid/basic/write/expected.compact.json",
       "expectedPrettyRON": "valid/basic/write/expected.pretty.ron",
       "expectedCompactRON": "valid/basic/write/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "a3b456385ee7f9ea"
+      "expectedCanonicalRONXXH3": "c823408f68ae4b5bc0e8446965699c6b"
     },
     {
       "name": "ported/valid/y_number_negative_zero",
@@ -66,7 +67,7 @@
       "expectedCompactJSON": "valid/ported/valid/y_number_negative_zero/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_number_negative_zero/expected.pretty.ron",
       "expectedCompactRON": "valid/ported/valid/y_number_negative_zero/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "773d18eedb6ed630"
+      "expectedCanonicalRONXXH3": "0509cea48cdff5e0773d18eedb6ed630"
     },
     {
       "name": "ported/valid/y_number_real_capital_e",
@@ -78,7 +79,7 @@
       "expectedCompactJSON": "valid/ported/valid/y_number_real_capital_e/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_number_real_capital_e/expected.pretty.ron",
       "expectedCompactRON": "valid/ported/valid/y_number_real_capital_e/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "999287f903f6340d"
+      "expectedCanonicalRONXXH3": "779c971a17a28835999287f903f6340d"
     },
     {
       "name": "ported/valid/y_root_scalar_false",
@@ -90,7 +91,7 @@
       "expectedCompactJSON": "valid/ported/valid/y_root_scalar_false/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_root_scalar_false/expected.pretty.ron",
       "expectedCompactRON": "valid/ported/valid/y_root_scalar_false/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "43e71bbe0316e682"
+      "expectedCanonicalRONXXH3": "4f9a6c9c2b463ad812c0396f2c3ab301"
     },
     {
       "name": "ported/valid/y_root_scalar_null",
@@ -102,7 +103,7 @@
       "expectedCompactJSON": "valid/ported/valid/y_root_scalar_null/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_root_scalar_null/expected.pretty.ron",
       "expectedCompactRON": "valid/ported/valid/y_root_scalar_null/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "b785b6ec423c44e1"
+      "expectedCanonicalRONXXH3": "dc32537e27486e2c652e7b35ccc22eda"
     },
     {
       "name": "ported/valid/y_string_non_ascii",
@@ -114,7 +115,7 @@
       "expectedCompactJSON": "valid/ported/valid/y_string_non_ascii/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_string_non_ascii/expected.pretty.ron",
       "expectedCompactRON": "valid/ported/valid/y_string_non_ascii/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "bfa86aec1fdaf6d0"
+      "expectedCanonicalRONXXH3": "8980bc47aac806eae447861c60c74036"
     },
     {
       "name": "ported/valid/y_structure_array_empty",
@@ -126,7 +127,7 @@
       "expectedCompactJSON": "valid/ported/valid/y_structure_array_empty/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_structure_array_empty/expected.pretty.ron",
       "expectedCompactRON": "valid/ported/valid/y_structure_array_empty/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "831154110e30ac6a"
+      "expectedCanonicalRONXXH3": "39347ff402b6c53d831154110e30ac6a"
     },
     {
       "name": "ported/valid/y_structure_nested",
@@ -138,7 +139,7 @@
       "expectedCompactJSON": "valid/ported/valid/y_structure_nested/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_structure_nested/expected.pretty.ron",
       "expectedCompactRON": "valid/ported/valid/y_structure_nested/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "62ad59e79867d108"
+      "expectedCanonicalRONXXH3": "5b798d1264056fa042940eaf09ad4b99"
     },
     {
       "name": "ported/valid/y_structure_object_empty",
@@ -150,7 +151,7 @@
       "expectedCompactJSON": "valid/ported/valid/y_structure_object_empty/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_structure_object_empty/expected.pretty.ron",
       "expectedCompactRON": "valid/ported/valid/y_structure_object_empty/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "1349cde127705c16"
+      "expectedCanonicalRONXXH3": "dc7048f8f8747f561349cde127705c16"
     },
     {
       "name": "ron_only/valid/array_empty",
@@ -162,7 +163,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/array_empty/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/array_empty/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/array_empty/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "831154110e30ac6a"
+      "expectedCanonicalRONXXH3": "39347ff402b6c53d831154110e30ac6a"
     },
     {
       "name": "ron_only/valid/array_mixed",
@@ -175,7 +176,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/array_mixed/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/array_mixed/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/array_mixed/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "7a075a39c42cca18"
+      "expectedCanonicalRONXXH3": "8513c2941814727ab04d058a79f78644"
     },
     {
       "name": "ron_only/valid/array_mixed_commas",
@@ -187,7 +188,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/array_mixed_commas/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/array_mixed_commas/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/array_mixed_commas/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "7a075a39c42cca18"
+      "expectedCanonicalRONXXH3": "8513c2941814727ab04d058a79f78644"
     },
     {
       "name": "ron_only/valid/array_nested",
@@ -199,7 +200,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/array_nested/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/array_nested/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/array_nested/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "8a5a96162d959874"
+      "expectedCanonicalRONXXH3": "dc987479ff116549f6d4633943029628"
     },
     {
       "name": "ron_only/valid/object_digit_prefixed_string",
@@ -211,7 +212,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/object_digit_prefixed_string/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/object_digit_prefixed_string/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/object_digit_prefixed_string/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "887f78006db872fc"
+      "expectedCanonicalRONXXH3": "681a3b2235c3e66b8280303ba38bb430"
     },
     {
       "name": "ron_only/valid/object_empty",
@@ -223,7 +224,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/object_empty/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/object_empty/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/object_empty/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "1349cde127705c16"
+      "expectedCanonicalRONXXH3": "dc7048f8f8747f561349cde127705c16"
     },
     {
       "name": "ron_only/valid/object_quoted_key",
@@ -235,7 +236,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/object_quoted_key/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/object_quoted_key/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/object_quoted_key/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "bc6d06b4bce89cc0"
+      "expectedCanonicalRONXXH3": "43b68e03ecddd4bb252284380ab42856"
     },
     {
       "name": "ron_only/valid/object_with_commas",
@@ -247,7 +248,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/object_with_commas/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/object_with_commas/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/object_with_commas/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "87b5d93fa84b4d3c"
+      "expectedCanonicalRONXXH3": "66bd8278407250abf730e1e78b15a8b0"
     },
     {
       "name": "ron_only/valid/punctuation_tokens",
@@ -259,7 +260,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/punctuation_tokens/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/punctuation_tokens/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/punctuation_tokens/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "00818fb7b9fa28eb"
+      "expectedCanonicalRONXXH3": "b8a75857c64f91367952f7e376b1bf6c"
     },
     {
       "name": "ron_only/valid/scalar_boolean_false",
@@ -271,7 +272,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_boolean_false/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_boolean_false/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_boolean_false/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "43e71bbe0316e682"
+      "expectedCanonicalRONXXH3": "4f9a6c9c2b463ad812c0396f2c3ab301"
     },
     {
       "name": "ron_only/valid/scalar_boolean_true",
@@ -283,7 +284,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_boolean_true/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_boolean_true/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_boolean_true/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "40bbd512750b7629"
+      "expectedCanonicalRONXXH3": "f41296b9e2d38ac855a9a1372b7155c1"
     },
     {
       "name": "ron_only/valid/scalar_null",
@@ -295,7 +296,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_null/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_null/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_null/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "b785b6ec423c44e1"
+      "expectedCanonicalRONXXH3": "dc32537e27486e2c652e7b35ccc22eda"
     },
     {
       "name": "ron_only/valid/scalar_number_float",
@@ -307,7 +308,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_number_float/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_number_float/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_number_float/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "d60873a37f446dc5"
+      "expectedCanonicalRONXXH3": "3c90fe546f88f4d44bf303803a1b91f6"
     },
     {
       "name": "ron_only/valid/scalar_number_int",
@@ -319,7 +320,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_number_int/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_number_int/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_number_int/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "404a763b3f4c8c9a"
+      "expectedCanonicalRONXXH3": "0e45f72b026d434f404a763b3f4c8c9a"
     },
     {
       "name": "ron_only/valid/scalar_number_uint",
@@ -331,7 +332,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_number_uint/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_number_uint/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_number_uint/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "9131ab7296c23377"
+      "expectedCanonicalRONXXH3": "20dbdeb09a959e7f056a116d7ec33be3"
     },
     {
       "name": "ron_only/valid/scalar_query_var",
@@ -343,7 +344,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_query_var/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_query_var/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_query_var/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "0f64ebbcbee91524"
+      "expectedCanonicalRONXXH3": "a49c2589697fc0630f64ebbcbee91524"
     },
     {
       "name": "ron_only/valid/scalar_string_bare",
@@ -355,7 +356,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_bare/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_bare/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_string_bare/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "96ca223b3d5dcf80"
+      "expectedCanonicalRONXXH3": "88e129d95fbab7ba96ca223b3d5dcf80"
     },
     {
       "name": "ron_only/valid/scalar_string_empty",
@@ -368,7 +369,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_empty/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_empty/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_string_empty/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "25c8e23ec1d946b4"
+      "expectedCanonicalRONXXH3": "0fd2db2b9466295425c8e23ec1d946b4"
     },
     {
       "name": "ron_only/valid/scalar_string_empty_double",
@@ -380,7 +381,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_empty_double/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_empty_double/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_string_empty_double/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "25c8e23ec1d946b4"
+      "expectedCanonicalRONXXH3": "0fd2db2b9466295425c8e23ec1d946b4"
     },
     {
       "name": "ron_only/valid/scalar_string_quad_double_quotes",
@@ -392,7 +393,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_quad_double_quotes/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_quad_double_quotes/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_string_quad_double_quotes/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "dcf5614327f7469f"
+      "expectedCanonicalRONXXH3": "679c2294547cfec51cbbda5dcbe4517a"
     },
     {
       "name": "ron_only/valid/scalar_string_quad_single_quotes",
@@ -404,7 +405,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_quad_single_quotes/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_quad_single_quotes/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_string_quad_single_quotes/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "be9b8bfb911d4855"
+      "expectedCanonicalRONXXH3": "766071b539afb9fdb255cc56ff890ce4"
     },
     {
       "name": "ron_only/valid/scalar_string_repeated_double",
@@ -416,7 +417,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_repeated_double/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_repeated_double/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_string_repeated_double/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "152b5ad5c5df8697"
+      "expectedCanonicalRONXXH3": "ceaf70212dc9460384ba300118cdcc31"
     },
     {
       "name": "ron_only/valid/scalar_string_repeated_single",
@@ -428,7 +429,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_repeated_single/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_repeated_single/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_string_repeated_single/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "e312d764259a893d"
+      "expectedCanonicalRONXXH3": "4487919974e3e03d032883c8f1e00502"
     },
     {
       "name": "ron_only/valid/scalar_string_single_quoted",
@@ -440,7 +441,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_single_quoted/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_single_quoted/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_string_single_quoted/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "6feb434e04802423"
+      "expectedCanonicalRONXXH3": "a9541f9426c817184946bcd310dc0104"
     },
     {
       "name": "ron_only/valid/top_level_elided_map",
@@ -452,7 +453,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/top_level_elided_map/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/top_level_elided_map/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/top_level_elided_map/expected.compact.ron",
-      "expectedCanonicalRONXXH3": "913f5322d88ba26f"
+      "expectedCanonicalRONXXH3": "5f339b5662a86a251e1b4b06b82cfabd"
     }
   ],
   "invalidRON": [

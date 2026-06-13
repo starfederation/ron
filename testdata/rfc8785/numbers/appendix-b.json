@@ -1,0 +1,121 @@
+{
+  "source": "RFC 8785 Appendix B",
+  "finite": [
+    {
+      "ieee754Hex": "0000000000000000",
+      "expectedJSON": "0",
+      "comment": "Zero"
+    },
+    {
+      "ieee754Hex": "8000000000000000",
+      "expectedJSON": "0",
+      "comment": "Minus zero"
+    },
+    {
+      "ieee754Hex": "0000000000000001",
+      "expectedJSON": "5e-324",
+      "comment": "Min pos number"
+    },
+    {
+      "ieee754Hex": "8000000000000001",
+      "expectedJSON": "-5e-324",
+      "comment": "Min neg number"
+    },
+    {
+      "ieee754Hex": "7fefffffffffffff",
+      "expectedJSON": "1.7976931348623157e+308",
+      "comment": "Max pos number"
+    },
+    {
+      "ieee754Hex": "ffefffffffffffff",
+      "expectedJSON": "-1.7976931348623157e+308",
+      "comment": "Max neg number"
+    },
+    {
+      "ieee754Hex": "4340000000000000",
+      "expectedJSON": "9007199254740992",
+      "comment": "Max pos int"
+    },
+    {
+      "ieee754Hex": "c340000000000000",
+      "expectedJSON": "-9007199254740992",
+      "comment": "Max neg int"
+    },
+    {
+      "ieee754Hex": "4430000000000000",
+      "expectedJSON": "295147905179352830000",
+      "comment": "About 2**68"
+    },
+    {
+      "ieee754Hex": "44b52d02c7e14af5",
+      "expectedJSON": "9.999999999999997e+22"
+    },
+    {
+      "ieee754Hex": "44b52d02c7e14af6",
+      "expectedJSON": "1e+23"
+    },
+    {
+      "ieee754Hex": "44b52d02c7e14af7",
+      "expectedJSON": "1.0000000000000001e+23"
+    },
+    {
+      "ieee754Hex": "444b1ae4d6e2ef4e",
+      "expectedJSON": "999999999999999700000"
+    },
+    {
+      "ieee754Hex": "444b1ae4d6e2ef4f",
+      "expectedJSON": "999999999999999900000"
+    },
+    {
+      "ieee754Hex": "444b1ae4d6e2ef50",
+      "expectedJSON": "1e+21"
+    },
+    {
+      "ieee754Hex": "3eb0c6f7a0b5ed8c",
+      "expectedJSON": "9.999999999999997e-7"
+    },
+    {
+      "ieee754Hex": "3eb0c6f7a0b5ed8d",
+      "expectedJSON": "0.000001"
+    },
+    {
+      "ieee754Hex": "41b3de4355555553",
+      "expectedJSON": "333333333.3333332"
+    },
+    {
+      "ieee754Hex": "41b3de4355555554",
+      "expectedJSON": "333333333.33333325"
+    },
+    {
+      "ieee754Hex": "41b3de4355555555",
+      "expectedJSON": "333333333.3333333"
+    },
+    {
+      "ieee754Hex": "41b3de4355555556",
+      "expectedJSON": "333333333.3333334"
+    },
+    {
+      "ieee754Hex": "41b3de4355555557",
+      "expectedJSON": "333333333.33333343"
+    },
+    {
+      "ieee754Hex": "becbf647612f3696",
+      "expectedJSON": "-0.0000033333333333333333"
+    },
+    {
+      "ieee754Hex": "43143ff3c1cb0959",
+      "expectedJSON": "1424953923781206.2",
+      "comment": "Round to even"
+    }
+  ],
+  "rejectedNativeValues": [
+    {
+      "ieee754Hex": "7fffffffffffffff",
+      "reason": "NaN is not permitted in JSON by RFC 8785 Section 3.2.2.3"
+    },
+    {
+      "ieee754Hex": "7ff0000000000000",
+      "reason": "Infinity is not permitted in JSON by RFC 8785 Section 3.2.2.3"
+    }
+  ]
+}
