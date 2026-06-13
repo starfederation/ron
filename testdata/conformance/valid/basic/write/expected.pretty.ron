@@ -1,11 +1,9 @@
-{
-  facts {
-    #_newPerson {name Grace}
-    100 {
-      manager {# 200}
-      name Ada
-      tags [math logic]
-    }
+facts {
+  #_newPerson {name Grace}
+  100 {
+    manager {# 200}
+    name Ada
+    tags [math logic]
   }
-  txMeta {source api}
 }
+txMeta {source api}

@@ -203,11 +203,36 @@ Rules:
 
 - Enabled by `isPretty=true`.
 - Always append one trailing newline.
+- Render root object members at indentation level 0 without outer braces.
+- Render empty root objects as `{}` because there are no members to elide.
 - Use the selected object order: `isCanonical=true` sorts keys lexicographically by RFC 8785 UTF-16 code unit order; `isCanonical=false` preserves source order when available.
 - Render empty objects as `{}` and empty arrays as `[]`.
 - Inline arrays when every element can inline and total rendered size is at most 80 bytes.
 - Inline objects only when they have exactly one key, the value can inline, and total rendered size is at most 80 bytes.
 - Otherwise render one item or member per line.
+
+### Typed Value Rendering Hooks
+
+JSON-to-RON renderers should expose an optional hook for application-specific typed rendering. The hook is a pre-render transform with this shape in language-neutral terms:
+
+```text
+mapValue(path, value) -> (replacementValue, replaced)
+```
+
+Rules:
+
+- `path` is the location in the original JSON tree. Object path elements are strings. Array path elements are zero-based integers. The root path is empty.
+- If `replaced=false`, render the original value normally.
+- If `replaced=true`, render `replacementValue` at that path and do not apply the same hook again inside the returned replacement subtree.
+- `replacementValue` must be a valid JSON value in the RON data model.
+- The hook is a rendering API only. It does not change parser behavior or make tagged marker objects special.
+
+Examples:
+
+```text
+path ["tx"], value "BE" -> {"#":"BE"} -> tx {# BE}
+path ["committed"], value "2026-06-13T00:00:00Z" -> {"#time":"2026-06-13T00:00:00Z"} -> committed {#time 2026-06-13T00:00:00Z}
+```
 
 ### Compact RON
 
@@ -283,6 +308,14 @@ For each valid case:
 8. Parse all produced JSON and compare values with `jsonInput`.
 9. Parse produced RON back to JSON and compare values with `jsonInput`.
 
+For each case in `jsonToRONRendering`:
+
+1. Read `jsonInput`.
+2. Apply the declared options and typed value hooks.
+3. Convert JSON -> RON.
+4. Exact-match `expectedRON`.
+5. Parse produced RON back to JSON. For typed value hook cases, compare with the transformed value, not the original `jsonInput`.
+
 For invalid cases:
 
 - Every `invalidRON` path must fail RON parsing.
@@ -299,8 +332,10 @@ For invalid cases:
 7. Implement string rendering.
 8. Implement pretty RON output.
 9. Implement compact RON output.
-10. Add unseeded XXH3-128 checks for canonical RON output.
-11. Wire a manifest-based conformance runner.
+10. Add pretty root object elision for JSON-to-RON output.
+11. Add typed value hook support for JSON-to-RON rendering.
+12. Add unseeded XXH3-128 checks for canonical RON output.
+13. Wire a manifest-based conformance runner.
 
 ## Gotchas
 
@@ -314,3 +349,5 @@ For invalid cases:
 - Compact output is not necessarily canonical unless `isCanonical=true`.
 - Canonical hash input is compact canonical RON bytes, not pretty RON, non-canonical compact RON, or JSON bytes.
 - Pretty RON has a trailing newline; pretty JSON golden files do not require one.
+- Pretty root object elision is a JSON-to-RON rendering behavior, not a parsing mode.
+- Typed value hooks intentionally change rendered output values; compare typed-hook round trips against the transformed value.

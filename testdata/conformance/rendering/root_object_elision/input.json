@@ -1,0 +1,7 @@
+{
+  "status": "ok",
+  "count": 2,
+  "nested": {
+    "a": true
+  }
+}

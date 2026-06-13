@@ -18,6 +18,7 @@ Top-level fields:
 - `valid`: valid conversion cases, including each case's `expectedCanonicalRONXXH3`.
 - `invalidRON`: RON files that must fail RON parsing.
 - `invalidJSON`: JSON files that must fail JSON parsing or JSON -> RON conversion.
+- `jsonToRONRendering`: JSON -> RON rendering cases, including root object elision and typed value hooks.
 
 ## Valid Case Layout
 
@@ -106,6 +107,30 @@ Formatters may also expose non-canonical given-order output with `isCanonical=fa
 
 If an implementation does not support one output mode yet, mark that mode unsupported in that implementation's own test suite. Do not change these fixtures to match a partial implementation.
 
+## JSON-to-RON Rendering Option Cases
+
+The `jsonToRONRendering` manifest entries are option-specific JSON -> RON cases. Each entry includes:
+
+- `jsonInput`: JSON source file.
+- `options`: rendering options such as `isPretty` and `isCanonical`.
+- `typedValueHooks`: optional path replacement rules for typed rendering.
+- `expectedRON`: exact RON output.
+
+Use this flow:
+
+```text
+jsonInput
+  -> parse JSON
+  -> apply typedValueHooks when present
+  -> render RON with options
+  -> exact compare with expectedRON
+  -> parse generated RON back to JSON
+  -> compare with transformed value when hooks are present, otherwise input value
+```
+
+Pretty JSON-to-RON rendering of a root object emits root members at indentation level 0 with the normal pretty RON trailing newline. Empty root objects render as `{}` because there are no members to elide.
+
+A typed value hook is a rendering transform, not new syntax. Path elements are object keys or zero-based array indexes. `replaceWith` is the JSON value to render at that path. For example, replacing `"BE"` at path `["tx"]` with `{ "#": "BE" }` renders as `tx {# BE}`.
 
 ## RFC 8785 Canonical JSON Fixtures
 
