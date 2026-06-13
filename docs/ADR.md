@@ -227,7 +227,7 @@ maps to this JSON:
 RON formatting has two independent options. Implementations should expose them as flags, option structs, variadic options, or idiomatic equivalents for the target language.
 
 - `isPretty`: render multiline pretty output when true, compact output when false.
-- `isCanonical`: sort object keys lexicographically by Unicode code point sequence when true; preserve object member order from the parsed source when false and that order is available.
+- `isCanonical`: sort object keys lexicographically by RFC 8785 UTF-16 code unit order when true; preserve object member order from the parsed source when false and that order is available.
 
 If an object contains duplicate keys, the last occurrence wins. In non-canonical given-order output, the surviving member appears at the position of its last occurrence.
 
@@ -266,7 +266,9 @@ If source order is unavailable because the host JSON value is an unordered map, 
 - Object key order is selected by `isCanonical`.
 - Key/value space is omitted before array, object, or quoted-string values when unambiguous.
 
-Canonical RON is the byte form rendered with `isPretty=false` and `isCanonical=true`. Canonical mode has an extra cost because every object may require key sorting. Use it when stable bytes or hashes matter. Non-canonical compact output can preserve source order and avoid sorting. Canonical hashes are unseeded XXH3-64 of the exact canonical RON bytes, encoded as 16 lowercase hexadecimal digits. The corpus stores each expected hash in the manifest as `expectedCanonicalRONXXH3`.
+Canonical RON is the byte form rendered with `isPretty=false` and `isCanonical=true`. Canonical mode has an extra cost because every object may require key sorting. Use it when stable bytes or hashes matter. Non-canonical compact output can preserve source order and avoid sorting. Canonical RON hashes are unseeded XXH3-128 of the exact canonical RON bytes, encoded as 32 lowercase hexadecimal digits. The corpus stores each expected hash in the manifest as `expectedCanonicalRONXXH3`.
+
+Canonical JSON means RFC 8785 JSON Canonicalization Scheme (JCS) bytes encoded as UTF-8. RFC 8785 fixtures live under `testdata/rfc8785/` and include `expectedCanonicalJSONXXH3` hashes using the same unseeded XXH3-128 encoding.
 
 ## Corpus Decision
 
@@ -280,7 +282,7 @@ Each valid conformance case contains:
 - Expected pretty JSON.
 - Expected compact canonical RON.
 - Expected pretty canonical RON.
-- Expected canonical RON XXH3-64 hash.
+- Expected canonical RON XXH3-128 hash.
 
 Invalid RON and invalid JSON fixtures are listed separately in the manifest.
 

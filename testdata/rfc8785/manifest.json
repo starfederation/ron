@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "standard": "RFC 8785 JSON Canonicalization Scheme (JCS)",
+  "source": "https://www.rfc-editor.org/rfc/rfc8785.txt",
+  "canonicalJSON": {
+    "definition": "RFC 8785 canonical JSON bytes encoded as UTF-8",
+    "hashAlgorithm": "XXH3-128, seed 0, lowercase hex",
+    "hashEncoding": "32 lowercase hexadecimal digits",
+    "objectKeyOrder": "RFC 8785 UTF-16 code unit order"
+  },
+  "valid": [
+    {
+      "name": "primitive_serialization",
+      "source": "RFC 8785 Sections 3.2.2, 3.2.3, and 3.2.4",
+      "inputJSON": "canonical/primitive_serialization.input.json",
+      "expectedCanonicalJSON": "canonical/primitive_serialization.expected.json",
+      "expectedCanonicalUTF8Hex": "canonical/primitive_serialization.expected.hex",
+      "expectedCanonicalJSONXXH3": "28c22fc6337f4c428f618836d64aa0a2"
+    },
+    {
+      "name": "property_sorting",
+      "source": "RFC 8785 Section 3.2.3",
+      "inputJSON": "canonical/property_sorting.input.json",
+      "expectedCanonicalJSON": "canonical/property_sorting.expected.json",
+      "expectedCanonicalUTF8Hex": "canonical/property_sorting.expected.hex",
+      "expectedCanonicalJSONXXH3": "e945db891d4a3129e64aca19f7364e41"
+    },
+    {
+      "name": "recursive_sorting",
+      "source": "RFC 8785 Section 3.2.3",
+      "inputJSON": "canonical/recursive_sorting.input.json",
+      "expectedCanonicalJSON": "canonical/recursive_sorting.expected.json",
+      "expectedCanonicalUTF8Hex": "canonical/recursive_sorting.expected.hex",
+      "expectedCanonicalJSONXXH3": "af1095fb760495348912de97718092f4"
+    }
+  ],
+  "numberSerialization": "numbers/appendix-b.json",
+  "invalidIJSON": [
+    {
+      "name": "duplicate_property_names",
+      "source": "RFC 8785 Section 3.1",
+      "inputJSON": "invalid/duplicate_property_names.json",
+      "reason": "JSON objects must not exhibit duplicate property names."
+    },
+    {
+      "name": "lone_surrogate_string",
+      "source": "RFC 8785 Sections 3.1 and 3.2.2.2",
+      "inputJSON": "invalid/lone_surrogate_string.json",
+      "reason": "JSON string data must be valid Unicode and lone surrogates must be rejected."
+    },
+    {
+      "name": "integer_not_exact_ieee754_double",
+      "source": "RFC 8785 Section 3.1",
+      "inputJSON": "invalid/integer_not_exact_ieee754_double.json",
+      "reason": "JSON number data must be expressible as IEEE 754 double precision."
+    }
+  ]
+}

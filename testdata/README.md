@@ -3,7 +3,8 @@
 ## Layout
 
 ```text
-conformance/  Language-neutral fixture corpus.
+conformance/  Language-neutral RON fixture corpus.
+rfc8785/      RFC 8785 canonical JSON fixture corpus.
 ```
 
 ## Manifest
@@ -35,7 +36,7 @@ Each case is a set of different textual views of one JSON value:
 - `expected.pretty.json`: pretty JSON output for RON -> JSON.
 - `expected.compact.ron`: compact canonical RON output for JSON -> RON and canonical RON hash input.
 - `expected.pretty.ron`: pretty canonical RON output for JSON -> RON.
-- `expectedCanonicalRONXXH3`: unseeded XXH3-64 of `expected.compact.ron`, encoded as 16 lowercase hexadecimal digits in the manifest.
+- `expectedCanonicalRONXXH3`: unseeded XXH3-128 of `expected.compact.ron`, encoded as 32 lowercase hexadecimal digits in the manifest.
 
 A language implementation should generate its own actual outputs in memory or in its own temporary/build directory. Do not write generated outputs back into this corpus during normal test runs.
 
@@ -61,7 +62,7 @@ jsonInput
   -> JSON value model
   -> emit compact canonical RON
   -> exact compare with expectedCompactRON
-  -> hash with unseeded XXH3-64
+  -> hash with unseeded XXH3-128
   -> exact compare lowercase hex with expectedCanonicalRONXXH3
 
 jsonInput
@@ -99,11 +100,42 @@ Exact means byte-for-byte against the fixture file using LF line endings.
 - Compact JSON emits no insignificant whitespace.
 - Compact RON emits no newlines and may elide root object braces.
 - Canonical RON is compact RON with canonical ordering, equivalent to `isPretty=false` and `isCanonical=true`.
-- Canonical hashes use unseeded XXH3-64 over exact compact canonical RON bytes.
+- Canonical hashes use unseeded XXH3-128 over exact compact canonical RON bytes.
 
 Formatters may also expose non-canonical given-order output with `isCanonical=false`. Given-order output is intentionally not part of this shared fixture corpus because it depends on source text order.
 
 If an implementation does not support one output mode yet, mark that mode unsupported in that implementation's own test suite. Do not change these fixtures to match a partial implementation.
+
+
+## RFC 8785 Canonical JSON Fixtures
+
+`rfc8785/manifest.json` is the source of truth for RFC 8785 JSON Canonicalization Scheme fixtures. All paths in that manifest are relative to `testdata/rfc8785/`.
+
+Top-level fields:
+
+- `version`: corpus version.
+- `standard`: RFC 8785 JSON Canonicalization Scheme (JCS).
+- `source`: RFC URL.
+- `canonicalJSON`: canonical byte definition, object key order, and hash algorithm.
+- `valid`: RFC-derived valid canonicalization cases.
+- `numberSerialization`: RFC 8785 Appendix B number serialization vectors.
+- `invalidIJSON`: JSON text that is syntactically valid or parser-adjacent but invalid for RFC 8785/I-JSON canonicalization.
+
+For each valid RFC 8785 case:
+
+```text
+inputJSON
+  -> parse as I-JSON
+  -> canonicalize per RFC 8785
+  -> exact compare with expectedCanonicalJSON
+  -> compare UTF-8 bytes as lowercase hex with expectedCanonicalUTF8Hex
+  -> hash canonical JSON bytes with unseeded XXH3-128
+  -> exact compare lowercase hex with expectedCanonicalJSONXXH3
+```
+
+For `numbers/appendix-b.json`, serialize each finite IEEE 754 value to JSON and exact-match `expectedJSON`. Reject each `rejectedNativeValues` entry if the implementation accepts native floating-point input.
+
+For `invalidIJSON`, canonicalization must fail. Do not assert exact error strings.
 
 ## Invalid Case Flow
 
@@ -141,7 +173,7 @@ When the reference format changes or a new edge case is added:
 1. Add or edit the input fixture files.
 2. Generate all expected files from the accepted reference behavior, not from an implementation under test.
 3. Update `conformance/manifest.json` so every new file is reachable and every valid case has `expectedCanonicalRONXXH3`.
-4. Verify each manifest hash matches unseeded XXH3-64 of the expected compact canonical RON bytes.
+4. Verify each manifest hash matches unseeded XXH3-128 of the expected compact canonical RON bytes.
 5. Verify each valid case still represents one JSON value across all RON and JSON files.
 6. Verify invalid cases still fail for the intended reason.
 

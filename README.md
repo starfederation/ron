@@ -12,7 +12,8 @@ RON is also not [EDN](https://github.com/edn-format/edn), though it shares the s
 
 - `docs/ADR.md`: reference ADR for the format.
 - `docs/implementation-guide.md`: parser, renderer, and formatter guidance for new implementations.
-- `testdata/conformance/`: language-neutral fixture corpus with a manifest.
+- `testdata/conformance/`: language-neutral RON fixture corpus with a manifest.
+- `testdata/rfc8785/`: RFC 8785 canonical JSON fixture corpus.
 
 ## Implementations
 
@@ -23,11 +24,13 @@ RON is also not [EDN](https://github.com/edn-format/edn), though it shares the s
 RON formatting has independent options. Use flags, option structs, variadic options, or idiomatic equivalents for the target language:
 
 - `isPretty`: render multiline pretty output when true, compact output when false.
-- `isCanonical`: sort object keys lexicographically for stable byte-for-byte output when true; preserve source object member order when false and the parser has it.
+- `isCanonical`: sort object keys in RFC 8785 UTF-16 code unit order for stable byte-for-byte output when true; preserve source object member order when false and the parser has it.
 
 Compact is not automatically canonical. Canonical RON is compact RON rendered with `isPretty=false` and `isCanonical=true`. Use canonical mode when stable bytes or hashes matter. It has extra cost because each object may need key sorting; non-canonical compact output can preserve source order and avoid that sort.
 
-Canonical RON hashes use unseeded XXH3-64 over the exact canonical RON bytes. The manifest includes each case's `expectedCanonicalRONXXH3`. Testdata declares `expectedPrettyOptions` as `isPretty=true, isCanonical=true` and `expectedCompactOptions` as `isPretty=false, isCanonical=true`.
+Canonical JSON means RFC 8785 JSON Canonicalization Scheme (JCS) bytes encoded as UTF-8. Its fixtures live under `testdata/rfc8785/`.
+
+Canonical hashes use unseeded XXH3-128, encoded as 32 lowercase hexadecimal digits. RON conformance cases hash exact canonical RON bytes in `expectedCanonicalRONXXH3`. RFC 8785 cases hash exact canonical JSON bytes in `expectedCanonicalJSONXXH3`. Testdata declares `expectedPrettyOptions` as `isPretty=true, isCanonical=true` and `expectedCompactOptions` as `isPretty=false, isCanonical=true`.
 
 ## Quick example
 
@@ -122,7 +125,9 @@ Use `testdata/conformance/manifest.json` as the test runner input. For each vali
 4. Convert `jsonInput` to RON.
 5. Compare pretty canonical RON with `expectedPrettyRON`.
 6. Compare compact canonical RON with `expectedCompactRON` if compact mode is supported.
-7. Hash compact canonical RON with unseeded XXH3-64 and compare lowercase hex with `expectedCanonicalRONXXH3`.
+7. Hash compact canonical RON with unseeded XXH3-128 and compare lowercase hex with `expectedCanonicalRONXXH3`.
 8. Parse generated RON back to JSON and compare JSON values, not text.
 
 For invalid cases, every `invalidRON[]` file must fail RON parsing and every `invalidJSON[]` file must fail JSON -> RON conversion.
+
+Use `testdata/rfc8785/manifest.json` for RFC 8785 canonical JSON vectors. Implementations must exact-match canonical JSON bytes, expected UTF-8 hex when present, Appendix B number serialization samples, I-JSON rejection cases, and unseeded XXH3-128 hashes.
