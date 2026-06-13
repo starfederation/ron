@@ -139,7 +139,7 @@ Rules:
 - Whitespace or a value-start delimiter separates key and value.
 - Commas after values are optional separators.
 - Duplicate keys are allowed while parsing; the last value wins.
-- JSON and RON formatters sort object keys lexicographically.
+- Canonical JSON and RON formatters sort object keys lexicographically.
 
 ### Top-level object elision
 
@@ -224,42 +224,53 @@ maps to this JSON:
 
 ### Formatting
 
-Reference formatting has four output modes in the corpus.
+RON formatting has two independent options. Implementations should expose them as flags, option structs, variadic options, or idiomatic equivalents for the target language.
+
+- `isPretty`: render multiline pretty output when true, compact output when false.
+- `isCanonical`: sort object keys lexicographically by Unicode code point sequence when true; preserve object member order from the parsed source when false and that order is available.
+
+If an object contains duplicate keys, the last occurrence wins. In non-canonical given-order output, the surviving member appears at the position of its last occurrence.
+
+If source order is unavailable because the host JSON value is an unordered map, implementations should either reject `isCanonical=false` as unsupported for that value or document a deterministic fallback. They must not call unordered map iteration "given" order.
 
 #### Pretty JSON
 
 - Prefix: empty string.
 - Indent: two spaces.
 - Objects and arrays are multiline when non-empty.
-- Object keys are sorted lexicographically.
+- Corpus fixtures use canonical object order.
 - No trailing newline is required in golden files.
 
 #### Compact JSON
 
 - No insignificant whitespace.
-- Object keys are sorted lexicographically.
+- Corpus fixtures use canonical object order.
 - Duplicate object keys have already collapsed to the last value.
 
 #### Pretty RON
 
+- Enabled by `isPretty=true`.
 - Indent: two spaces.
 - Output ends with a trailing newline.
 - Root objects are wrapped with braces.
-- Object keys are sorted lexicographically.
+- Object key order is selected by `isCanonical`.
 - Empty arrays and objects render as `[]` and `{}`.
 - Arrays inline when every element can inline and the rendered size is at most 80 bytes.
 - Objects inline only when they have one key, the value can inline, and the rendered size is at most 80 bytes.
 
 #### Compact RON
 
+- Enabled by `isPretty=false`.
 - No newlines.
 - Root object braces are elided.
-- Object keys are sorted lexicographically.
+- Object key order is selected by `isCanonical`.
 - Key/value space is omitted before array, object, or quoted-string values when unambiguous.
+
+Canonical RON is the byte form rendered with `isPretty=false` and `isCanonical=true`. Canonical mode has an extra cost because every object may require key sorting. Use it when stable bytes or hashes matter. Non-canonical compact output can preserve source order and avoid sorting. Canonical hashes are unseeded XXH3-64 of the exact canonical RON bytes, encoded as 16 lowercase hexadecimal digits. The corpus stores each expected hash in the manifest as `expectedCanonicalRONXXH3`.
 
 ## Corpus Decision
 
-Keep language-neutral conformance fixtures indexed by `testdata/conformance/manifest.json`.
+Keep language-neutral conformance fixtures indexed by `testdata/conformance/manifest.json`. Pretty fixtures use `isPretty=true` and `isCanonical=true`; compact fixtures use `isPretty=false` and `isCanonical=true`.
 
 Each valid conformance case contains:
 
@@ -267,8 +278,9 @@ Each valid conformance case contains:
 - JSON input.
 - Expected compact JSON.
 - Expected pretty JSON.
-- Expected compact RON.
-- Expected pretty RON.
+- Expected compact canonical RON.
+- Expected pretty canonical RON.
+- Expected canonical RON XXH3-64 hash.
 
 Invalid RON and invalid JSON fixtures are listed separately in the manifest.
 

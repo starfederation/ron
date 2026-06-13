@@ -18,6 +18,17 @@ RON is also not [EDN](https://github.com/edn-format/edn), though it shares the s
 
 - Go: [starfederation/ron-go](https://github.com/starfederation/ron-go)
 
+## Formatting modes
+
+RON formatting has independent options. Use flags, option structs, variadic options, or idiomatic equivalents for the target language:
+
+- `isPretty`: render multiline pretty output when true, compact output when false.
+- `isCanonical`: sort object keys lexicographically for stable byte-for-byte output when true; preserve source object member order when false and the parser has it.
+
+Compact is not automatically canonical. Canonical RON is compact RON rendered with `isPretty=false` and `isCanonical=true`. Use canonical mode when stable bytes or hashes matter. It has extra cost because each object may need key sorting; non-canonical compact output can preserve source order and avoid that sort.
+
+Canonical RON hashes use unseeded XXH3-64 over the exact canonical RON bytes. The manifest includes each case's `expectedCanonicalRONXXH3`. Testdata declares `expectedPrettyOptions` as `isPretty=true, isCanonical=true` and `expectedCompactOptions` as `isPretty=false, isCanonical=true`.
+
 ## Quick example
 
 This RON uses top-level object elision, nested objects, arrays, booleans, null, numbers, bare strings, quoted strings, quoted keys, optional commas, comma-prefixed tokens, and punctuation-like strings.
@@ -107,10 +118,11 @@ Use `testdata/conformance/manifest.json` as the test runner input. For each vali
 
 1. Convert every `ronInputs[]` file to JSON.
 2. Compare compact output with `expectedCompactJSON` if compact mode is supported.
-3. Compare pretty output with `expectedPrettyJSON` if pretty mode is supported.
+3. Compare pretty output with canonical order against `expectedPrettyJSON` if pretty mode is supported.
 4. Convert `jsonInput` to RON.
-5. Compare pretty output with `expectedPrettyRON`.
-6. Optionally compare compact output with `expectedCompactRON`.
-7. Parse generated RON back to JSON and compare JSON values, not text.
+5. Compare pretty canonical RON with `expectedPrettyRON`.
+6. Compare compact canonical RON with `expectedCompactRON` if compact mode is supported.
+7. Hash compact canonical RON with unseeded XXH3-64 and compare lowercase hex with `expectedCanonicalRONXXH3`.
+8. Parse generated RON back to JSON and compare JSON values, not text.
 
 For invalid cases, every `invalidRON[]` file must fail RON parsing and every `invalidJSON[]` file must fail JSON -> RON conversion.

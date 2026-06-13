@@ -5,7 +5,17 @@
     "jsonIndent": "  ",
     "ronIndent": "  ",
     "prettyRONTrailingNewline": true,
-    "objectKeyOrder": "lexicographic by Unicode code point sequence"
+    "objectKeyOrder": "lexicographic by Unicode code point sequence",
+    "canonicalRON": "compact RON with isCanonical=true",
+    "canonicalRONHashAlgorithm": "XXH3-64, seed 0, lowercase hex",
+    "expectedPrettyOptions": {
+      "isPretty": true,
+      "isCanonical": true
+    },
+    "expectedCompactOptions": {
+      "isPretty": false,
+      "isCanonical": true
+    }
   },
   "valid": [
     {
@@ -18,7 +28,8 @@
       "expectedPrettyJSON": "valid/basic/records/expected.pretty.json",
       "expectedCompactJSON": "valid/basic/records/expected.compact.json",
       "expectedPrettyRON": "valid/basic/records/expected.pretty.ron",
-      "expectedCompactRON": "valid/basic/records/expected.compact.ron"
+      "expectedCompactRON": "valid/basic/records/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "e90216d438907e1e"
     },
     {
       "name": "basic/strings",
@@ -29,7 +40,8 @@
       "expectedPrettyJSON": "valid/basic/strings/expected.pretty.json",
       "expectedCompactJSON": "valid/basic/strings/expected.compact.json",
       "expectedPrettyRON": "valid/basic/strings/expected.pretty.ron",
-      "expectedCompactRON": "valid/basic/strings/expected.compact.ron"
+      "expectedCompactRON": "valid/basic/strings/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "22558398e16e617d"
     },
     {
       "name": "basic/write",
@@ -41,7 +53,8 @@
       "expectedPrettyJSON": "valid/basic/write/expected.pretty.json",
       "expectedCompactJSON": "valid/basic/write/expected.compact.json",
       "expectedPrettyRON": "valid/basic/write/expected.pretty.ron",
-      "expectedCompactRON": "valid/basic/write/expected.compact.ron"
+      "expectedCompactRON": "valid/basic/write/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "a3b456385ee7f9ea"
     },
     {
       "name": "ported/valid/y_number_negative_zero",
@@ -52,7 +65,8 @@
       "expectedPrettyJSON": "valid/ported/valid/y_number_negative_zero/expected.pretty.json",
       "expectedCompactJSON": "valid/ported/valid/y_number_negative_zero/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_number_negative_zero/expected.pretty.ron",
-      "expectedCompactRON": "valid/ported/valid/y_number_negative_zero/expected.compact.ron"
+      "expectedCompactRON": "valid/ported/valid/y_number_negative_zero/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "773d18eedb6ed630"
     },
     {
       "name": "ported/valid/y_number_real_capital_e",
@@ -63,7 +77,8 @@
       "expectedPrettyJSON": "valid/ported/valid/y_number_real_capital_e/expected.pretty.json",
       "expectedCompactJSON": "valid/ported/valid/y_number_real_capital_e/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_number_real_capital_e/expected.pretty.ron",
-      "expectedCompactRON": "valid/ported/valid/y_number_real_capital_e/expected.compact.ron"
+      "expectedCompactRON": "valid/ported/valid/y_number_real_capital_e/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "999287f903f6340d"
     },
     {
       "name": "ported/valid/y_root_scalar_false",
@@ -74,7 +89,8 @@
       "expectedPrettyJSON": "valid/ported/valid/y_root_scalar_false/expected.pretty.json",
       "expectedCompactJSON": "valid/ported/valid/y_root_scalar_false/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_root_scalar_false/expected.pretty.ron",
-      "expectedCompactRON": "valid/ported/valid/y_root_scalar_false/expected.compact.ron"
+      "expectedCompactRON": "valid/ported/valid/y_root_scalar_false/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "43e71bbe0316e682"
     },
     {
       "name": "ported/valid/y_root_scalar_null",
@@ -85,7 +101,8 @@
       "expectedPrettyJSON": "valid/ported/valid/y_root_scalar_null/expected.pretty.json",
       "expectedCompactJSON": "valid/ported/valid/y_root_scalar_null/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_root_scalar_null/expected.pretty.ron",
-      "expectedCompactRON": "valid/ported/valid/y_root_scalar_null/expected.compact.ron"
+      "expectedCompactRON": "valid/ported/valid/y_root_scalar_null/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "b785b6ec423c44e1"
     },
     {
       "name": "ported/valid/y_string_non_ascii",
@@ -96,7 +113,8 @@
       "expectedPrettyJSON": "valid/ported/valid/y_string_non_ascii/expected.pretty.json",
       "expectedCompactJSON": "valid/ported/valid/y_string_non_ascii/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_string_non_ascii/expected.pretty.ron",
-      "expectedCompactRON": "valid/ported/valid/y_string_non_ascii/expected.compact.ron"
+      "expectedCompactRON": "valid/ported/valid/y_string_non_ascii/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "bfa86aec1fdaf6d0"
     },
     {
       "name": "ported/valid/y_structure_array_empty",
@@ -107,7 +125,8 @@
       "expectedPrettyJSON": "valid/ported/valid/y_structure_array_empty/expected.pretty.json",
       "expectedCompactJSON": "valid/ported/valid/y_structure_array_empty/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_structure_array_empty/expected.pretty.ron",
-      "expectedCompactRON": "valid/ported/valid/y_structure_array_empty/expected.compact.ron"
+      "expectedCompactRON": "valid/ported/valid/y_structure_array_empty/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "831154110e30ac6a"
     },
     {
       "name": "ported/valid/y_structure_nested",
@@ -118,7 +137,8 @@
       "expectedPrettyJSON": "valid/ported/valid/y_structure_nested/expected.pretty.json",
       "expectedCompactJSON": "valid/ported/valid/y_structure_nested/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_structure_nested/expected.pretty.ron",
-      "expectedCompactRON": "valid/ported/valid/y_structure_nested/expected.compact.ron"
+      "expectedCompactRON": "valid/ported/valid/y_structure_nested/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "62ad59e79867d108"
     },
     {
       "name": "ported/valid/y_structure_object_empty",
@@ -129,7 +149,8 @@
       "expectedPrettyJSON": "valid/ported/valid/y_structure_object_empty/expected.pretty.json",
       "expectedCompactJSON": "valid/ported/valid/y_structure_object_empty/expected.compact.json",
       "expectedPrettyRON": "valid/ported/valid/y_structure_object_empty/expected.pretty.ron",
-      "expectedCompactRON": "valid/ported/valid/y_structure_object_empty/expected.compact.ron"
+      "expectedCompactRON": "valid/ported/valid/y_structure_object_empty/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "1349cde127705c16"
     },
     {
       "name": "ron_only/valid/array_empty",
@@ -140,7 +161,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/array_empty/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/array_empty/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/array_empty/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/array_empty/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/array_empty/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "831154110e30ac6a"
     },
     {
       "name": "ron_only/valid/array_mixed",
@@ -152,7 +174,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/array_mixed/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/array_mixed/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/array_mixed/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/array_mixed/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/array_mixed/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "7a075a39c42cca18"
     },
     {
       "name": "ron_only/valid/array_mixed_commas",
@@ -163,7 +186,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/array_mixed_commas/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/array_mixed_commas/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/array_mixed_commas/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/array_mixed_commas/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/array_mixed_commas/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "7a075a39c42cca18"
     },
     {
       "name": "ron_only/valid/array_nested",
@@ -174,7 +198,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/array_nested/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/array_nested/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/array_nested/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/array_nested/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/array_nested/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "8a5a96162d959874"
     },
     {
       "name": "ron_only/valid/object_digit_prefixed_string",
@@ -185,7 +210,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/object_digit_prefixed_string/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/object_digit_prefixed_string/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/object_digit_prefixed_string/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/object_digit_prefixed_string/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/object_digit_prefixed_string/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "887f78006db872fc"
     },
     {
       "name": "ron_only/valid/object_empty",
@@ -196,7 +222,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/object_empty/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/object_empty/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/object_empty/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/object_empty/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/object_empty/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "1349cde127705c16"
     },
     {
       "name": "ron_only/valid/object_quoted_key",
@@ -207,7 +234,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/object_quoted_key/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/object_quoted_key/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/object_quoted_key/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/object_quoted_key/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/object_quoted_key/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "bc6d06b4bce89cc0"
     },
     {
       "name": "ron_only/valid/object_with_commas",
@@ -218,7 +246,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/object_with_commas/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/object_with_commas/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/object_with_commas/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/object_with_commas/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/object_with_commas/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "87b5d93fa84b4d3c"
     },
     {
       "name": "ron_only/valid/punctuation_tokens",
@@ -229,7 +258,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/punctuation_tokens/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/punctuation_tokens/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/punctuation_tokens/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/punctuation_tokens/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/punctuation_tokens/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "00818fb7b9fa28eb"
     },
     {
       "name": "ron_only/valid/scalar_boolean_false",
@@ -240,7 +270,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/scalar_boolean_false/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/scalar_boolean_false/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_boolean_false/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/scalar_boolean_false/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/scalar_boolean_false/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "43e71bbe0316e682"
     },
     {
       "name": "ron_only/valid/scalar_boolean_true",
@@ -251,7 +282,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/scalar_boolean_true/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/scalar_boolean_true/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_boolean_true/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/scalar_boolean_true/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/scalar_boolean_true/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "40bbd512750b7629"
     },
     {
       "name": "ron_only/valid/scalar_null",
@@ -262,7 +294,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/scalar_null/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/scalar_null/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_null/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/scalar_null/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/scalar_null/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "b785b6ec423c44e1"
     },
     {
       "name": "ron_only/valid/scalar_number_float",
@@ -273,7 +306,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/scalar_number_float/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/scalar_number_float/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_number_float/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/scalar_number_float/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/scalar_number_float/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "d60873a37f446dc5"
     },
     {
       "name": "ron_only/valid/scalar_number_int",
@@ -284,7 +318,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/scalar_number_int/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/scalar_number_int/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_number_int/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/scalar_number_int/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/scalar_number_int/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "404a763b3f4c8c9a"
     },
     {
       "name": "ron_only/valid/scalar_number_uint",
@@ -295,7 +330,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/scalar_number_uint/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/scalar_number_uint/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_number_uint/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/scalar_number_uint/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/scalar_number_uint/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "9131ab7296c23377"
     },
     {
       "name": "ron_only/valid/scalar_query_var",
@@ -306,7 +342,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/scalar_query_var/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/scalar_query_var/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_query_var/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/scalar_query_var/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/scalar_query_var/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "0f64ebbcbee91524"
     },
     {
       "name": "ron_only/valid/scalar_string_bare",
@@ -317,7 +354,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_bare/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_bare/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_bare/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/scalar_string_bare/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_bare/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "96ca223b3d5dcf80"
     },
     {
       "name": "ron_only/valid/scalar_string_empty",
@@ -329,7 +367,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_empty/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_empty/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_empty/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/scalar_string_empty/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_empty/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "25c8e23ec1d946b4"
     },
     {
       "name": "ron_only/valid/scalar_string_empty_double",
@@ -340,7 +379,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_empty_double/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_empty_double/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_empty_double/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/scalar_string_empty_double/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_empty_double/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "25c8e23ec1d946b4"
     },
     {
       "name": "ron_only/valid/scalar_string_quad_double_quotes",
@@ -351,7 +391,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_quad_double_quotes/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_quad_double_quotes/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_quad_double_quotes/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/scalar_string_quad_double_quotes/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_quad_double_quotes/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "dcf5614327f7469f"
     },
     {
       "name": "ron_only/valid/scalar_string_quad_single_quotes",
@@ -362,7 +403,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_quad_single_quotes/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_quad_single_quotes/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_quad_single_quotes/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/scalar_string_quad_single_quotes/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_quad_single_quotes/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "be9b8bfb911d4855"
     },
     {
       "name": "ron_only/valid/scalar_string_repeated_double",
@@ -373,7 +415,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_repeated_double/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_repeated_double/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_repeated_double/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/scalar_string_repeated_double/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_repeated_double/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "152b5ad5c5df8697"
     },
     {
       "name": "ron_only/valid/scalar_string_repeated_single",
@@ -384,7 +427,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_repeated_single/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_repeated_single/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_repeated_single/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/scalar_string_repeated_single/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_repeated_single/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "e312d764259a893d"
     },
     {
       "name": "ron_only/valid/scalar_string_single_quoted",
@@ -395,7 +439,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/scalar_string_single_quoted/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_single_quoted/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_single_quoted/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/scalar_string_single_quoted/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/scalar_string_single_quoted/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "6feb434e04802423"
     },
     {
       "name": "ron_only/valid/top_level_elided_map",
@@ -406,7 +451,8 @@
       "expectedPrettyJSON": "valid/ron_only/valid/top_level_elided_map/expected.pretty.json",
       "expectedCompactJSON": "valid/ron_only/valid/top_level_elided_map/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/top_level_elided_map/expected.pretty.ron",
-      "expectedCompactRON": "valid/ron_only/valid/top_level_elided_map/expected.compact.ron"
+      "expectedCompactRON": "valid/ron_only/valid/top_level_elided_map/expected.compact.ron",
+      "expectedCanonicalRONXXH3": "913f5322d88ba26f"
     }
   ],
   "invalidRON": [
