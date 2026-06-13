@@ -475,5 +475,53 @@
     "invalid/json/from_json/malformed_object.json",
     "invalid/json/from_json/multiple_roots.json",
     "invalid/json/from_json/trailing_data.json"
+  ],
+  "jsonToRONRendering": [
+    {
+      "name": "root_object_elision",
+      "jsonInput": "rendering/root_object_elision/input.json",
+      "options": {
+        "isPretty": true,
+        "isCanonical": true
+      },
+      "expectedRON": "rendering/root_object_elision/expected.pretty.ron"
+    },
+    {
+      "name": "typed_value_hooks",
+      "jsonInput": "rendering/typed_value_hooks/input.json",
+      "options": {
+        "isPretty": true,
+        "isCanonical": true
+      },
+      "typedValueHooks": [
+        {
+          "path": [
+            "committed"
+          ],
+          "replaceWith": {
+            "#time": "2026-06-13T00:00:00Z"
+          }
+        },
+        {
+          "path": [
+            "events",
+            0,
+            "tx"
+          ],
+          "replaceWith": {
+            "#": "CA"
+          }
+        },
+        {
+          "path": [
+            "tx"
+          ],
+          "replaceWith": {
+            "#": "BE"
+          }
+        }
+      ],
+      "expectedRON": "rendering/typed_value_hooks/expected.pretty.ron"
+    }
   ]
 }

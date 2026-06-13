@@ -1,0 +1,9 @@
+committed {#time 2026-06-13T00:00:00Z}
+events [
+  {
+    committed 2026-06-14T00:00:00Z
+    tx {# CA}
+  }
+]
+status ok
+tx {# BE}

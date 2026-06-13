@@ -252,7 +252,8 @@ If source order is unavailable because the host JSON value is an unordered map, 
 - Enabled by `isPretty=true`.
 - Indent: two spaces.
 - Output ends with a trailing newline.
-- Root objects are wrapped with braces.
+- Root object members render at indentation level 0 without outer braces.
+- Empty root objects render as `{}` because there are no members to elide.
 - Object key order is selected by `isCanonical`.
 - Empty arrays and objects render as `[]` and `{}`.
 - Arrays inline when every element can inline and the rendered size is at most 80 bytes.
@@ -270,6 +271,8 @@ Canonical RON is the byte form rendered with `isPretty=false` and `isCanonical=t
 
 Canonical JSON means RFC 8785 JSON Canonicalization Scheme (JCS) bytes encoded as UTF-8. RFC 8785 fixtures live under `testdata/rfc8785/` and include `expectedCanonicalJSONXXH3` hashes using the same unseeded XXH3-128 encoding.
 
+JSON-to-RON renderers should expose a typed value hook for application-specific examples and APIs that want JSON-compatible inputs to render as tagged RON object forms. The hook maps a value by path before formatting. Paths use object keys and array indexes from the original JSON tree. A hook may replace the value with any JSON value; returned objects such as `{"#":"BE"}` and `{"#time":"2026-06-13T00:00:00Z"}` render as ordinary RON objects like `{# BE}` and `{#time 2026-06-13T00:00:00Z}`. Hooks are a rendering API only; they do not change RON parsing or make marker objects special in the data model.
+
 ## Corpus Decision
 
 Keep language-neutral conformance fixtures indexed by `testdata/conformance/manifest.json`. Pretty fixtures use `isPretty=true` and `isCanonical=true`; compact fixtures use `isPretty=false` and `isCanonical=true`.
@@ -283,6 +286,8 @@ Each valid conformance case contains:
 - Expected compact canonical RON.
 - Expected pretty canonical RON.
 - Expected canonical RON XXH3-128 hash.
+
+Additional JSON-to-RON rendering cases cover root object elision and typed value hooks.
 
 Invalid RON and invalid JSON fixtures are listed separately in the manifest.
 
