@@ -1,0 +1,5 @@
+{
+  "scalar": {"#com.example/rating": 5},
+  "array": {"#com.example/tags": ["a", "b"]},
+  "object": {"#com.example/money": {"currency": "USD", "amount": "123.45"}}
+}

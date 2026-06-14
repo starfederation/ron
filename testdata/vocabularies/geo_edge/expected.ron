@@ -1,0 +1,7 @@
+bboxForeign {#geo {bbox [0 0 0 0] coordinates [0 0] title origin type Point}}
+geometryCollection {#geo {geometries [{coordinates [0 0] type Point}] type GeometryCollection}}
+lineString {#geo {coordinates [[-73.9857 40.7484] [-73.9851 40.749]] type LineString}}
+multiLineString {#geo {coordinates [[[0 0] [1 1]] [[2 2] [3 3]]] type MultiLineString}}
+multiPoint {#geo {coordinates [[-73.9857 40.7484] [-73.9851 40.749]] type MultiPoint}}
+multiPolygon {#geo {coordinates [[[[0 0] [1 0] [1 1] [0 0]]]] type MultiPolygon}}
+nullGeometryFeature {#geo {geometry null properties {name unplaced} type Feature}}

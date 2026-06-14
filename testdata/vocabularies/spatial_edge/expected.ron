@@ -1,0 +1,4 @@
+emptyVoxels {#vox {cellSize {#vN [1 1 1]} cells [] dimensions 3 origin {#vN [0 0 0]}}}
+frustum {#fru [[[1 0 0] 1] [[-1 0 0] 1] [[0 1 0] 1] [[0 -1 0] 1] [[0 0 1] 1] [[0 0 -1] 1]]}
+harmonics {#sh3 [[0 0 0] [1 0 0] [0 1 0] [0 0 1] [1 1 0] [1 0 1] [0 1 1] [1 1 1] [2 2 2]]}
+southern {#lla [151.2093 -33.8688 58]}

@@ -174,6 +174,8 @@ Top-level fields:
 - `vocabularies`: vocabulary profile map. `true` means required support, `false` means optional support.
 - `registry`: machine-readable tag registry for codegen-oriented consumers.
 - `valid`: valid typed value rendering cases.
+- `invalid`: typed values that vocabulary-aware implementations must reject.
+- `invalidProfiles`: vocabulary profiles that must be rejected by implementations that cannot satisfy required vocabularies.
 
 For each valid vocabulary case:
 
@@ -188,6 +190,25 @@ inputJSON
 ```
 
 Base implementations may use these as ordinary JSON/RON fixtures. Vocabulary-aware implementations should additionally validate payloads and assert native type/codegen mappings from `docs/vocabularies.md`.
+
+For each invalid vocabulary case:
+
+```text
+inputJSON
+  -> parse JSON
+  -> apply vocabulary-aware validation for listed vocabularies
+  -> must return an error
+```
+
+For each invalid profile case:
+
+```text
+profile
+  -> load vocabulary requirements
+  -> must return an error if any vocabulary marked true is unknown or unsupported
+```
+
+Do not assert exact error strings. Error text is implementation-specific. Assert only that validation fails.
 
 ## Invalid Case Flow
 

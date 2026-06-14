@@ -1,0 +1,3 @@
+array {#com.example/tags [a b]}
+object {#com.example/money {amount '123.45' currency USD}}
+scalar {#com.example/rating 5}
