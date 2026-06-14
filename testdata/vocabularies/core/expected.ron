@@ -1,0 +1,7 @@
+emptyHash {#sha256 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855}
+homepage {#url https://example.com/docs?q=ron#intro}
+id {#uid 00112233-4455-6677-8899-aabbccddeeff}
+opaque {#tag [127 {mode raw value [1 2 3]}]}
+parent {# 300}
+payload {#b64 3q2-7w}
+price {#dec '123.45'}

@@ -1,0 +1,339 @@
+{
+  "version": 1,
+  "vocabularies": [
+    {
+      "uri": "https://ron.dev/vocab/core/v1",
+      "tags": [
+        {
+          "tag": "#uid",
+          "typeName": "UUID",
+          "payload": "string:rfc4122-lowercase"
+        },
+        {
+          "tag": "#url",
+          "typeName": "URL",
+          "payload": "string:absolute-url"
+        },
+        {
+          "tag": "#dec",
+          "typeName": "Decimal",
+          "payload": "string:canonical-decimal"
+        },
+        {
+          "tag": "#b64",
+          "typeName": "Bytes",
+          "payload": "string:base64url-no-padding"
+        },
+        {
+          "tag": "#sha256",
+          "typeName": "SHA256",
+          "payload": "string:lowercase-hex-32-bytes"
+        },
+        {
+          "tag": "#",
+          "typeName": "EntityRef",
+          "payload": "database-key:int|string-exact"
+        },
+        {
+          "tag": "#tag",
+          "typeName": "OpaqueTag",
+          "payload": [
+            "uint8",
+            "any"
+          ]
+        }
+      ]
+    },
+    {
+      "uri": "https://ron.dev/vocab/time/v1",
+      "tags": [
+        {
+          "tag": "#utc",
+          "typeName": "Instant",
+          "payload": "string:rfc3339-utc"
+        },
+        {
+          "tag": "#dur",
+          "typeName": "Duration",
+          "payload": "string:iso8601-day-time-duration"
+        }
+      ]
+    },
+    {
+      "uri": "https://ron.dev/vocab/network/v1",
+      "tags": [
+        {
+          "tag": "#ip4",
+          "typeName": "IPv4",
+          "payload": "string:ipv4"
+        },
+        {
+          "tag": "#ip6",
+          "typeName": "IPv6",
+          "payload": "string:rfc5952-ipv6"
+        },
+        {
+          "tag": "#cdr",
+          "typeName": "CIDR",
+          "payload": "string:masked-cidr"
+        }
+      ]
+    },
+    {
+      "uri": "https://ron.dev/vocab/math/v1",
+      "tags": [
+        {
+          "tag": "#i64",
+          "typeName": "Int64",
+          "payload": "integer"
+        },
+        {
+          "tag": "#u64",
+          "typeName": "Uint64",
+          "payload": "string:base10-uint64"
+        },
+        {
+          "tag": "#f64",
+          "typeName": "Float64",
+          "payload": "float64-finite"
+        },
+        {
+          "tag": "#ivN",
+          "typeName": "IntVectorN",
+          "payload": "integer[]"
+        },
+        {
+          "tag": "#vN",
+          "typeName": "VectorN",
+          "payload": "float64[]"
+        },
+        {
+          "tag": "#iv2",
+          "typeName": "IntVector2",
+          "payload": [
+            "integer",
+            "integer"
+          ]
+        },
+        {
+          "tag": "#iv3",
+          "typeName": "IntVector3",
+          "payload": [
+            "integer",
+            "integer",
+            "integer"
+          ]
+        },
+        {
+          "tag": "#iv4",
+          "typeName": "IntVector4",
+          "payload": [
+            "integer",
+            "integer",
+            "integer",
+            "integer"
+          ]
+        },
+        {
+          "tag": "#f2v",
+          "typeName": "Vector2",
+          "payload": [
+            "float64",
+            "float64"
+          ]
+        },
+        {
+          "tag": "#f3v",
+          "typeName": "Vector3",
+          "payload": [
+            "float64",
+            "float64",
+            "float64"
+          ]
+        },
+        {
+          "tag": "#f4v",
+          "typeName": "Vector4",
+          "payload": [
+            "float64",
+            "float64",
+            "float64",
+            "float64"
+          ]
+        },
+        {
+          "tag": "#qat",
+          "typeName": "Quaternion",
+          "payload": [
+            "float64",
+            "float64",
+            "float64",
+            "float64"
+          ]
+        },
+        {
+          "tag": "#eul",
+          "typeName": "Euler",
+          "payload": [
+            "float64",
+            "float64",
+            "float64",
+            "enum:EulerOrder"
+          ]
+        },
+        {
+          "tag": "#m2x",
+          "typeName": "Matrix2",
+          "payload": "float64[4]:column-major"
+        },
+        {
+          "tag": "#m3x",
+          "typeName": "Matrix3",
+          "payload": "float64[9]:column-major"
+        },
+        {
+          "tag": "#m4x",
+          "typeName": "Matrix4",
+          "payload": "float64[16]:column-major"
+        }
+      ]
+    },
+    {
+      "uri": "https://ron.dev/vocab/spatial/v1",
+      "tags": [
+        {
+          "tag": "#lla",
+          "typeName": "LngLatAlt",
+          "payload": [
+            "longitudeDegrees",
+            "latitudeDegrees",
+            "altitudeMeters"
+          ]
+        },
+        {
+          "tag": "#sph",
+          "typeName": "Spherical",
+          "payload": [
+            "radius",
+            "phi",
+            "theta"
+          ]
+        },
+        {
+          "tag": "#cyl",
+          "typeName": "Cylindrical",
+          "payload": [
+            "radius",
+            "theta",
+            "y"
+          ]
+        },
+        {
+          "tag": "#bx2",
+          "typeName": "Box2",
+          "payload": [
+            "vec2:min",
+            "vec2:max"
+          ]
+        },
+        {
+          "tag": "#bx3",
+          "typeName": "Box3",
+          "payload": [
+            "vec3:min",
+            "vec3:max"
+          ]
+        },
+        {
+          "tag": "#spr",
+          "typeName": "Sphere",
+          "payload": [
+            "vec3:center",
+            "float64:radius"
+          ]
+        },
+        {
+          "tag": "#pln",
+          "typeName": "Plane",
+          "payload": [
+            "vec3:normal",
+            "float64:constant"
+          ]
+        },
+        {
+          "tag": "#ray",
+          "typeName": "Ray",
+          "payload": [
+            "vec3:origin",
+            "vec3:direction"
+          ]
+        },
+        {
+          "tag": "#ln2",
+          "typeName": "Line2",
+          "payload": [
+            "vec2:start",
+            "vec2:end"
+          ]
+        },
+        {
+          "tag": "#ln3",
+          "typeName": "Line3",
+          "payload": [
+            "vec3:start",
+            "vec3:end"
+          ]
+        },
+        {
+          "tag": "#tri",
+          "typeName": "Triangle",
+          "payload": [
+            "vec3:a",
+            "vec3:b",
+            "vec3:c"
+          ]
+        },
+        {
+          "tag": "#fru",
+          "typeName": "Frustum",
+          "payload": "plane-payload[6]"
+        },
+        {
+          "tag": "#sh3",
+          "typeName": "SphericalHarmonics3",
+          "payload": "vec3[9]"
+        },
+        {
+          "tag": "#vox",
+          "typeName": "VoxelSet",
+          "payload": "object:sparse-voxel-set"
+        }
+      ]
+    },
+    {
+      "uri": "https://ron.dev/vocab/geo/v1",
+      "tags": [
+        {
+          "tag": "#geo",
+          "typeName": "GeoJSON",
+          "payload": "object:rfc7946-geojson"
+        }
+      ]
+    },
+    {
+      "uri": "https://ron.dev/vocab/color/v1",
+      "tags": [
+        {
+          "tag": "#clr",
+          "typeName": "Color",
+          "payload": [
+            "enum:ColorSpace",
+            "float64",
+            "float64",
+            "float64"
+          ]
+        }
+      ]
+    }
+  ]
+}

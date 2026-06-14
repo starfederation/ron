@@ -1,0 +1,9 @@
+{
+  "id": {"#uid": "00112233-4455-6677-8899-aabbccddeeff"},
+  "homepage": {"#url": "https://example.com/docs?q=ron#intro"},
+  "price": {"#dec": "123.45"},
+  "payload": {"#b64": "3q2-7w"},
+  "emptyHash": {"#sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
+  "parent": {"#": 300},
+  "opaque": {"#tag": [127, {"mode": "raw", "value": [1, 2, 3]}]}
+}

@@ -1,0 +1,5 @@
+created {#utc 2026-06-13T00:00:00Z}
+elapsed {#dur PT1H30M}
+negative {#dur -PT2S}
+precise {#utc 2026-06-13T00:00:00.123456789Z}
+tick {#dur PT0.0000001S}

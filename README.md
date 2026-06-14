@@ -12,12 +12,18 @@ RON is also not [EDN](https://github.com/edn-format/edn), though it shares the s
 
 - `docs/ADR.md`: reference ADR for the format.
 - `docs/implementation-guide.md`: parser, renderer, and formatter guidance for new implementations.
+- `docs/vocabularies.md`: optional typed vocabularies and extension rules.
 - `testdata/conformance/`: language-neutral RON fixture corpus with a manifest.
 - `testdata/rfc8785/`: RFC 8785 canonical JSON fixture corpus.
+- `testdata/vocabularies/`: typed vocabulary fixtures.
 
 ## Implementations
 
-- Go: [starfederation/ron-go](https://github.com/starfederation/ron-go)
+| Implementation | Language | Base RON | RFC 8785 canonical JSON | Supported typed vocabularies |
+| --- | --- | --- | --- | --- |
+| [starfederation/ron-go](https://github.com/starfederation/ron-go) | Go | Yes | Unknown | None declared |
+
+When adding an implementation, list each supported vocabulary URI or short name from `docs/vocabularies.md`, for example `core`, `time`, `math`, or `geo`.
 
 ## Formatting modes
 
@@ -33,6 +39,8 @@ Canonical JSON means RFC 8785 JSON Canonicalization Scheme (JCS) bytes encoded a
 Canonical hashes use unseeded XXH3-128, encoded as 32 lowercase hexadecimal digits. RON conformance cases hash exact canonical RON bytes in `expectedCanonicalRONXXH3`. RFC 8785 cases hash exact canonical JSON bytes in `expectedCanonicalJSONXXH3`. Testdata declares `expectedPrettyOptions` as `isPretty=true, isCanonical=true` and `expectedCompactOptions` as `isPretty=false, isCanonical=true`.
 
 Pretty JSON-to-RON rendering emits root JSON object members at top level by default. JSON-to-RON renderers should also expose typed value hooks for application-specific examples. Hooks map JSON values by path to replacement JSON values before RON formatting, so a string at `tx` can render as `{# BE}` by replacing it with `{"#":"BE"}`.
+
+Typed vocabularies are optional semantic layers over JSON-compatible single-key objects. Official vocabularies define readable tags such as `#utc`, `#dur`, `#url`, `#uid`, `#dec`, `#vN`, `#f3v`, `#lla`, and `#geo`; custom vocabularies use namespaced tags such as `#com.example/money`. Base RON parsers preserve all of these as ordinary JSON objects.
 
 ## Quick example
 
@@ -134,3 +142,5 @@ Use `testdata/conformance/manifest.json` as the test runner input. For each vali
 For invalid cases, every `invalidRON[]` file must fail RON parsing and every `invalidJSON[]` file must fail JSON -> RON conversion.
 
 Use `testdata/rfc8785/manifest.json` for RFC 8785 canonical JSON vectors. Implementations must exact-match canonical JSON bytes, expected UTF-8 hex when present, Appendix B number serialization samples, I-JSON rejection cases, and unseeded XXH3-128 hashes.
+
+Use `testdata/vocabularies/manifest.json` for typed vocabulary fixtures. Vocabulary-aware implementations should validate and map enabled typed tags; base implementations may treat the same files as ordinary JSON/RON round-trip cases.

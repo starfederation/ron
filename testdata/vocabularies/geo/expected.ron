@@ -1,0 +1,29 @@
+collection {#geo {
+  features [
+    {
+      geometry {
+        coordinates [-73.9857 40.7484]
+        type Point
+      }
+      properties {name A}
+      type Feature
+    }
+  ]
+  type FeatureCollection
+}}
+feature {#geo {
+  geometry {
+    coordinates [-73.9857 40.7484 381]
+    type Point
+  }
+  properties {
+    name 'Empire State Building'
+    opened {#utc 1931-05-01T00:00:00Z}
+  }
+  type Feature
+}}
+point {#geo {coordinates [-73.9857 40.7484] type Point}}
+polygon {#geo {
+  coordinates [[[-73.9 40.7] [-73.8 40.7] [-73.8 40.8] [-73.9 40.7]]]
+  type Polygon
+}}
