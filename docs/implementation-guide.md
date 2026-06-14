@@ -340,6 +340,8 @@ Use `testdata/vocabularies/manifest.json` for typed vocabulary cases. For each v
 4. Parse produced RON back to JSON.
 5. Base implementations may skip typed mapping and compare the JSON value structurally; vocabulary-aware implementations should also assert native type mapping.
 
+For each invalid vocabulary case, parse `inputJSON`, apply vocabulary-aware validation for the listed vocabularies, and assert validation fails. For each invalid profile case, load the profile and reject it if any vocabulary marked `true` is unknown or unsupported. Do not assert exact error strings.
+
 ## Implementation Order
 
 1. Implement number-shape detection.

@@ -1,0 +1,10 @@
+decLargeScale {#dec '0.000000001'}
+decNegative {#dec '-123.45'}
+decZero {#dec '0'}
+refNumber {# 300}
+refString {# user/ada}
+tagArray {#tag [2 [1 true text]]}
+tagObject {#tag [3 {enabled true mode raw}]}
+tagScalar {#tag [1 ok]}
+urlEncoded {#url https://example.com/a%20b?x=1#frag}
+urlFragment {#url https://example.com/docs?q=ron#intro}

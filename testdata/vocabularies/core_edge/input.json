@@ -1,0 +1,12 @@
+{
+  "refNumber": {"#": 300},
+  "refString": {"#": "user/ada"},
+  "urlEncoded": {"#url": "https://example.com/a%20b?x=1#frag"},
+  "urlFragment": {"#url": "https://example.com/docs?q=ron#intro"},
+  "decZero": {"#dec": "0"},
+  "decNegative": {"#dec": "-123.45"},
+  "decLargeScale": {"#dec": "0.000000001"},
+  "tagScalar": {"#tag": [1, "ok"]},
+  "tagArray": {"#tag": [2, [1, true, "text"]]},
+  "tagObject": {"#tag": [3, {"mode": "raw", "enabled": true}]}
+}

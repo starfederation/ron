@@ -75,7 +75,168 @@
       ],
       "inputJSON": "custom/input.json",
       "expectedRON": "custom/expected.ron"
+    },
+    {
+      "name": "core_edge",
+      "vocabularies": [
+        "https://ron.dev/vocab/core/v1"
+      ],
+      "inputJSON": "core_edge/input.json",
+      "expectedRON": "core_edge/expected.ron"
+    },
+    {
+      "name": "time_edge",
+      "vocabularies": [
+        "https://ron.dev/vocab/time/v1"
+      ],
+      "inputJSON": "time_edge/input.json",
+      "expectedRON": "time_edge/expected.ron"
+    },
+    {
+      "name": "math_edge",
+      "vocabularies": [
+        "https://ron.dev/vocab/math/v1"
+      ],
+      "inputJSON": "math_edge/input.json",
+      "expectedRON": "math_edge/expected.ron"
+    },
+    {
+      "name": "spatial_edge",
+      "vocabularies": [
+        "https://ron.dev/vocab/spatial/v1"
+      ],
+      "inputJSON": "spatial_edge/input.json",
+      "expectedRON": "spatial_edge/expected.ron"
+    },
+    {
+      "name": "geo_edge",
+      "vocabularies": [
+        "https://ron.dev/vocab/geo/v1"
+      ],
+      "inputJSON": "geo_edge/input.json",
+      "expectedRON": "geo_edge/expected.ron"
+    },
+    {
+      "name": "color_edge",
+      "vocabularies": [
+        "https://ron.dev/vocab/color/v1"
+      ],
+      "inputJSON": "color_edge/input.json",
+      "expectedRON": "color_edge/expected.ron"
+    },
+    {
+      "name": "custom_edge",
+      "vocabularies": [
+        "https://example.com/vocab/invoice/v1"
+      ],
+      "inputJSON": "custom_edge/input.json",
+      "expectedRON": "custom_edge/expected.ron"
     }
   ],
-  "registry": "registry.json"
+  "registry": "registry.json",
+  "invalid": [
+    {
+      "name": "core/wrong_arity",
+      "vocabularies": [
+        "https://ron.dev/vocab/core/v1"
+      ],
+      "inputJSON": "invalid/core/wrong_arity.json",
+      "reason": "typed value objects must have exactly one member"
+    },
+    {
+      "name": "core/bad_uuid",
+      "vocabularies": [
+        "https://ron.dev/vocab/core/v1"
+      ],
+      "inputJSON": "invalid/core/bad_uuid.json",
+      "reason": "invalid #uid payload"
+    },
+    {
+      "name": "core/bad_url",
+      "vocabularies": [
+        "https://ron.dev/vocab/core/v1"
+      ],
+      "inputJSON": "invalid/core/bad_url.json",
+      "reason": "invalid #url payload"
+    },
+    {
+      "name": "core/bad_tag_payload",
+      "vocabularies": [
+        "https://ron.dev/vocab/core/v1"
+      ],
+      "inputJSON": "invalid/core/bad_tag_payload.json",
+      "reason": "invalid #tag payload arity"
+    },
+    {
+      "name": "time/bad_utc",
+      "vocabularies": [
+        "https://ron.dev/vocab/time/v1"
+      ],
+      "inputJSON": "invalid/time/bad_utc.json",
+      "reason": "invalid #utc payload"
+    },
+    {
+      "name": "time/bad_duration_months",
+      "vocabularies": [
+        "https://ron.dev/vocab/time/v1"
+      ],
+      "inputJSON": "invalid/time/bad_duration_months.json",
+      "reason": "months are not allowed in #dur"
+    },
+    {
+      "name": "network/bad_ip4",
+      "vocabularies": [
+        "https://ron.dev/vocab/network/v1"
+      ],
+      "inputJSON": "invalid/network/bad_ip4.json",
+      "reason": "invalid #ip4 payload"
+    },
+    {
+      "name": "network/bad_cdr",
+      "vocabularies": [
+        "https://ron.dev/vocab/network/v1"
+      ],
+      "inputJSON": "invalid/network/bad_cdr.json",
+      "reason": "CIDR payload must be masked"
+    },
+    {
+      "name": "math/bad_iv3_length",
+      "vocabularies": [
+        "https://ron.dev/vocab/math/v1"
+      ],
+      "inputJSON": "invalid/math/bad_iv3_length.json",
+      "reason": "wrong #iv3 arity"
+    },
+    {
+      "name": "math/bad_f64_type",
+      "vocabularies": [
+        "https://ron.dev/vocab/math/v1"
+      ],
+      "inputJSON": "invalid/math/bad_f64_type.json",
+      "reason": "wrong #f64 payload type"
+    },
+    {
+      "name": "geo/bad_type",
+      "vocabularies": [
+        "https://ron.dev/vocab/geo/v1"
+      ],
+      "inputJSON": "invalid/geo/bad_type.json",
+      "reason": "invalid GeoJSON type"
+    },
+    {
+      "name": "geo/bad_coordinates",
+      "vocabularies": [
+        "https://ron.dev/vocab/geo/v1"
+      ],
+      "inputJSON": "invalid/geo/bad_coordinates.json",
+      "reason": "invalid GeoJSON coordinate shape"
+    }
+  ],
+  "invalidProfiles": [
+    {
+      "name": "unsupported_required_vocabulary",
+      "profile": "invalid/profile/unsupported_required.json",
+      "reason": "required vocabulary is unknown or unsupported"
+    }
+  ]
 }

@@ -1,0 +1,5 @@
+dayTime {#dur P2DT3H4M5S}
+fractional {#dur PT0.123456789S}
+negativeFractional {#dur -PT0.5S}
+preciseUtc {#utc 2026-06-13T00:00:00.0000001Z}
+zero {#dur PT0S}

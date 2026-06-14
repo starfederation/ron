@@ -1,0 +1,12 @@
+identity2 {#m2x [1 0 0 1]}
+identity3 {#m3x [1 0 0 0 1 0 0 0 1]}
+ivec2d {#ivN [5 6]}
+orders [
+  {#eul [0 0 0 XYZ]}
+  {#eul [0 0 0 YXZ]}
+  {#eul [0 0 0 ZXY]}
+  {#eul [0 0 0 ZYX]}
+  {#eul [0 0 0 YZX]}
+  {#eul [0 0 0 XZY]}
+]
+vec5d {#vN [0 1.25 2.5 3.75 5]}

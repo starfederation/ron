@@ -1,0 +1,9 @@
+{
+  "multiPoint": {"#geo": {"type": "MultiPoint", "coordinates": [[-73.9857, 40.7484], [-73.9851, 40.749]]}},
+  "lineString": {"#geo": {"type": "LineString", "coordinates": [[-73.9857, 40.7484], [-73.9851, 40.749]]}},
+  "multiLineString": {"#geo": {"type": "MultiLineString", "coordinates": [[[0, 0], [1, 1]], [[2, 2], [3, 3]]]}},
+  "multiPolygon": {"#geo": {"type": "MultiPolygon", "coordinates": [[[[0, 0], [1, 0], [1, 1], [0, 0]]]]}},
+  "geometryCollection": {"#geo": {"type": "GeometryCollection", "geometries": [{"type": "Point", "coordinates": [0, 0]}]}},
+  "bboxForeign": {"#geo": {"type": "Point", "coordinates": [0, 0], "bbox": [0, 0, 0, 0], "title": "origin"}},
+  "nullGeometryFeature": {"#geo": {"type": "Feature", "geometry": null, "properties": {"name": "unplaced"}}}
+}
