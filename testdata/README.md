@@ -5,6 +5,7 @@
 ```text
 conformance/  Language-neutral RON fixture corpus.
 rfc8785/      RFC 8785 canonical JSON fixture corpus.
+vocabularies/ Typed vocabulary fixture corpus.
 ```
 
 ## Manifest
@@ -161,6 +162,32 @@ inputJSON
 For `numbers/appendix-b.json`, serialize each finite IEEE 754 value to JSON and exact-match `expectedJSON`. Reject each `rejectedNativeValues` entry if the implementation accepts native floating-point input.
 
 For `invalidIJSON`, canonicalization must fail. Do not assert exact error strings.
+
+## Typed Vocabulary Fixtures
+
+`vocabularies/manifest.json` is the source of truth for typed vocabulary fixtures. All paths in that manifest are relative to `testdata/vocabularies/`.
+
+Top-level fields:
+
+- `version`: corpus version.
+- `description`: fixture corpus purpose.
+- `vocabularies`: vocabulary profile map. `true` means required support, `false` means optional support.
+- `registry`: machine-readable tag registry for codegen-oriented consumers.
+- `valid`: valid typed value rendering cases.
+
+For each valid vocabulary case:
+
+```text
+inputJSON
+  -> parse JSON
+  -> optionally map enabled typed tags to native values
+  -> render RON
+  -> exact compare with expectedRON
+  -> parse generated RON back to JSON
+  -> compare structurally with inputJSON when no native mapping is asserted
+```
+
+Base implementations may use these as ordinary JSON/RON fixtures. Vocabulary-aware implementations should additionally validate payloads and assert native type/codegen mappings from `docs/vocabularies.md`.
 
 ## Invalid Case Flow
 

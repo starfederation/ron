@@ -1,0 +1,10 @@
+answer {#i64 '-42'}
+cell {#iv3 [1 2 3]}
+count {#u64 '300'}
+euler {#eul [0 0 0 XYZ]}
+identity4 {#m4x [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]}
+lattice {#ivN [10 20 30 40]}
+position {#f3v [1.5 2.5 3.5]}
+rotation {#qat [0 0 0 1]}
+score {#f64 42.5}
+weights {#vN [0.25 0.5 0.75 1]}

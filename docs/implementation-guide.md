@@ -7,6 +7,8 @@ Read first:
 - `docs/ADR.md`
 - `testdata/conformance/manifest.json`
 - `testdata/rfc8785/manifest.json`
+- `docs/vocabularies.md`
+- `testdata/vocabularies/manifest.json`
 
 ## Required API Surface
 
@@ -225,13 +227,14 @@ Rules:
 - If `replaced=false`, render the original value normally.
 - If `replaced=true`, render `replacementValue` at that path and do not apply the same hook again inside the returned replacement subtree.
 - `replacementValue` must be a valid JSON value in the RON data model.
-- The hook is a rendering API only. It does not change parser behavior or make tagged marker objects special.
+- The hook is a rendering API only. It does not change parser behavior or make typed marker objects special in base RON.
+- Prefer official tags from `docs/vocabularies.md` when a hook emits typed values.
 
 Examples:
 
 ```text
 path ["tx"], value "BE" -> {"#":"BE"} -> tx {# BE}
-path ["committed"], value "2026-06-13T00:00:00Z" -> {"#time":"2026-06-13T00:00:00Z"} -> committed {#time 2026-06-13T00:00:00Z}
+path ["committed"], value "2026-06-13T00:00:00Z" -> {"#utc":"2026-06-13T00:00:00Z"} -> committed {#utc 2026-06-13T00:00:00Z}
 ```
 
 ### Compact RON
@@ -279,6 +282,14 @@ Rules:
 - Emit no insignificant whitespace.
 - Preserve number text.
 
+## Typed Vocabularies
+
+Typed vocabularies are optional semantic layers over the JSON value model. A typed value is a single-key object whose key starts with `#`, for example `{ "#utc": "2026-06-13T00:00:00Z" }` or `{ "#f3v": [1, 2, 3] }`.
+
+Base RON parsers and renderers do not need typed vocabulary support. They must preserve typed values as ordinary JSON objects. Vocabulary-aware decoders may map enabled tags to native types after parsing, and vocabulary-aware renderers may emit official tags from native typed values.
+
+Use `docs/vocabularies.md` for the normative tag registry, payload rules, vocabulary profile model, custom extension contract, and vocabulary fixtures. Use `testdata/vocabularies/registry.json` as the machine-readable registry for codegen-oriented consumers, and `testdata/vocabularies/manifest.json` for vocabulary fixtures.
+
 ## RFC 8785 Canonical JSON
 
 RFC 8785 canonical JSON is a separate JSON byte contract from RON compact output. It is the JSON Canonicalization Scheme (JCS): no insignificant whitespace, primitive serialization as ECMAScript `JSON.stringify()`, recursive object property sorting by raw property names interpreted as UTF-16 code unit arrays, and final UTF-8 bytes.
@@ -320,6 +331,14 @@ For invalid cases:
 
 - Every `invalidRON` path must fail RON parsing.
 - Every `invalidJSON` path must fail JSON -> RON conversion.
+
+Use `testdata/vocabularies/manifest.json` for typed vocabulary cases. For each valid vocabulary case:
+
+1. Read `inputJSON`.
+2. If vocabulary support is enabled, validate and map each single-key typed object whose tag belongs to the case vocabularies.
+3. Render RON and exact-match `expectedRON`.
+4. Parse produced RON back to JSON.
+5. Base implementations may skip typed mapping and compare the JSON value structurally; vocabulary-aware implementations should also assert native type mapping.
 
 ## Implementation Order
 

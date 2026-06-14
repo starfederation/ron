@@ -1,0 +1,16 @@
+bounds {#bx3 [[0 0 0] [10 10 10]]}
+edge {#ln3 [[0 0 0] [1 1 1]]}
+face {#tri [[0 0 0] [1 0 0] [0 1 0]]}
+ground {#pln [[0 1 0] 0]}
+hit {#spr [[0 0 0] 1]}
+home {#lla [-73.9857 40.7484 381]}
+ray {#ray [[0 0 0] [0 0 1]]}
+voxels {#vox {
+  cellSize {#vN [1 1 1]}
+  cells [
+    [[0 0 0] 1]
+    [[1 0 0] {#clr [oklch 0.7 0.15 230]}]
+  ]
+  dimensions 3
+  origin {#vN [0 0 0]}
+}}

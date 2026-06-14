@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "description": "RON typed vocabulary fixtures",
+  "vocabularies": {
+    "https://ron.dev/vocab/core/v1": true,
+    "https://ron.dev/vocab/time/v1": true,
+    "https://ron.dev/vocab/network/v1": true,
+    "https://ron.dev/vocab/math/v1": true,
+    "https://ron.dev/vocab/spatial/v1": true,
+    "https://ron.dev/vocab/color/v1": true,
+    "https://example.com/vocab/invoice/v1": false,
+    "https://ron.dev/vocab/geo/v1": true
+  },
+  "valid": [
+    {
+      "name": "core",
+      "vocabularies": [
+        "https://ron.dev/vocab/core/v1"
+      ],
+      "inputJSON": "core/input.json",
+      "expectedRON": "core/expected.ron"
+    },
+    {
+      "name": "time",
+      "vocabularies": [
+        "https://ron.dev/vocab/time/v1"
+      ],
+      "inputJSON": "time/input.json",
+      "expectedRON": "time/expected.ron"
+    },
+    {
+      "name": "network",
+      "vocabularies": [
+        "https://ron.dev/vocab/network/v1"
+      ],
+      "inputJSON": "network/input.json",
+      "expectedRON": "network/expected.ron"
+    },
+    {
+      "name": "math",
+      "vocabularies": [
+        "https://ron.dev/vocab/math/v1"
+      ],
+      "inputJSON": "math/input.json",
+      "expectedRON": "math/expected.ron"
+    },
+    {
+      "name": "spatial",
+      "vocabularies": [
+        "https://ron.dev/vocab/spatial/v1"
+      ],
+      "inputJSON": "spatial/input.json",
+      "expectedRON": "spatial/expected.ron"
+    },
+    {
+      "name": "color",
+      "vocabularies": [
+        "https://ron.dev/vocab/color/v1"
+      ],
+      "inputJSON": "color/input.json",
+      "expectedRON": "color/expected.ron"
+    },
+    {
+      "name": "geo",
+      "vocabularies": [
+        "https://ron.dev/vocab/geo/v1"
+      ],
+      "inputJSON": "geo/input.json",
+      "expectedRON": "geo/expected.ron"
+    },
+    {
+      "name": "custom",
+      "vocabularies": [
+        "https://example.com/vocab/invoice/v1"
+      ],
+      "inputJSON": "custom/input.json",
+      "expectedRON": "custom/expected.ron"
+    }
+  ],
+  "registry": "registry.json"
+}
