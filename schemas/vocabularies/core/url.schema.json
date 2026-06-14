@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/core/v1/url",
+  "title": "URL",
+  "description": "Absolute URL for resources, links, and identifiers that should remain URL-shaped rather than plain strings.",
+  "type": "object",
+  "required": [
+    "#url"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#url": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9+.-]*://[^\\s]+$",
+      "format": "uri"
+    }
+  }
+}

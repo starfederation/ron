@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/math/v1/f2v",
+  "title": "Vector2",
+  "description": "Two-component floating-point vector for 2D positions, offsets, sizes, directions, and texture coordinates.",
+  "type": "object",
+  "required": [
+    "#f2v"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#f2v": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "X",
+          "description": "X component.",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "Y",
+          "description": "Y component.",
+          "type": "number",
+          "default": 0
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2,
+      "default": [
+        0,
+        0
+      ]
+    }
+  }
+}

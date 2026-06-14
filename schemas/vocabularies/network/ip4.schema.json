@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/network/v1/ip4",
+  "title": "IPv4",
+  "description": "IPv4 host address for endpoints, logs, network configuration, and access control metadata.",
+  "type": "object",
+  "required": [
+    "#ip4"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#ip4": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "string",
+      "pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$",
+      "format": "ipv4"
+    }
+  }
+}

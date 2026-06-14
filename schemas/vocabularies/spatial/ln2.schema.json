@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/spatial/v1/ln2",
+  "title": "Line2",
+  "description": "2D line segment represented by start and end vectors.",
+  "type": "object",
+  "required": [
+    "#ln2"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#ln2": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Start",
+          "description": "Start point vector.",
+          "$ref": "#/$defs/vec2"
+        },
+        {
+          "title": "End",
+          "description": "End point vector.",
+          "$ref": "#/$defs/vec2"
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "vec2": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "X",
+          "description": "X component.",
+          "type": "number"
+        },
+        {
+          "title": "Y",
+          "description": "Y component.",
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    }
+  }
+}

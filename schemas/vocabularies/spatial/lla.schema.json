@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/spatial/v1/lla",
+  "title": "LngLatAlt",
+  "description": "Geographic longitude, latitude, and altitude coordinate for point locations outside a GeoJSON object.",
+  "type": "object",
+  "required": [
+    "#lla"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#lla": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Longitude",
+          "description": "Longitude in degrees.",
+          "type": "number"
+        },
+        {
+          "title": "Latitude",
+          "description": "Latitude in degrees.",
+          "type": "number"
+        },
+        {
+          "title": "Altitude",
+          "description": "Altitude in meters.",
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    }
+  }
+}

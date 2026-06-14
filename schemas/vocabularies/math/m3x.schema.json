@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/math/v1/m3x",
+  "title": "Matrix3",
+  "description": "3x3 column-major matrix for 2D affine transforms, normal transforms, and compact 3D linear transforms.",
+  "type": "object",
+  "required": [
+    "#m3x"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#m3x": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Column 0 Row 0",
+          "description": "Column 0 Row 0 matrix element in column-major order.",
+          "type": "number",
+          "default": 1
+        },
+        {
+          "title": "Column 0 Row 1",
+          "description": "Column 0 Row 1 matrix element in column-major order.",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "Column 0 Row 2",
+          "description": "Column 0 Row 2 matrix element in column-major order.",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "Column 1 Row 0",
+          "description": "Column 1 Row 0 matrix element in column-major order.",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "Column 1 Row 1",
+          "description": "Column 1 Row 1 matrix element in column-major order.",
+          "type": "number",
+          "default": 1
+        },
+        {
+          "title": "Column 1 Row 2",
+          "description": "Column 1 Row 2 matrix element in column-major order.",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "Column 2 Row 0",
+          "description": "Column 2 Row 0 matrix element in column-major order.",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "Column 2 Row 1",
+          "description": "Column 2 Row 1 matrix element in column-major order.",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "Column 2 Row 2",
+          "description": "Column 2 Row 2 matrix element in column-major order.",
+          "type": "number",
+          "default": 1
+        }
+      ],
+      "items": false,
+      "minItems": 9,
+      "maxItems": 9,
+      "default": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ]
+    }
+  }
+}

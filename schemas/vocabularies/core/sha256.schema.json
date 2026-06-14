@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/core/v1/sha256",
+  "title": "SHA256",
+  "description": "SHA-256 digest for content identity, integrity checks, cache keys, and references to external byte streams.",
+  "type": "object",
+  "required": [
+    "#sha256"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#sha256": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

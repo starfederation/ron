@@ -288,7 +288,7 @@ Typed vocabularies are optional semantic layers over the JSON value model. A typ
 
 Base RON parsers and renderers do not need typed vocabulary support. They must preserve typed values as ordinary JSON objects. Vocabulary-aware decoders may map enabled tags to native types after parsing, and vocabulary-aware renderers may emit official tags from native typed values.
 
-Use `docs/vocabularies.md` for the normative tag registry, payload rules, vocabulary profile model, custom extension contract, and vocabulary fixtures. Use `testdata/vocabularies/registry.json` as the machine-readable registry for codegen-oriented consumers, and `testdata/vocabularies/manifest.json` for vocabulary fixtures.
+Use `docs/vocabularies.md` for the normative tag registry, payload rules, vocabulary profile model, custom extension contract, and vocabulary fixtures. Use `testdata/vocabularies/registry.json` as the machine-readable registry for codegen-oriented consumers, `schemas/vocabularies/` for JSON Schema Draft 2020-12 validation/codegen aids, and `testdata/vocabularies/manifest.json` for vocabulary fixtures. Registry schema paths are repository-root relative.
 
 ## RFC 8785 Canonical JSON
 

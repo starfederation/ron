@@ -173,6 +173,7 @@ Top-level fields:
 - `description`: fixture corpus purpose.
 - `vocabularies`: vocabulary profile map. `true` means required support, `false` means optional support.
 - `registry`: machine-readable tag registry for codegen-oriented consumers.
+- `schemas`: path to the repository's typed vocabulary JSON Schema directory, relative to `testdata/vocabularies/`.
 - `valid`: valid typed value rendering cases.
 - `invalid`: typed values that vocabulary-aware implementations must reject.
 - `invalidProfiles`: vocabulary profiles that must be rejected by implementations that cannot satisfy required vocabularies.
@@ -189,7 +190,7 @@ inputJSON
   -> compare structurally with inputJSON when no native mapping is asserted
 ```
 
-Base implementations may use these as ordinary JSON/RON fixtures. Vocabulary-aware implementations should additionally validate payloads and assert native type/codegen mappings from `docs/vocabularies.md`.
+Base implementations may use these as ordinary JSON/RON fixtures. Vocabulary-aware implementations should additionally validate payloads and assert native type/codegen mappings from `docs/vocabularies.md`. JSON Schema files under `schemas/vocabularies/` validate typed object shape and payload shape; semantic checks such as masked CIDR, RFC 5952 IPv6 text, and GeoJSON ring validity may need additional implementation validation.
 
 For each invalid vocabulary case:
 

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/math/v1/iv4",
+  "title": "IntVector4",
+  "description": "Four-component integer vector for packed coordinates, rectangular extents, and application-defined integer tuples.",
+  "type": "object",
+  "required": [
+    "#iv4"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#iv4": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "X",
+          "description": "X component.",
+          "type": "integer",
+          "default": 0
+        },
+        {
+          "title": "Y",
+          "description": "Y component.",
+          "type": "integer",
+          "default": 0
+        },
+        {
+          "title": "Z",
+          "description": "Z component.",
+          "type": "integer",
+          "default": 0
+        },
+        {
+          "title": "W",
+          "description": "W component.",
+          "type": "integer",
+          "default": 0
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4,
+      "default": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  }
+}

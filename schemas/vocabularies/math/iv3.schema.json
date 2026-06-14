@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/math/v1/iv3",
+  "title": "IntVector3",
+  "description": "Three-component integer vector for voxels, lattice coordinates, chunk indexes, and discrete 3D extents.",
+  "type": "object",
+  "required": [
+    "#iv3"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#iv3": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "X",
+          "description": "X component.",
+          "type": "integer",
+          "default": 0
+        },
+        {
+          "title": "Y",
+          "description": "Y component.",
+          "type": "integer",
+          "default": 0
+        },
+        {
+          "title": "Z",
+          "description": "Z component.",
+          "type": "integer",
+          "default": 0
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3,
+      "default": [
+        0,
+        0,
+        0
+      ]
+    }
+  }
+}

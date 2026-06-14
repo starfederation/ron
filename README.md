@@ -13,6 +13,7 @@ RON is also not [EDN](https://github.com/edn-format/edn), though it shares the s
 - `docs/ADR.md`: reference ADR for the format.
 - `docs/implementation-guide.md`: parser, renderer, and formatter guidance for new implementations.
 - `docs/vocabularies.md`: optional typed vocabularies and extension rules.
+- `schemas/vocabularies/`: JSON Schema Draft 2020-12 validation/codegen aids for typed vocabularies.
 - `testdata/conformance/`: language-neutral RON fixture corpus with a manifest.
 - `testdata/rfc8785/`: RFC 8785 canonical JSON fixture corpus.
 - `testdata/vocabularies/`: typed vocabulary fixtures.

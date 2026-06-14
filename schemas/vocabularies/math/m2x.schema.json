@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/math/v1/m2x",
+  "title": "Matrix2",
+  "description": "2x2 column-major matrix for 2D linear transforms such as scale, shear, and rotation.",
+  "type": "object",
+  "required": [
+    "#m2x"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#m2x": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Column 0 Row 0",
+          "description": "Column 0 Row 0 matrix element in column-major order.",
+          "type": "number",
+          "default": 1
+        },
+        {
+          "title": "Column 0 Row 1",
+          "description": "Column 0 Row 1 matrix element in column-major order.",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "Column 1 Row 0",
+          "description": "Column 1 Row 0 matrix element in column-major order.",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "Column 1 Row 1",
+          "description": "Column 1 Row 1 matrix element in column-major order.",
+          "type": "number",
+          "default": 1
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4,
+      "default": [
+        1,
+        0,
+        0,
+        1
+      ]
+    }
+  }
+}

@@ -1,3 +1,7 @@
 {
-  "accent": {"#clr": ["oklch", 0.7, 0.15, 230]}
+  "accent": {"#clr": ["oklch", 0.7, 0.15, 230]},
+  "red": {"#clr": ["rgb", 1, 0, 0]},
+  "translucent": {"#clr": ["rgba", 0, 0.5, 1, 0.25]},
+  "pastel": {"#clr": ["hsl", 210, 0.5, 0.8]},
+  "golden": {"#clr": ["hsv", 45, 1, 1]}
 }

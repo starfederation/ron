@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/network/v1/ip6",
+  "title": "IPv6",
+  "description": "IPv6 host address for endpoints, logs, network configuration, and access control metadata.",
+  "type": "object",
+  "required": [
+    "#ip6"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#ip6": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "string",
+      "pattern": "^[0-9a-f:]+$",
+      "format": "ipv6"
+    }
+  }
+}

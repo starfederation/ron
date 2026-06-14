@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/math/v1/f4v",
+  "title": "Vector4",
+  "description": "Four-component floating-point vector for homogeneous coordinates, quaternions alternatives, colors, and shader-style tuples.",
+  "type": "object",
+  "required": [
+    "#f4v"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#f4v": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "X",
+          "description": "X component.",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "Y",
+          "description": "Y component.",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "Z",
+          "description": "Z component.",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "W",
+          "description": "W component.",
+          "type": "number",
+          "default": 0
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4,
+      "default": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  }
+}

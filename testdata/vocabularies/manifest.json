@@ -230,6 +230,30 @@
       ],
       "inputJSON": "invalid/geo/bad_coordinates.json",
       "reason": "invalid GeoJSON coordinate shape"
+    },
+    {
+      "name": "color/bad_space",
+      "vocabularies": [
+        "https://ron.dev/vocab/color/v1"
+      ],
+      "inputJSON": "invalid/color/bad_space.json",
+      "reason": "unsupported #clr color space"
+    },
+    {
+      "name": "color/bad_rgb_arity",
+      "vocabularies": [
+        "https://ron.dev/vocab/color/v1"
+      ],
+      "inputJSON": "invalid/color/bad_rgb_arity.json",
+      "reason": "wrong #clr rgb arity"
+    },
+    {
+      "name": "color/bad_alpha_range",
+      "vocabularies": [
+        "https://ron.dev/vocab/color/v1"
+      ],
+      "inputJSON": "invalid/color/bad_alpha_range.json",
+      "reason": "wrong #clr alpha range"
     }
   ],
   "invalidProfiles": [
@@ -238,5 +262,6 @@
       "profile": "invalid/profile/unsupported_required.json",
       "reason": "required vocabulary is unknown or unsupported"
     }
-  ]
+  ],
+  "schemas": "../../schemas/vocabularies"
 }

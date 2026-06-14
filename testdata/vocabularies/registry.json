@@ -7,32 +7,44 @@
         {
           "tag": "#uid",
           "typeName": "UUID",
-          "payload": "string:rfc4122-lowercase"
+          "payload": "string:uuid-lowercase",
+          "schema": "schemas/vocabularies/core/uid.schema.json",
+          "payloadSchema": "schemas/vocabularies/core/uid.schema.json#/$defs/payload"
         },
         {
           "tag": "#url",
           "typeName": "URL",
-          "payload": "string:absolute-url"
+          "payload": "string:absolute-url",
+          "schema": "schemas/vocabularies/core/url.schema.json",
+          "payloadSchema": "schemas/vocabularies/core/url.schema.json#/$defs/payload"
         },
         {
           "tag": "#dec",
           "typeName": "Decimal",
-          "payload": "string:canonical-decimal"
+          "payload": "string:canonical-decimal",
+          "schema": "schemas/vocabularies/core/dec.schema.json",
+          "payloadSchema": "schemas/vocabularies/core/dec.schema.json#/$defs/payload"
         },
         {
           "tag": "#b64",
           "typeName": "Bytes",
-          "payload": "string:base64url-no-padding"
+          "payload": "string:base64url-no-padding",
+          "schema": "schemas/vocabularies/core/b64.schema.json",
+          "payloadSchema": "schemas/vocabularies/core/b64.schema.json#/$defs/payload"
         },
         {
           "tag": "#sha256",
           "typeName": "SHA256",
-          "payload": "string:lowercase-hex-32-bytes"
+          "payload": "string:lowercase-hex-32-bytes",
+          "schema": "schemas/vocabularies/core/sha256.schema.json",
+          "payloadSchema": "schemas/vocabularies/core/sha256.schema.json#/$defs/payload"
         },
         {
           "tag": "#",
           "typeName": "EntityRef",
-          "payload": "database-key:int|string-exact"
+          "payload": "database-key:int|string-exact",
+          "schema": "schemas/vocabularies/core/ref.schema.json",
+          "payloadSchema": "schemas/vocabularies/core/ref.schema.json#/$defs/payload"
         },
         {
           "tag": "#tag",
@@ -40,7 +52,9 @@
           "payload": [
             "uint8",
             "any"
-          ]
+          ],
+          "schema": "schemas/vocabularies/core/tag.schema.json",
+          "payloadSchema": "schemas/vocabularies/core/tag.schema.json#/$defs/payload"
         }
       ]
     },
@@ -50,12 +64,16 @@
         {
           "tag": "#utc",
           "typeName": "Instant",
-          "payload": "string:rfc3339-utc"
+          "payload": "string:rfc3339-utc",
+          "schema": "schemas/vocabularies/time/utc.schema.json",
+          "payloadSchema": "schemas/vocabularies/time/utc.schema.json#/$defs/payload"
         },
         {
           "tag": "#dur",
           "typeName": "Duration",
-          "payload": "string:iso8601-day-time-duration"
+          "payload": "string:iso8601-day-time-duration",
+          "schema": "schemas/vocabularies/time/dur.schema.json",
+          "payloadSchema": "schemas/vocabularies/time/dur.schema.json#/$defs/payload"
         }
       ]
     },
@@ -65,17 +83,23 @@
         {
           "tag": "#ip4",
           "typeName": "IPv4",
-          "payload": "string:ipv4"
+          "payload": "string:ipv4",
+          "schema": "schemas/vocabularies/network/ip4.schema.json",
+          "payloadSchema": "schemas/vocabularies/network/ip4.schema.json#/$defs/payload"
         },
         {
           "tag": "#ip6",
           "typeName": "IPv6",
-          "payload": "string:rfc5952-ipv6"
+          "payload": "string:rfc5952-ipv6",
+          "schema": "schemas/vocabularies/network/ip6.schema.json",
+          "payloadSchema": "schemas/vocabularies/network/ip6.schema.json#/$defs/payload"
         },
         {
           "tag": "#cdr",
           "typeName": "CIDR",
-          "payload": "string:masked-cidr"
+          "payload": "string:masked-cidr",
+          "schema": "schemas/vocabularies/network/cdr.schema.json",
+          "payloadSchema": "schemas/vocabularies/network/cdr.schema.json#/$defs/payload"
         }
       ]
     },
@@ -85,27 +109,37 @@
         {
           "tag": "#i64",
           "typeName": "Int64",
-          "payload": "integer"
+          "payload": "string:base10-int64",
+          "schema": "schemas/vocabularies/math/i64.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/i64.schema.json#/$defs/payload"
         },
         {
           "tag": "#u64",
           "typeName": "Uint64",
-          "payload": "string:base10-uint64"
+          "payload": "string:base10-uint64",
+          "schema": "schemas/vocabularies/math/u64.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/u64.schema.json#/$defs/payload"
         },
         {
           "tag": "#f64",
           "typeName": "Float64",
-          "payload": "float64-finite"
+          "payload": "float64-finite",
+          "schema": "schemas/vocabularies/math/f64.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/f64.schema.json#/$defs/payload"
         },
         {
           "tag": "#ivN",
           "typeName": "IntVectorN",
-          "payload": "integer[]"
+          "payload": "integer[]",
+          "schema": "schemas/vocabularies/math/ivn.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/ivn.schema.json#/$defs/payload"
         },
         {
           "tag": "#vN",
           "typeName": "VectorN",
-          "payload": "float64[]"
+          "payload": "float64[]",
+          "schema": "schemas/vocabularies/math/vn.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/vn.schema.json#/$defs/payload"
         },
         {
           "tag": "#iv2",
@@ -113,7 +147,9 @@
           "payload": [
             "integer",
             "integer"
-          ]
+          ],
+          "schema": "schemas/vocabularies/math/iv2.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/iv2.schema.json#/$defs/payload"
         },
         {
           "tag": "#iv3",
@@ -122,7 +158,9 @@
             "integer",
             "integer",
             "integer"
-          ]
+          ],
+          "schema": "schemas/vocabularies/math/iv3.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/iv3.schema.json#/$defs/payload"
         },
         {
           "tag": "#iv4",
@@ -132,7 +170,9 @@
             "integer",
             "integer",
             "integer"
-          ]
+          ],
+          "schema": "schemas/vocabularies/math/iv4.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/iv4.schema.json#/$defs/payload"
         },
         {
           "tag": "#f2v",
@@ -140,7 +180,9 @@
           "payload": [
             "float64",
             "float64"
-          ]
+          ],
+          "schema": "schemas/vocabularies/math/f2v.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/f2v.schema.json#/$defs/payload"
         },
         {
           "tag": "#f3v",
@@ -149,7 +191,9 @@
             "float64",
             "float64",
             "float64"
-          ]
+          ],
+          "schema": "schemas/vocabularies/math/f3v.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/f3v.schema.json#/$defs/payload"
         },
         {
           "tag": "#f4v",
@@ -159,7 +203,9 @@
             "float64",
             "float64",
             "float64"
-          ]
+          ],
+          "schema": "schemas/vocabularies/math/f4v.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/f4v.schema.json#/$defs/payload"
         },
         {
           "tag": "#qat",
@@ -169,7 +215,9 @@
             "float64",
             "float64",
             "float64"
-          ]
+          ],
+          "schema": "schemas/vocabularies/math/qat.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/qat.schema.json#/$defs/payload"
         },
         {
           "tag": "#eul",
@@ -179,22 +227,30 @@
             "float64",
             "float64",
             "enum:EulerOrder"
-          ]
+          ],
+          "schema": "schemas/vocabularies/math/eul.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/eul.schema.json#/$defs/payload"
         },
         {
           "tag": "#m2x",
           "typeName": "Matrix2",
-          "payload": "float64[4]:column-major"
+          "payload": "float64[4]:column-major",
+          "schema": "schemas/vocabularies/math/m2x.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/m2x.schema.json#/$defs/payload"
         },
         {
           "tag": "#m3x",
           "typeName": "Matrix3",
-          "payload": "float64[9]:column-major"
+          "payload": "float64[9]:column-major",
+          "schema": "schemas/vocabularies/math/m3x.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/m3x.schema.json#/$defs/payload"
         },
         {
           "tag": "#m4x",
           "typeName": "Matrix4",
-          "payload": "float64[16]:column-major"
+          "payload": "float64[16]:column-major",
+          "schema": "schemas/vocabularies/math/m4x.schema.json",
+          "payloadSchema": "schemas/vocabularies/math/m4x.schema.json#/$defs/payload"
         }
       ]
     },
@@ -208,7 +264,9 @@
             "longitudeDegrees",
             "latitudeDegrees",
             "altitudeMeters"
-          ]
+          ],
+          "schema": "schemas/vocabularies/spatial/lla.schema.json",
+          "payloadSchema": "schemas/vocabularies/spatial/lla.schema.json#/$defs/payload"
         },
         {
           "tag": "#sph",
@@ -217,7 +275,9 @@
             "radius",
             "phi",
             "theta"
-          ]
+          ],
+          "schema": "schemas/vocabularies/spatial/sph.schema.json",
+          "payloadSchema": "schemas/vocabularies/spatial/sph.schema.json#/$defs/payload"
         },
         {
           "tag": "#cyl",
@@ -226,7 +286,9 @@
             "radius",
             "theta",
             "y"
-          ]
+          ],
+          "schema": "schemas/vocabularies/spatial/cyl.schema.json",
+          "payloadSchema": "schemas/vocabularies/spatial/cyl.schema.json#/$defs/payload"
         },
         {
           "tag": "#bx2",
@@ -234,7 +296,9 @@
           "payload": [
             "vec2:min",
             "vec2:max"
-          ]
+          ],
+          "schema": "schemas/vocabularies/spatial/bx2.schema.json",
+          "payloadSchema": "schemas/vocabularies/spatial/bx2.schema.json#/$defs/payload"
         },
         {
           "tag": "#bx3",
@@ -242,7 +306,9 @@
           "payload": [
             "vec3:min",
             "vec3:max"
-          ]
+          ],
+          "schema": "schemas/vocabularies/spatial/bx3.schema.json",
+          "payloadSchema": "schemas/vocabularies/spatial/bx3.schema.json#/$defs/payload"
         },
         {
           "tag": "#spr",
@@ -250,7 +316,9 @@
           "payload": [
             "vec3:center",
             "float64:radius"
-          ]
+          ],
+          "schema": "schemas/vocabularies/spatial/spr.schema.json",
+          "payloadSchema": "schemas/vocabularies/spatial/spr.schema.json#/$defs/payload"
         },
         {
           "tag": "#pln",
@@ -258,7 +326,9 @@
           "payload": [
             "vec3:normal",
             "float64:constant"
-          ]
+          ],
+          "schema": "schemas/vocabularies/spatial/pln.schema.json",
+          "payloadSchema": "schemas/vocabularies/spatial/pln.schema.json#/$defs/payload"
         },
         {
           "tag": "#ray",
@@ -266,7 +336,9 @@
           "payload": [
             "vec3:origin",
             "vec3:direction"
-          ]
+          ],
+          "schema": "schemas/vocabularies/spatial/ray.schema.json",
+          "payloadSchema": "schemas/vocabularies/spatial/ray.schema.json#/$defs/payload"
         },
         {
           "tag": "#ln2",
@@ -274,7 +346,9 @@
           "payload": [
             "vec2:start",
             "vec2:end"
-          ]
+          ],
+          "schema": "schemas/vocabularies/spatial/ln2.schema.json",
+          "payloadSchema": "schemas/vocabularies/spatial/ln2.schema.json#/$defs/payload"
         },
         {
           "tag": "#ln3",
@@ -282,7 +356,9 @@
           "payload": [
             "vec3:start",
             "vec3:end"
-          ]
+          ],
+          "schema": "schemas/vocabularies/spatial/ln3.schema.json",
+          "payloadSchema": "schemas/vocabularies/spatial/ln3.schema.json#/$defs/payload"
         },
         {
           "tag": "#tri",
@@ -291,22 +367,30 @@
             "vec3:a",
             "vec3:b",
             "vec3:c"
-          ]
+          ],
+          "schema": "schemas/vocabularies/spatial/tri.schema.json",
+          "payloadSchema": "schemas/vocabularies/spatial/tri.schema.json#/$defs/payload"
         },
         {
           "tag": "#fru",
           "typeName": "Frustum",
-          "payload": "plane-payload[6]"
+          "payload": "plane-payload[6]",
+          "schema": "schemas/vocabularies/spatial/fru.schema.json",
+          "payloadSchema": "schemas/vocabularies/spatial/fru.schema.json#/$defs/payload"
         },
         {
           "tag": "#sh3",
           "typeName": "SphericalHarmonics3",
-          "payload": "vec3[9]"
+          "payload": "vec3[9]",
+          "schema": "schemas/vocabularies/spatial/sh3.schema.json",
+          "payloadSchema": "schemas/vocabularies/spatial/sh3.schema.json#/$defs/payload"
         },
         {
           "tag": "#vox",
           "typeName": "VoxelSet",
-          "payload": "object:sparse-voxel-set"
+          "payload": "object:sparse-voxel-set",
+          "schema": "schemas/vocabularies/spatial/vox.schema.json",
+          "payloadSchema": "schemas/vocabularies/spatial/vox.schema.json#/$defs/payload"
         }
       ]
     },
@@ -316,7 +400,9 @@
         {
           "tag": "#geo",
           "typeName": "GeoJSON",
-          "payload": "object:rfc7946-geojson"
+          "payload": "object:rfc7946-geojson",
+          "schema": "schemas/vocabularies/geo/geo.schema.json",
+          "payloadSchema": "schemas/vocabularies/geo/geo.schema.json#/$defs/payload"
         }
       ]
     },
@@ -326,12 +412,130 @@
         {
           "tag": "#clr",
           "typeName": "Color",
-          "payload": [
-            "enum:ColorSpace",
-            "float64",
-            "float64",
-            "float64"
-          ]
+          "payload": "color-space-discriminated-tuple",
+          "schema": "schemas/vocabularies/color/clr.schema.json",
+          "payloadSchema": "schemas/vocabularies/color/clr.schema.json#/$defs/payload",
+          "colorSpaces": [
+            "rgb",
+            "rgba",
+            "hsl",
+            "hsla",
+            "hsv",
+            "hsva",
+            "hwb",
+            "hwba",
+            "lab",
+            "laba",
+            "lch",
+            "lcha",
+            "oklab",
+            "oklaba",
+            "oklch",
+            "oklcha",
+            "xyz",
+            "xyza"
+          ],
+          "components": {
+            "rgb": [
+              "red",
+              "green",
+              "blue"
+            ],
+            "rgba": [
+              "red",
+              "green",
+              "blue",
+              "alpha"
+            ],
+            "hsl": [
+              "hueDegrees",
+              "saturation",
+              "lightness"
+            ],
+            "hsla": [
+              "hueDegrees",
+              "saturation",
+              "lightness",
+              "alpha"
+            ],
+            "hsv": [
+              "hueDegrees",
+              "saturation",
+              "value"
+            ],
+            "hsva": [
+              "hueDegrees",
+              "saturation",
+              "value",
+              "alpha"
+            ],
+            "hwb": [
+              "hueDegrees",
+              "whiteness",
+              "blackness"
+            ],
+            "hwba": [
+              "hueDegrees",
+              "whiteness",
+              "blackness",
+              "alpha"
+            ],
+            "lab": [
+              "lightness",
+              "a",
+              "b"
+            ],
+            "laba": [
+              "lightness",
+              "a",
+              "b",
+              "alpha"
+            ],
+            "lch": [
+              "lightness",
+              "chroma",
+              "hueDegrees"
+            ],
+            "lcha": [
+              "lightness",
+              "chroma",
+              "hueDegrees",
+              "alpha"
+            ],
+            "oklab": [
+              "lightness",
+              "a",
+              "b"
+            ],
+            "oklaba": [
+              "lightness",
+              "a",
+              "b",
+              "alpha"
+            ],
+            "oklch": [
+              "lightness",
+              "chroma",
+              "hueDegrees"
+            ],
+            "oklcha": [
+              "lightness",
+              "chroma",
+              "hueDegrees",
+              "alpha"
+            ],
+            "xyz": [
+              "x",
+              "y",
+              "z"
+            ],
+            "xyza": [
+              "x",
+              "y",
+              "z",
+              "alpha"
+            ]
+          }
         }
       ]
     }

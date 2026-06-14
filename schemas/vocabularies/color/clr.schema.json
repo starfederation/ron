@@ -1,0 +1,636 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/color/v1/clr",
+  "title": "Color",
+  "description": "Color encoded as a color-space discriminator followed by that space's components. Preserves authoring space instead of forcing conversion to a single color model.",
+  "type": "object",
+  "required": [
+    "#clr"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#clr": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/rgb"
+        },
+        {
+          "$ref": "#/$defs/rgba"
+        },
+        {
+          "$ref": "#/$defs/hsl"
+        },
+        {
+          "$ref": "#/$defs/hsla"
+        },
+        {
+          "$ref": "#/$defs/hsv"
+        },
+        {
+          "$ref": "#/$defs/hsva"
+        },
+        {
+          "$ref": "#/$defs/hwb"
+        },
+        {
+          "$ref": "#/$defs/hwba"
+        },
+        {
+          "$ref": "#/$defs/lab"
+        },
+        {
+          "$ref": "#/$defs/laba"
+        },
+        {
+          "$ref": "#/$defs/lch"
+        },
+        {
+          "$ref": "#/$defs/lcha"
+        },
+        {
+          "$ref": "#/$defs/oklab"
+        },
+        {
+          "$ref": "#/$defs/oklaba"
+        },
+        {
+          "$ref": "#/$defs/oklch"
+        },
+        {
+          "$ref": "#/$defs/oklcha"
+        },
+        {
+          "$ref": "#/$defs/xyz"
+        },
+        {
+          "$ref": "#/$defs/xyza"
+        }
+      ]
+    },
+    "unit": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "hueDegrees": {
+      "type": "number"
+    },
+    "number": {
+      "type": "number"
+    },
+    "rgb": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "rgb"
+        },
+        {
+          "title": "Red",
+          "description": "Red channel normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        },
+        {
+          "title": "Green",
+          "description": "Green channel normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        },
+        {
+          "title": "Blue",
+          "description": "Blue channel normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "rgba": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "rgba"
+        },
+        {
+          "title": "Red",
+          "description": "Red channel normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        },
+        {
+          "title": "Green",
+          "description": "Green channel normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        },
+        {
+          "title": "Blue",
+          "description": "Blue channel normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        },
+        {
+          "title": "Alpha",
+          "description": "Alpha channel normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        }
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "hsl": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "hsl"
+        },
+        {
+          "title": "Hue Degrees",
+          "description": "Hue angle in degrees.",
+          "$ref": "#/$defs/hueDegrees"
+        },
+        {
+          "title": "Saturation",
+          "description": "Saturation component normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        },
+        {
+          "title": "Lightness",
+          "description": "Lightness component.",
+          "$ref": "#/$defs/number"
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "hsla": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "hsla"
+        },
+        {
+          "title": "Hue Degrees",
+          "description": "Hue angle in degrees.",
+          "$ref": "#/$defs/hueDegrees"
+        },
+        {
+          "title": "Saturation",
+          "description": "Saturation component normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        },
+        {
+          "title": "Lightness",
+          "description": "Lightness component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Alpha",
+          "description": "Alpha channel normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        }
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "hsv": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "hsv"
+        },
+        {
+          "title": "Hue Degrees",
+          "description": "Hue angle in degrees.",
+          "$ref": "#/$defs/hueDegrees"
+        },
+        {
+          "title": "Saturation",
+          "description": "Saturation component normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        },
+        {
+          "title": "Value Component",
+          "description": "Value component normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "hsva": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "hsva"
+        },
+        {
+          "title": "Hue Degrees",
+          "description": "Hue angle in degrees.",
+          "$ref": "#/$defs/hueDegrees"
+        },
+        {
+          "title": "Saturation",
+          "description": "Saturation component normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        },
+        {
+          "title": "Value Component",
+          "description": "Value component normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        },
+        {
+          "title": "Alpha",
+          "description": "Alpha channel normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        }
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "hwb": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "hwb"
+        },
+        {
+          "title": "Hue Degrees",
+          "description": "Hue angle in degrees.",
+          "$ref": "#/$defs/hueDegrees"
+        },
+        {
+          "title": "Whiteness",
+          "description": "Whiteness component normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        },
+        {
+          "title": "Blackness",
+          "description": "Blackness component normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "hwba": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "hwba"
+        },
+        {
+          "title": "Hue Degrees",
+          "description": "Hue angle in degrees.",
+          "$ref": "#/$defs/hueDegrees"
+        },
+        {
+          "title": "Whiteness",
+          "description": "Whiteness component normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        },
+        {
+          "title": "Blackness",
+          "description": "Blackness component normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        },
+        {
+          "title": "Alpha",
+          "description": "Alpha channel normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        }
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "lab": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "lab"
+        },
+        {
+          "title": "Lightness",
+          "description": "Lightness component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "A",
+          "description": "A component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "B",
+          "description": "B component.",
+          "$ref": "#/$defs/number"
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "laba": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "laba"
+        },
+        {
+          "title": "Lightness",
+          "description": "Lightness component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "A",
+          "description": "A component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "B",
+          "description": "B component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Alpha",
+          "description": "Alpha channel normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        }
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "lch": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "lch"
+        },
+        {
+          "title": "Lightness",
+          "description": "Lightness component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Chroma",
+          "description": "Chroma component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Hue Degrees",
+          "description": "Hue angle in degrees.",
+          "$ref": "#/$defs/hueDegrees"
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "lcha": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "lcha"
+        },
+        {
+          "title": "Lightness",
+          "description": "Lightness component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Chroma",
+          "description": "Chroma component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Hue Degrees",
+          "description": "Hue angle in degrees.",
+          "$ref": "#/$defs/hueDegrees"
+        },
+        {
+          "title": "Alpha",
+          "description": "Alpha channel normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        }
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "oklab": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "oklab"
+        },
+        {
+          "title": "Lightness",
+          "description": "Lightness component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "A",
+          "description": "A component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "B",
+          "description": "B component.",
+          "$ref": "#/$defs/number"
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "oklaba": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "oklaba"
+        },
+        {
+          "title": "Lightness",
+          "description": "Lightness component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "A",
+          "description": "A component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "B",
+          "description": "B component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Alpha",
+          "description": "Alpha channel normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        }
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "oklch": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "oklch"
+        },
+        {
+          "title": "Lightness",
+          "description": "Lightness component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Chroma",
+          "description": "Chroma component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Hue Degrees",
+          "description": "Hue angle in degrees.",
+          "$ref": "#/$defs/hueDegrees"
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "oklcha": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "oklcha"
+        },
+        {
+          "title": "Lightness",
+          "description": "Lightness component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Chroma",
+          "description": "Chroma component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Hue Degrees",
+          "description": "Hue angle in degrees.",
+          "$ref": "#/$defs/hueDegrees"
+        },
+        {
+          "title": "Alpha",
+          "description": "Alpha channel normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        }
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "xyz": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "xyz"
+        },
+        {
+          "title": "X",
+          "description": "X component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Y",
+          "description": "Y component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Z",
+          "description": "Z component.",
+          "$ref": "#/$defs/number"
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "xyza": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Color Space",
+          "description": "Color space discriminator.",
+          "const": "xyza"
+        },
+        {
+          "title": "X",
+          "description": "X component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Y",
+          "description": "Y component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Z",
+          "description": "Z component.",
+          "$ref": "#/$defs/number"
+        },
+        {
+          "title": "Alpha",
+          "description": "Alpha channel normalized to [0, 1].",
+          "$ref": "#/$defs/unit"
+        }
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    }
+  }
+}

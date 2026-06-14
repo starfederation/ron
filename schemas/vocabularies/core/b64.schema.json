@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/core/v1/b64",
+  "title": "Bytes",
+  "description": "Binary data carried through a text-only data model. The payload is base64url without padding for compact, URL-safe byte storage.",
+  "type": "object",
+  "required": [
+    "#b64"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#b64": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]*$"
+    }
+  }
+}

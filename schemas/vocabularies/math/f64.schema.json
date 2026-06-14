@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/math/v1/f64",
+  "title": "Float64",
+  "description": "Finite double-precision scalar for ordinary numeric measurement or calculation values.",
+  "type": "object",
+  "required": [
+    "#f64"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#f64": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "number",
+      "default": 0
+    }
+  }
+}

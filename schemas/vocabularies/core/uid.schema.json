@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/core/v1/uid",
+  "title": "UUID",
+  "description": "Stable UUID identifier for records, resources, and cross-system references. The payload is lowercase dashed UUID text.",
+  "type": "object",
+  "required": [
+    "#uid"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#uid": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    }
+  }
+}

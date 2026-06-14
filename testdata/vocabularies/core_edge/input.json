@@ -1,12 +1,63 @@
 {
-  "refNumber": {"#": 300},
-  "refString": {"#": "user/ada"},
-  "urlEncoded": {"#url": "https://example.com/a%20b?x=1#frag"},
-  "urlFragment": {"#url": "https://example.com/docs?q=ron#intro"},
-  "decZero": {"#dec": "0"},
-  "decNegative": {"#dec": "-123.45"},
-  "decLargeScale": {"#dec": "0.000000001"},
-  "tagScalar": {"#tag": [1, "ok"]},
-  "tagArray": {"#tag": [2, [1, true, "text"]]},
-  "tagObject": {"#tag": [3, {"mode": "raw", "enabled": true}]}
+  "refNumber": {
+    "#": 300
+  },
+  "refString": {
+    "#": "user/ada"
+  },
+  "urlEncoded": {
+    "#url": "https://example.com/a%20b?x=1#frag"
+  },
+  "urlFragment": {
+    "#url": "https://example.com/docs?q=ron#intro"
+  },
+  "decZero": {
+    "#dec": "0"
+  },
+  "decNegative": {
+    "#dec": "-123.45"
+  },
+  "decLargeScale": {
+    "#dec": "0.000000001"
+  },
+  "tagScalar": {
+    "#tag": [
+      1,
+      "ok"
+    ]
+  },
+  "tagArray": {
+    "#tag": [
+      2,
+      [
+        1,
+        true,
+        "text"
+      ]
+    ]
+  },
+  "tagObject": {
+    "#tag": [
+      3,
+      {
+        "mode": "raw",
+        "enabled": true
+      }
+    ]
+  },
+  "uuidNil": {
+    "#uid": "00000000-0000-0000-0000-000000000000"
+  },
+  "uuidV1": {
+    "#uid": "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"
+  },
+  "uuidV4": {
+    "#uid": "550e8400-e29b-41d4-a716-446655440000"
+  },
+  "uuidV7": {
+    "#uid": "01890f9a-7b48-7cc2-98c4-dc0c0c07398f"
+  },
+  "uuidMax": {
+    "#uid": "ffffffff-ffff-ffff-ffff-ffffffffffff"
+  }
 }

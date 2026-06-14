@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/spatial/v1/tri",
+  "title": "Triangle",
+  "description": "Triangle represented by three 3D vertices for mesh fragments, collision tests, and geometry operations.",
+  "type": "object",
+  "required": [
+    "#tri"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#tri": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "A",
+          "description": "A component.",
+          "$ref": "#/$defs/vec3"
+        },
+        {
+          "title": "B",
+          "description": "B component.",
+          "$ref": "#/$defs/vec3"
+        },
+        {
+          "title": "C",
+          "description": "C component.",
+          "$ref": "#/$defs/vec3"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "vec3": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "X",
+          "description": "X component.",
+          "type": "number"
+        },
+        {
+          "title": "Y",
+          "description": "Y component.",
+          "type": "number"
+        },
+        {
+          "title": "Z",
+          "description": "Z component.",
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    }
+  }
+}

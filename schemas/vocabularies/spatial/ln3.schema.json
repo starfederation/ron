@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/spatial/v1/ln3",
+  "title": "Line3",
+  "description": "3D line segment represented by start and end vectors.",
+  "type": "object",
+  "required": [
+    "#ln3"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#ln3": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Start",
+          "description": "Start point vector.",
+          "$ref": "#/$defs/vec3"
+        },
+        {
+          "title": "End",
+          "description": "End point vector.",
+          "$ref": "#/$defs/vec3"
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "vec3": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "X",
+          "description": "X component.",
+          "type": "number"
+        },
+        {
+          "title": "Y",
+          "description": "Y component.",
+          "type": "number"
+        },
+        {
+          "title": "Z",
+          "description": "Z component.",
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    }
+  }
+}
