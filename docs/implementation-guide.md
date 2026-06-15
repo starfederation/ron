@@ -254,7 +254,7 @@ Exact compact canonical output examples live in `expected.compact.ron` fixture f
 
 ### Canonical RON Hashing
 
-Canonical RON is compact output with canonical ordering: `isPretty=false` and `isCanonical=true`. Canonical mode has an extra cost because every object may require sorting its keys before rendering. Non-canonical compact output can preserve source order and avoid that sort when source order is available. For each valid manifest case, hash the exact canonical RON bytes with unseeded XXH3-128 and encode the result as 32 lowercase hexadecimal digits. The hash must match the manifest's `expectedCanonicalRONXXH3`.
+Canonical RON is compact output with canonical ordering: `isPretty=false` and `isCanonical=true`. Canonical mode has an extra cost because every object may require sorting its keys before rendering. Non-canonical compact output can preserve source order and avoid that sort when source order is available. For each valid manifest case, hash the exact canonical RON bytes with SHA-256 and encode the result as 64 lowercase hexadecimal digits. The hash must match the manifest's `expectedCanonicalRONSHA256`.
 
 ## JSON Rendering
 
@@ -294,7 +294,7 @@ Use `docs/vocabularies.md` for the normative tag registry, payload rules, vocabu
 
 RFC 8785 canonical JSON is a separate JSON byte contract from RON compact output. It is the JSON Canonicalization Scheme (JCS): no insignificant whitespace, primitive serialization as ECMAScript `JSON.stringify()`, recursive object property sorting by raw property names interpreted as UTF-16 code unit arrays, and final UTF-8 bytes.
 
-Use `testdata/rfc8785/manifest.json` for the RFC fixture corpus. Each valid case has an input JSON file, expected canonical JSON bytes, expected UTF-8 hex, and an unseeded XXH3-128 hash in `expectedCanonicalJSONXXH3`. The corpus also includes RFC 8785 Appendix B number serialization samples and I-JSON rejection cases.
+Use `testdata/rfc8785/manifest.json` for the RFC fixture corpus. Each valid case has an input JSON file, expected canonical JSON bytes, expected UTF-8 hex, and a SHA-256 hash in `expectedCanonicalJSONSHA256`. The corpus also includes RFC 8785 Appendix B number serialization samples and I-JSON rejection cases.
 
 RON's normal JSON renderer preserves number text when practical. RFC 8785 canonical JSON does not preserve source number text; it serializes numbers as IEEE 754 double precision ECMAScript numbers.
 
@@ -315,7 +315,7 @@ For each valid case:
 4. Read `jsonInput`.
 5. Convert JSON -> pretty RON with `isPretty=true` and `isCanonical=true`, then exact-match `expectedPrettyRON`.
 6. Convert JSON -> compact canonical RON with `isPretty=false` and `isCanonical=true`, then exact-match `expectedCompactRON` if compact mode exists.
-7. Hash compact canonical RON with unseeded XXH3-128 and exact-match `expectedCanonicalRONXXH3` if compact mode exists.
+7. Hash compact canonical RON with SHA-256 and exact-match `expectedCanonicalRONSHA256` if compact mode exists.
 8. Parse all produced JSON and compare values with `jsonInput`.
 9. Parse produced RON back to JSON and compare values with `jsonInput`.
 
@@ -355,7 +355,7 @@ For each invalid vocabulary case, parse `inputJSON`, apply vocabulary-aware vali
 9. Implement compact RON output.
 10. Add pretty root object elision for JSON-to-RON output.
 11. Add typed value hook support for JSON-to-RON rendering.
-12. Add unseeded XXH3-128 checks for canonical RON output.
+12. Add SHA-256 checks for canonical RON output.
 13. Wire a manifest-based conformance runner.
 
 ## Gotchas

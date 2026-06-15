@@ -37,7 +37,7 @@ Compact is not automatically canonical. Canonical RON is compact RON rendered wi
 
 Canonical JSON means RFC 8785 JSON Canonicalization Scheme (JCS) bytes encoded as UTF-8. Its fixtures live under `testdata/rfc8785/`.
 
-Canonical hashes use unseeded XXH3-128, encoded as 32 lowercase hexadecimal digits. RON conformance cases hash exact canonical RON bytes in `expectedCanonicalRONXXH3`. RFC 8785 cases hash exact canonical JSON bytes in `expectedCanonicalJSONXXH3`. Testdata declares `expectedPrettyOptions` as `isPretty=true, isCanonical=true` and `expectedCompactOptions` as `isPretty=false, isCanonical=true`.
+Canonical hashes use SHA-256, encoded as 64 lowercase hexadecimal digits. RON conformance cases hash exact canonical RON bytes in `expectedCanonicalRONSHA256`. RFC 8785 cases hash exact canonical JSON bytes in `expectedCanonicalJSONSHA256`. Testdata declares `expectedPrettyOptions` as `isPretty=true, isCanonical=true` and `expectedCompactOptions` as `isPretty=false, isCanonical=true`.
 
 Pretty JSON-to-RON rendering emits root JSON object members at top level by default. JSON-to-RON renderers should also expose typed value hooks for application-specific examples. Hooks map JSON values by path to replacement JSON values before RON formatting, so a string at `tx` can render as `{# BE}` by replacing it with `{"#":"BE"}`.
 
@@ -136,12 +136,12 @@ Use `testdata/conformance/manifest.json` as the test runner input. For each vali
 4. Convert `jsonInput` to RON.
 5. Compare pretty canonical RON with `expectedPrettyRON`.
 6. Compare compact canonical RON with `expectedCompactRON` if compact mode is supported.
-7. Hash compact canonical RON with unseeded XXH3-128 and compare lowercase hex with `expectedCanonicalRONXXH3`.
+7. Hash compact canonical RON with SHA-256 and compare lowercase hex with `expectedCanonicalRONSHA256`.
 8. Parse generated RON back to JSON and compare JSON values, not text.
 9. Run `jsonToRONRendering` cases for root object elision and typed value hooks when those hooks are supported.
 
 For invalid cases, every `invalidRON[]` file must fail RON parsing and every `invalidJSON[]` file must fail JSON -> RON conversion.
 
-Use `testdata/rfc8785/manifest.json` for RFC 8785 canonical JSON vectors. Implementations must exact-match canonical JSON bytes, expected UTF-8 hex when present, Appendix B number serialization samples, I-JSON rejection cases, and unseeded XXH3-128 hashes.
+Use `testdata/rfc8785/manifest.json` for RFC 8785 canonical JSON vectors. Implementations must exact-match canonical JSON bytes, expected UTF-8 hex when present, Appendix B number serialization samples, I-JSON rejection cases, and SHA-256 hashes.
 
 Use `testdata/vocabularies/manifest.json` for typed vocabulary fixtures. Vocabulary-aware implementations should validate and map enabled typed tags; base implementations may treat the same files as ordinary JSON/RON round-trip cases.
