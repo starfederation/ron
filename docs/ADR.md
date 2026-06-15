@@ -267,9 +267,9 @@ If source order is unavailable because the host JSON value is an unordered map, 
 - Object key order is selected by `isCanonical`.
 - Key/value space is omitted before array, object, or quoted-string values when unambiguous.
 
-Canonical RON is the byte form rendered with `isPretty=false` and `isCanonical=true`. Canonical mode has an extra cost because every object may require key sorting. Use it when stable bytes or hashes matter. Non-canonical compact output can preserve source order and avoid sorting. Canonical RON hashes are unseeded XXH3-128 of the exact canonical RON bytes, encoded as 32 lowercase hexadecimal digits. The corpus stores each expected hash in the manifest as `expectedCanonicalRONXXH3`.
+Canonical RON is the byte form rendered with `isPretty=false` and `isCanonical=true`. Canonical mode has an extra cost because every object may require key sorting. Use it when stable bytes or hashes matter. Non-canonical compact output can preserve source order and avoid sorting. Canonical RON hashes are SHA-256 of the exact canonical RON bytes, encoded as 64 lowercase hexadecimal digits. The corpus stores each expected hash in the manifest as `expectedCanonicalRONSHA256`.
 
-Canonical JSON means RFC 8785 JSON Canonicalization Scheme (JCS) bytes encoded as UTF-8. RFC 8785 fixtures live under `testdata/rfc8785/` and include `expectedCanonicalJSONXXH3` hashes using the same unseeded XXH3-128 encoding.
+Canonical JSON means RFC 8785 JSON Canonicalization Scheme (JCS) bytes encoded as UTF-8. RFC 8785 fixtures live under `testdata/rfc8785/` and include `expectedCanonicalJSONSHA256` hashes using the same SHA-256 encoding.
 
 JSON-to-RON renderers should expose a typed value hook for application-specific examples and APIs that want JSON-compatible inputs to render as typed RON object forms. The hook maps a value by path before formatting. Paths use object keys and array indexes from the original JSON tree. A hook may replace the value with any JSON value; returned objects such as `{"#":"BE"}` and `{"#utc":"2026-06-13T00:00:00Z"}` render as ordinary RON objects like `{# BE}` and `{#utc 2026-06-13T00:00:00Z}`. Hooks are a rendering API only; they do not change RON parsing or make marker objects special in the base data model.
 
@@ -287,7 +287,7 @@ Each valid conformance case contains:
 - Expected pretty JSON.
 - Expected compact canonical RON.
 - Expected pretty canonical RON.
-- Expected canonical RON XXH3-128 hash.
+- Expected canonical RON SHA-256 hash.
 
 Additional JSON-to-RON rendering cases cover root object elision and typed value hooks. Typed vocabulary fixtures live under `testdata/vocabularies/`.
 

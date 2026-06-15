@@ -4,8 +4,8 @@
   "source": "https://www.rfc-editor.org/rfc/rfc8785.txt",
   "canonicalJSON": {
     "definition": "RFC 8785 canonical JSON bytes encoded as UTF-8",
-    "hashAlgorithm": "XXH3-128, seed 0, lowercase hex",
-    "hashEncoding": "32 lowercase hexadecimal digits",
+    "hashAlgorithm": "SHA-256, lowercase hex",
+    "hashEncoding": "64 lowercase hexadecimal digits",
     "objectKeyOrder": "RFC 8785 UTF-16 code unit order"
   },
   "valid": [
@@ -15,7 +15,7 @@
       "inputJSON": "canonical/primitive_serialization.input.json",
       "expectedCanonicalJSON": "canonical/primitive_serialization.expected.json",
       "expectedCanonicalUTF8Hex": "canonical/primitive_serialization.expected.hex",
-      "expectedCanonicalJSONXXH3": "28c22fc6337f4c428f618836d64aa0a2"
+      "expectedCanonicalJSONSHA256": "2d5e01a318d0f0879ab568c4be289c8b1f64ef8921a53c6277d5e069978baacb"
     },
     {
       "name": "property_sorting",
@@ -23,7 +23,7 @@
       "inputJSON": "canonical/property_sorting.input.json",
       "expectedCanonicalJSON": "canonical/property_sorting.expected.json",
       "expectedCanonicalUTF8Hex": "canonical/property_sorting.expected.hex",
-      "expectedCanonicalJSONXXH3": "e945db891d4a3129e64aca19f7364e41"
+      "expectedCanonicalJSONSHA256": "5e321556d22018a9656991a9e94f77ec175fa193e52a2429d312f8419ec8b08c"
     },
     {
       "name": "recursive_sorting",
@@ -31,7 +31,7 @@
       "inputJSON": "canonical/recursive_sorting.input.json",
       "expectedCanonicalJSON": "canonical/recursive_sorting.expected.json",
       "expectedCanonicalUTF8Hex": "canonical/recursive_sorting.expected.hex",
-      "expectedCanonicalJSONXXH3": "af1095fb760495348912de97718092f4"
+      "expectedCanonicalJSONSHA256": "0fae9d65871954d5a3cc12d41933277842c99635283f23709531e52ea9a2db8a"
     }
   ],
   "numberSerialization": "numbers/appendix-b.json",

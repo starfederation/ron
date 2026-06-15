@@ -16,7 +16,7 @@ Top-level fields:
 
 - `version`: corpus version.
 - `formatting`: reference formatting knobs, expected formatter options, canonical RON definition, and hash algorithm.
-- `valid`: valid conversion cases, including each case's `expectedCanonicalRONXXH3`.
+- `valid`: valid conversion cases, including each case's `expectedCanonicalRONSHA256`.
 - `invalidRON`: RON files that must fail RON parsing.
 - `invalidJSON`: JSON files that must fail JSON parsing or JSON -> RON conversion.
 - `jsonToRONRendering`: JSON -> RON rendering cases, including root object elision and typed value hooks.
@@ -38,7 +38,7 @@ Each case is a set of different textual views of one JSON value:
 - `expected.pretty.json`: pretty JSON output for RON -> JSON.
 - `expected.compact.ron`: compact canonical RON output for JSON -> RON and canonical RON hash input.
 - `expected.pretty.ron`: pretty canonical RON output for JSON -> RON.
-- `expectedCanonicalRONXXH3`: unseeded XXH3-128 of `expected.compact.ron`, encoded as 32 lowercase hexadecimal digits in the manifest.
+- `expectedCanonicalRONSHA256`: SHA-256 of `expected.compact.ron`, encoded as 64 lowercase hexadecimal digits in the manifest.
 
 A language implementation should generate its own actual outputs in memory or in its own temporary/build directory. Do not write generated outputs back into this corpus during normal test runs.
 
@@ -64,8 +64,8 @@ jsonInput
   -> JSON value model
   -> emit compact canonical RON
   -> exact compare with expectedCompactRON
-  -> hash with unseeded XXH3-128
-  -> exact compare lowercase hex with expectedCanonicalRONXXH3
+  -> hash with SHA-256
+  -> exact compare lowercase hex with expectedCanonicalRONSHA256
 
 jsonInput
   -> parse JSON
@@ -102,7 +102,7 @@ Exact means byte-for-byte against the fixture file using LF line endings.
 - Compact JSON emits no insignificant whitespace.
 - Compact RON emits no newlines and may elide root object braces.
 - Canonical RON is compact RON with canonical ordering, equivalent to `isPretty=false` and `isCanonical=true`.
-- Canonical hashes use unseeded XXH3-128 over exact compact canonical RON bytes.
+- Canonical hashes use SHA-256 over exact compact canonical RON bytes.
 
 Formatters may also expose non-canonical given-order output with `isCanonical=false`. Given-order output is intentionally not part of this shared fixture corpus because it depends on source text order.
 
@@ -155,8 +155,8 @@ inputJSON
   -> canonicalize per RFC 8785
   -> exact compare with expectedCanonicalJSON
   -> compare UTF-8 bytes as lowercase hex with expectedCanonicalUTF8Hex
-  -> hash canonical JSON bytes with unseeded XXH3-128
-  -> exact compare lowercase hex with expectedCanonicalJSONXXH3
+  -> hash canonical JSON bytes with SHA-256
+  -> exact compare lowercase hex with expectedCanonicalJSONSHA256
 ```
 
 For `numbers/appendix-b.json`, serialize each finite IEEE 754 value to JSON and exact-match `expectedJSON`. Reject each `rejectedNativeValues` entry if the implementation accepts native floating-point input.
@@ -246,9 +246,9 @@ When the reference format changes or a new edge case is added:
 
 1. Add or edit the input fixture files.
 2. Generate all expected files from the accepted reference behavior, not from an implementation under test.
-3. Update `conformance/manifest.json` so every new file is reachable and every valid case has `expectedCanonicalRONXXH3`.
-4. Verify each manifest hash matches unseeded XXH3-128 of the expected compact canonical RON bytes.
+3. Update `conformance/manifest.json` so every new file is reachable and every valid case has `expectedCanonicalRONSHA256`.
+4. Verify each manifest hash matches SHA-256 of the expected compact canonical RON bytes.
 5. Verify each valid case still represents one JSON value across all RON and JSON files.
 6. Verify invalid cases still fail for the intended reason.
 
-A new valid case is complete only when it has all four expected outputs: compact JSON, pretty JSON, compact canonical RON, pretty canonical RON, and a canonical XXH3 hash.
+A new valid case is complete only when it has all four expected outputs: compact JSON, pretty JSON, compact canonical RON, pretty canonical RON, and a canonical SHA-256 hash.
