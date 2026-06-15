@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/math/v1/u64",
+  "title": "Uint64",
+  "description": "Unsigned 64-bit integer stored as decimal text so values outside JSON safe-integer range remain exact.",
+  "type": "object",
+  "required": [
+    "#u64"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#u64": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "string",
+      "pattern": "^(?:0|[1-9][0-9]*)$",
+      "default": "0"
+    }
+  }
+}

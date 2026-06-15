@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/spatial/v1/bx2",
+  "title": "Box2",
+  "description": "2D axis-aligned bounding box represented by minimum and maximum corner vectors.",
+  "type": "object",
+  "required": [
+    "#bx2"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#bx2": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Min",
+          "description": "Minimum bound vector.",
+          "$ref": "#/$defs/vec2"
+        },
+        {
+          "title": "Max",
+          "description": "Maximum bound vector.",
+          "$ref": "#/$defs/vec2"
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "vec2": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "X",
+          "description": "X component.",
+          "type": "number"
+        },
+        {
+          "title": "Y",
+          "description": "Y component.",
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    }
+  }
+}

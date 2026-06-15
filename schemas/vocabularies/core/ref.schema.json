@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/core/v1/ref",
+  "title": "EntityRef",
+  "description": "Reference to another entity or database record. The payload is an application-defined key, commonly an integer row id or external string id.",
+  "type": "object",
+  "required": [
+    "#"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "oneOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    }
+  }
+}

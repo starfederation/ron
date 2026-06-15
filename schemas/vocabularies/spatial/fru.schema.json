@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/spatial/v1/fru",
+  "title": "Frustum",
+  "description": "Camera or view frustum represented as six planes for culling, clipping, and visibility queries.",
+  "type": "object",
+  "required": [
+    "#fru"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#fru": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Left Plane",
+          "description": "Left Plane payload.",
+          "$ref": "#/$defs/plane"
+        },
+        {
+          "title": "Right Plane",
+          "description": "Right Plane payload.",
+          "$ref": "#/$defs/plane"
+        },
+        {
+          "title": "Top Plane",
+          "description": "Top Plane payload.",
+          "$ref": "#/$defs/plane"
+        },
+        {
+          "title": "Bottom Plane",
+          "description": "Bottom Plane payload.",
+          "$ref": "#/$defs/plane"
+        },
+        {
+          "title": "Near Plane",
+          "description": "Near Plane payload.",
+          "$ref": "#/$defs/plane"
+        },
+        {
+          "title": "Far Plane",
+          "description": "Far Plane payload.",
+          "$ref": "#/$defs/plane"
+        }
+      ],
+      "items": false,
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "vec3": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "X",
+          "description": "X component.",
+          "type": "number"
+        },
+        {
+          "title": "Y",
+          "description": "Y component.",
+          "type": "number"
+        },
+        {
+          "title": "Z",
+          "description": "Z component.",
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "plane": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Normal",
+          "description": "Plane normal vector.",
+          "$ref": "#/$defs/vec3"
+        },
+        {
+          "title": "Constant",
+          "description": "Plane constant.",
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    }
+  }
+}

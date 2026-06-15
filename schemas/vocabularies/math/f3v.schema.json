@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/math/v1/f3v",
+  "title": "Vector3",
+  "description": "Three-component floating-point vector for 3D positions, directions, normals, colors, scales, and extents.",
+  "type": "object",
+  "required": [
+    "#f3v"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#f3v": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "X",
+          "description": "X component.",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "Y",
+          "description": "Y component.",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "Z",
+          "description": "Z component.",
+          "type": "number",
+          "default": 0
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3,
+      "default": [
+        0,
+        0,
+        0
+      ]
+    }
+  }
+}

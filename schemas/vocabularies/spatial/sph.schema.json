@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/spatial/v1/sph",
+  "title": "Spherical",
+  "description": "Spherical coordinates for radial positions and coordinate-system interchange.",
+  "type": "object",
+  "required": [
+    "#sph"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#sph": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Radius",
+          "description": "Radius component.",
+          "type": "number"
+        },
+        {
+          "title": "Phi",
+          "description": "Phi angle component.",
+          "type": "number"
+        },
+        {
+          "title": "Theta",
+          "description": "Theta angle component.",
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    }
+  }
+}

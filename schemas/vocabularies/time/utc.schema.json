@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/time/v1/utc",
+  "title": "Instant",
+  "description": "UTC timestamp for events, logs, record metadata, and cross-system time exchange.",
+  "type": "object",
+  "required": [
+    "#utc"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#utc": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "string",
+      "pattern": "^\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])T(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d{1,9})?Z$",
+      "format": "date-time"
+    }
+  }
+}

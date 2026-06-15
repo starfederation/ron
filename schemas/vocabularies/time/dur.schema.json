@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/time/v1/dur",
+  "title": "Duration",
+  "description": "Elapsed day-time duration for timeouts, delays, intervals, and measurements that avoid calendar month ambiguity.",
+  "type": "object",
+  "required": [
+    "#dur"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#dur": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "string",
+      "pattern": "^-?P(?=\\d+D|T)(?:\\d+D)?(?:T(?=\\d+H|\\d+M|\\d+(?:\\.\\d{1,9})?S)(?:\\d+H)?(?:\\d+M)?(?:\\d+(?:\\.\\d{1,9})?S)?)?$"
+    }
+  }
+}

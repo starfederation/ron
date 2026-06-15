@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/math/v1/vn",
+  "title": "VectorN",
+  "description": "Variable-length floating-point vector for application-defined numeric tuples and dimensionality.",
+  "type": "object",
+  "required": [
+    "#vN"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#vN": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "default": []
+    }
+  }
+}

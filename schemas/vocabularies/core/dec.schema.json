@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/core/v1/dec",
+  "title": "Decimal",
+  "description": "Exact decimal number for values such as money, quantities, and measurements where base-10 precision matters.",
+  "type": "object",
+  "required": [
+    "#dec"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#dec": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "string",
+      "pattern": "^(?:0|-?[1-9][0-9]*|-?(?:0|[1-9][0-9]*)\\.[0-9]*[1-9])$"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/spatial/v1/spr",
+  "title": "Sphere",
+  "description": "Sphere represented by center and radius for bounds, collisions, influence volumes, and spatial queries.",
+  "type": "object",
+  "required": [
+    "#spr"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#spr": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Center",
+          "description": "Center vector.",
+          "$ref": "#/$defs/vec3"
+        },
+        {
+          "title": "Radius",
+          "description": "Radius component.",
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "vec3": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "X",
+          "description": "X component.",
+          "type": "number"
+        },
+        {
+          "title": "Y",
+          "description": "Y component.",
+          "type": "number"
+        },
+        {
+          "title": "Z",
+          "description": "Z component.",
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    }
+  }
+}

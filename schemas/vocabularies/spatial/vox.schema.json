@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/spatial/v1/vox",
+  "title": "VoxelSet",
+  "description": "Sparse lattice sample set with dimensions, world-space origin, cell size, and coordinate/value cells.",
+  "type": "object",
+  "required": [
+    "#vox"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#vox": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "object",
+      "required": [
+        "dimensions",
+        "origin",
+        "cellSize",
+        "cells"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "dimensions": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "origin": {
+          "$ref": "#/$defs/typedVectorN"
+        },
+        "cellSize": {
+          "$ref": "#/$defs/typedVectorN"
+        },
+        "cells": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "title": "Coordinate",
+                "description": "Coordinate component.",
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              {
+                "title": "Value",
+                "description": "Value component normalized to [0, 1]."
+              }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          }
+        }
+      }
+    },
+    "typedVectorN": {
+      "type": "object",
+      "required": [
+        "#vN"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "#vN": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/network/v1/cdr",
+  "title": "CIDR",
+  "description": "CIDR network prefix for IP ranges, subnets, routing rules, firewall rules, and access control metadata.",
+  "type": "object",
+  "required": [
+    "#cdr"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#cdr": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "string",
+      "pattern": "^(?:[0-9A-Fa-f:.]+)/(?:[0-9]|[1-9][0-9]|1[01][0-9]|12[0-8])$"
+    }
+  }
+}

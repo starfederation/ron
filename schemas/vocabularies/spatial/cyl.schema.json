@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/spatial/v1/cyl",
+  "title": "Cylindrical",
+  "description": "Cylindrical coordinates for radial positions and coordinate-system interchange.",
+  "type": "object",
+  "required": [
+    "#cyl"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#cyl": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Radius",
+          "description": "Radius component.",
+          "type": "number"
+        },
+        {
+          "title": "Theta",
+          "description": "Theta angle component.",
+          "type": "number"
+        },
+        {
+          "title": "Y",
+          "description": "Y component.",
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    }
+  }
+}

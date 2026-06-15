@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/math/v1/ivn",
+  "title": "IntVectorN",
+  "description": "Variable-length integer vector for application-defined coordinate systems and dimensionality.",
+  "type": "object",
+  "required": [
+    "#ivN"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#ivN": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "default": []
+    }
+  }
+}

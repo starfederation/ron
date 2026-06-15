@@ -94,9 +94,11 @@ Typed payloads should have one canonical representation:
 - Do not use object payloads unless member names materially improve stability or future compatibility.
 - Avoid polymorphic payloads in official tags. If a tag needs multiple variants, include a discriminant as the first array element.
 
-## Registry files
+## Registry and schema files
 
-The prose in this document is the normative reference. `testdata/vocabularies/registry.json` mirrors the official tag list in a compact machine-readable shape for code generators and test harnesses. If the prose and registry disagree, treat the prose as authoritative and fix the registry.
+The prose in this document is the normative reference. `testdata/vocabularies/registry.json` mirrors the official tag list in a compact machine-readable shape for code generators and test harnesses. Registry `schema` and `payloadSchema` paths are repository-root relative and point into `schemas/vocabularies/`.
+
+Each official tag has a JSON Schema Draft 2020-12 file under `schemas/vocabularies/<vocabulary>/<tag>.schema.json`. A tag schema validates the full typed object, and its `$defs.payload` definition validates just the payload. Tuple schemas use `prefixItems` titles and descriptions for component names. Math schemas include neutral defaults such as zero vectors, identity matrices, and `{#qat [0 0 0 1]}`. Schemas are validation and codegen aids; canonical forms and semantic rules remain defined by this document and by fixtures. If the prose, registry, and schemas disagree, treat the prose as authoritative and fix the generated aids.
 
 ## Official vocabularies
 
@@ -106,7 +108,7 @@ URI: `https://ron.dev/vocab/core/v1`
 
 | Tag | Type | Payload | Canonical form | Example |
 | --- | --- | --- | --- | --- |
-| `#uid` | UUID | string | RFC 4122 lowercase UUID text | `{#uid 00112233-4455-6677-8899-aabbccddeeff}` |
+| `#uid` | UUID | string | lowercase dashed UUID text; no version restriction | `{#uid 00112233-4455-6677-8899-aabbccddeeff}` |
 | `#url` | URL | string | absolute URL string; no normalization beyond validation | `{#url https://example.com/docs?q=ron#intro}` |
 | `#dec` | Decimal | string | finite base-10 decimal, no exponent, no plus, no redundant trailing fraction zeroes | `{#dec '123.45'}` |
 | `#b64` | Bytes | string | RFC 4648 base64url without padding | `{#b64 3q2-7w}` |
@@ -250,7 +252,9 @@ URI: `https://ron.dev/vocab/color/v1`
 
 | Tag | Type | Payload | Canonical form | Example |
 | --- | --- | --- | --- | --- |
-| `#clr` | Color | `[space, c0, c1, c2]` | canonical space is `oklch`; values are lightness, chroma, hue degrees | `{#clr [oklch 0.7 0.15 230]}` |
+| `#clr` | Color | `[space, components...]` | space-specific tuple; preserve the selected supported space | `{#clr [rgba 0.1 0.2 0.3 0.5]}` |
+
+Supported color spaces are `rgb`, `rgba`, `hsl`, `hsla`, `hsv`, `hsva`, `hwb`, `hwba`, `lab`, `laba`, `lch`, `lcha`, `oklab`, `oklaba`, `oklch`, `oklcha`, `xyz`, and `xyza`. `rgb` and `rgba` use sRGB channels normalized to `[0, 1]`. `hsl`, `hsv`, and `hwb` use hue degrees followed by normalized components. Alpha variants append an alpha channel normalized to `[0, 1]`. `lab`, `lch`, `oklab`, `oklch`, and `xyz` use their conventional component order; `lch` and `oklch` hue is degrees.
 
 Future color spaces may be added by extending the `space` discriminant. Implementations that do not understand a color space must preserve the value or reject it according to the profile.
 
