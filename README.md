@@ -22,7 +22,7 @@ RON is also not [EDN](https://github.com/edn-format/edn), though it shares the s
 
 | Implementation | Language | Base RON | RFC 8785 canonical JSON | Supported typed vocabularies |
 | --- | --- | --- | --- | --- |
-| [starfederation/ron-go](https://github.com/starfederation/ron-go) | Go | Yes | Unknown | None declared |
+| [starfederation/ron-go](https://github.com/starfederation/ron-go) | Go | Yes | Yes | core, time, network, math, spatial, geo, color; custom option-scoped |
 
 When adding an implementation, list each supported vocabulary URI or short name from `docs/vocabularies.md`, for example `core`, `time`, `math`, or `geo`.
 
