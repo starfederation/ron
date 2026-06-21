@@ -34,7 +34,9 @@ Use this order:
         - [`testdata/rfc8785/`](testdata/rfc8785/): RFC 8785 canonical JSON fixture corpus.
         - [`testdata/vocabularies/`](testdata/vocabularies/): typed vocabulary fixtures.
 - Ecosystem
+    - [Nix tooling](#nix-tooling): reproducible VS Code extension builds and a dev shell.
     - [Implementations](#implementations): current library support matrix.
+    - [`vscode/`](vscode/): VS Code extension for RON syntax highlighting and Markdown fenced code blocks.
 
 ```mermaid
 flowchart TD
@@ -46,6 +48,41 @@ flowchart TD
   reference --> vocab[Vocabulary reference]
   reference --> corpus[Test corpus]
   corpus --> implementations[Implementations]
+```
+
+## Nix tooling
+
+Build the VS Code extension VSIX from the repository root:
+
+```sh
+nix build .#vscode-extension-vsix
+```
+
+The VSIX is written to:
+
+```text
+result/share/vscode/extensions/ron-language-0.1.0.vsix
+```
+
+Run flake checks:
+
+```sh
+nix flake check
+```
+
+Use the dev shell for local extension checks and packaging:
+
+```sh
+nix develop
+cd vscode
+npm run check
+npm run package
+```
+
+Install the Nix-built extension locally:
+
+```sh
+code --install-extension result/share/vscode/extensions/ron-language-0.1.0.vsix
 ```
 
 ## Quick Start

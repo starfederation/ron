@@ -1,0 +1,150 @@
+{
+  "name": "RON",
+  "scopeName": "source.ron",
+  "patterns": [
+    {
+      "include": "#punctuation-tokens"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#vars"
+    },
+    {
+      "include": "#tempids"
+    },
+    {
+      "include": "#tags"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#identifiers"
+    }
+  ],
+  "repository": {
+    "punctuation-tokens": {
+      "patterns": [
+        {
+          "name": "string.unquoted.punctuation.ron",
+          "match": "(?<![^\\s\\[\\]{}'\",])(?:'(?![^\\[\\]{}\\n]*')|,[^\\s\\[\\]{}'\",]*)"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.ron",
+          "begin": "(\"{1,})(?!\")",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.string.begin.ron"
+            }
+          },
+          "end": "\\1",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.ron"
+            }
+          }
+        },
+        {
+          "name": "string.quoted.single.ron",
+          "begin": "('{1,})(?!')",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.string.begin.ron"
+            }
+          },
+          "end": "\\1",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.ron"
+            }
+          }
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.language.boolean.ron",
+          "match": "(?<![^\\s\\[\\]{}'\",])(?:true|false)(?![^\\s\\[\\]{}'\",])"
+        },
+        {
+          "name": "constant.language.null.ron",
+          "match": "(?<![^\\s\\[\\]{}'\",])null(?![^\\s\\[\\]{}'\",])"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.ron",
+          "match": "(?<![^\\s\\[\\]{}'\",])-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?(?![^\\s\\[\\]{}'\",])"
+        }
+      ]
+    },
+    "vars": {
+      "patterns": [
+        {
+          "name": "variable.other.query.ron",
+          "match": "(?<![^\\s\\[\\]{}'\",])\\?[A-Za-z0-9_./!$%&*+=<>:-]+(?![^\\s\\[\\]{}'\",])"
+        }
+      ]
+    },
+    "tempids": {
+      "patterns": [
+        {
+          "name": "entity.name.label.tempid.ron",
+          "match": "(?<![^\\s\\[\\]{}'\",])#_[A-Za-z0-9_./!$%&*+=<>:-]+(?![^\\s\\[\\]{}'\",])"
+        }
+      ]
+    },
+    "tags": {
+      "patterns": [
+        {
+          "name": "entity.name.tag.ron",
+          "match": "(?<![^\\s\\[\\]{}'\",])#[A-Za-z0-9_./!$%&*+=<>:-]*(?![^\\s\\[\\]{}'\",])"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "punctuation.section.braces.begin.ron",
+          "match": "\\{"
+        },
+        {
+          "name": "punctuation.section.braces.end.ron",
+          "match": "\\}"
+        },
+        {
+          "name": "punctuation.section.brackets.begin.ron",
+          "match": "\\["
+        },
+        {
+          "name": "punctuation.section.brackets.end.ron",
+          "match": "\\]"
+        }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "name": "string.unquoted.ron",
+          "match": "(?<![^\\s\\[\\]{}'\",])[^\\s\\[\\]{}'\",]+(?![^\\s\\[\\]{}'\",])"
+        }
+      ]
+    }
+  },
+  "uuid": "bb6bb388-6c27-4ca2-8c68-0c8fc2903090"
+}

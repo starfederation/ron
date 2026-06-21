@@ -1,0 +1,73 @@
+{
+  "name": "ron-language",
+  "displayName": "RON",
+  "description": "Syntax highlighting and editor support for Readable Object Notation.",
+  "version": "0.1.0",
+  "publisher": "starfederation",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/starfederation/ron.git",
+    "directory": "vscode"
+  },
+  "homepage": "https://github.com/starfederation/ron",
+  "bugs": {
+    "url": "https://github.com/starfederation/ron/issues"
+  },
+  "main": "./extension.js",
+  "scripts": {
+    "check": "node scripts/check-extension.js",
+    "package": "node scripts/package-extension.js"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "ron",
+    "readable object notation",
+    "json",
+    "syntax"
+  ],
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "ron",
+        "aliases": [
+          "RON",
+          "ron"
+        ],
+        "extensions": [
+          ".ron"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "ron",
+        "scopeName": "source.ron",
+        "path": "./syntaxes/ron.tmLanguage.json"
+      },
+      {
+        "scopeName": "markdown.ron.codeblock",
+        "path": "./syntaxes/markdown-ron-fence.tmLanguage.json",
+        "injectTo": [
+          "text.html.markdown"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.ron": "ron"
+        }
+      }
+    ],
+    "markdown.markdownItPlugins": true,
+    "markdown.previewStyles": [
+      "./preview.css"
+    ]
+  }
+}

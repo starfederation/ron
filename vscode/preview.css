@@ -1,0 +1,35 @@
+.markdown-body pre code.language-ron .ron-ident {
+  color: #d4d44d;
+}
+
+.markdown-body pre code.language-ron .ron-brace {
+  color: #56b6c2;
+}
+
+.markdown-body pre code.language-ron .ron-bracket {
+  color: #7fb36a;
+}
+
+.markdown-body pre code.language-ron .ron-var {
+  color: #c678dd;
+}
+
+.markdown-body pre code.language-ron .ron-tempid {
+  color: #d19a66;
+}
+
+.markdown-body pre code.language-ron .ron-tag {
+  color: #61afef;
+}
+
+.markdown-body pre code.language-ron .ron-literal {
+  color: #c678dd;
+}
+
+.markdown-body pre code.language-ron .ron-number {
+  color: #d19a66;
+}
+
+.markdown-body pre code.language-ron .ron-string {
+  color: #98c379;
+}
