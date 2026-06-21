@@ -5,3 +5,4 @@ opaque {#tag [127 {mode raw value [1 2 3]}]}
 parent {# 300}
 payload {#b64 3q2-7w}
 price {#dec '123.45'}
+regex {#rx [^foo\d+$ i]}

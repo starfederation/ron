@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/core/v1/rx",
+  "title": "RegExp",
+  "description": "JavaScript regular expression source text and flags.",
+  "type": "object",
+  "required": [
+    "#rx"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#rx": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "Source",
+          "description": "JavaScript RegExp source text, without slash delimiters.",
+          "type": "string",
+          "format": "regex"
+        },
+        {
+          "title": "Flags",
+          "description": "Optional canonical JavaScript RegExp flags in sorted order. Omitted or empty means no flags. The u and v flags are mutually exclusive.",
+          "type": "string",
+          "pattern": "^d?g?i?m?s?(?:u|v)?y?$"
+        }
+      ],
+      "items": false,
+      "minItems": 1,
+      "maxItems": 2
+    }
+  }
+}
