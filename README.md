@@ -193,7 +193,7 @@ JSON5 and YAML solve adjacent authoring problems, but RON intentionally keeps a 
 
 ## Typed vocabularies
 
-Typed vocabularies are optional semantic layers over JSON-compatible single-key objects. Official vocabularies define readable tags such as `#utc`, `#dur`, `#url`, `#uid`, `#dec`, `#vN`, `#f3v`, `#lla`, and `#geo`; custom vocabularies use namespaced tags such as `#com.example/money`. Base RON parsers preserve all of these as ordinary JSON objects.
+Typed vocabularies are optional semantic layers over JSON-compatible single-key objects. Official vocabularies define readable tags such as `#utc`, `#dur`, `#url`, `#uid`, `#rx`, `#dec`, `#vN`, `#f3v`, `#lla`, and `#geo`; custom vocabularies use namespaced tags such as `#com.example/money`. Base RON parsers preserve all of these as ordinary JSON objects.
 
 ## Implementations
 

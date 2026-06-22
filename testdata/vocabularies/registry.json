@@ -19,6 +19,16 @@
           "payloadSchema": "schemas/vocabularies/core/url.schema.json#/$defs/payload"
         },
         {
+          "tag": "#rx",
+          "typeName": "RegExp",
+          "payload": [
+            "string:js-regexp-source",
+            "string:js-regexp-flags-canonical?"
+          ],
+          "schema": "schemas/vocabularies/core/rx.schema.json",
+          "payloadSchema": "schemas/vocabularies/core/rx.schema.json#/$defs/payload"
+        },
+        {
           "tag": "#dec",
           "typeName": "Decimal",
           "payload": "string:canonical-decimal",

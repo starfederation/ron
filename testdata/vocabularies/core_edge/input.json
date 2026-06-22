@@ -20,6 +20,22 @@
   "decLargeScale": {
     "#dec": "0.000000001"
   },
+  "regexNoFlags": {
+    "#rx": [
+      "(?<word>\\w+)"
+    ]
+  },
+  "regexSpace": {
+    "#rx": [
+      "hello world"
+    ]
+  },
+  "regexSticky": {
+    "#rx": [
+      "^item$",
+      "gy"
+    ]
+  },
   "tagScalar": {
     "#tag": [
       1,

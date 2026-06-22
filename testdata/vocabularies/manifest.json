@@ -160,6 +160,22 @@
       "reason": "invalid #url payload"
     },
     {
+      "name": "core/bad_regex_source",
+      "vocabularies": [
+        "https://ron.dev/vocab/core/v1"
+      ],
+      "inputJSON": "invalid/core/bad_regex_source.json",
+      "reason": "invalid #rx JavaScript RegExp source"
+    },
+    {
+      "name": "core/bad_regex_flags",
+      "vocabularies": [
+        "https://ron.dev/vocab/core/v1"
+      ],
+      "inputJSON": "invalid/core/bad_regex_flags.json",
+      "reason": "invalid #rx flags"
+    },
+    {
       "name": "core/bad_tag_payload",
       "vocabularies": [
         "https://ron.dev/vocab/core/v1"

@@ -273,7 +273,7 @@ Canonical JSON means RFC 8785 JSON Canonicalization Scheme (JCS) bytes encoded a
 
 JSON-to-RON renderers should expose a typed value hook for application-specific examples and APIs that want JSON-compatible inputs to render as typed RON object forms. The hook maps a value by path before formatting. Paths use object keys and array indexes from the original JSON tree. A hook may replace the value with any JSON value; returned objects such as `{"#":"BE"}` and `{"#utc":"2026-06-13T00:00:00Z"}` render as ordinary RON objects like `{# BE}` and `{#utc 2026-06-13T00:00:00Z}`. Hooks are a rendering API only; they do not change RON parsing or make marker objects special in the base data model.
 
-Typed vocabularies are optional semantic layers over JSON-compatible single-key objects whose keys start with `#`. Base RON remains JSON-only and preserves typed values as ordinary objects. Vocabulary-aware implementations may map enabled tags such as `#utc`, `#dur`, `#url`, `#uid`, `#dec`, `#vN`, `#f3v`, `#lla`, and `#geo` to native types. Custom vocabularies use namespaced tags such as `#com.example/money`. The registry, payload rules, vocabulary profile model, and extension rules live in `docs/vocabularies.md`.
+Typed vocabularies are optional semantic layers over JSON-compatible single-key objects whose keys start with `#`. Base RON remains JSON-only and preserves typed values as ordinary objects. Vocabulary-aware implementations may map enabled tags such as `#utc`, `#dur`, `#url`, `#uid`, `#rx`, `#dec`, `#vN`, `#f3v`, `#lla`, and `#geo` to native types. Custom vocabularies use namespaced tags such as `#com.example/money`. The registry, payload rules, vocabulary profile model, and extension rules live in `docs/vocabularies.md`.
 
 ## Corpus Decision
 
