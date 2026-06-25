@@ -200,12 +200,14 @@ Typed vocabularies are optional semantic layers over JSON-compatible single-key 
 | Implementation | Language | Base RON | RFC 8785 canonical JSON |
 | --- | --- | --- | --- |
 | [starfederation/ron-go](https://github.com/starfederation/ron-go) | Go | Yes | Yes |
+| [mbolli/php-ron](https://github.com/mbolli/php-ron) | PHP | Yes | Yes |
 
 ### Typed vocabulary support
 
 | Implementation | Core | Time | Network | Math | Spatial | Geo | Color | Custom |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [starfederation/ron-go](https://github.com/starfederation/ron-go) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| [mbolli/php-ron](https://github.com/mbolli/php-ron) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 When adding an implementation, list each supported vocabulary URI or short name from `docs/vocabularies.md`, for example `core`, `time`, `math`, or `geo`. Use `:white_check_mark:` for supported vocabularies.
 
