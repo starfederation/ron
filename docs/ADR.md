@@ -83,7 +83,7 @@ A bare value token is interpreted as:
 2. A number when it matches the JSON number grammar used by the reference parser.
 3. A string otherwise.
 
-Object keys are always strings. A bare object key such as `true`, `123`, or `null` is a string key, not a boolean, number, or null.
+Object keys are always strings. A bare object key such as `true`, `123`, or `null` is a string key, not a boolean, number, or null. Quoting is not needed or wanted for scalar-looking keys unless the key contains whitespace, structural delimiters, or is empty.
 
 ### Numbers
 
@@ -101,7 +101,7 @@ Implementations should preserve number text when converting RON -> JSON and when
 
 RON supports bare strings and quoted strings.
 
-Use a bare string when it is non-empty, is not `true`, `false`, or `null`, is not a number, and contains no structural delimiter or whitespace.
+Use a bare string value when it is non-empty, is not `true`, `false`, or `null`, is not a number, and contains no structural delimiter or whitespace. Object keys are already string context, so a non-empty key with no structural delimiter or whitespace is rendered bare even when it looks like a scalar value, for example `123`, `true`, or `null`.
 
 Quoted strings use either `'` or `"` as a repeated delimiter. The opening delimiter is one or more copies of the same quote byte. The closing delimiter must use the same quote byte and at least the same run length. Content is raw bytes between delimiters; there are no backslash escapes. This repeated-delimiter string style is inspired by [Janet](https://janet-lang.org/docs/syntax.html).
 
@@ -135,6 +135,7 @@ Objects are key/value pairs:
 Rules:
 
 - Keys are strings.
+- Scalar-looking keys are still strings and render bare when token-safe: `1538289 {# 181773}` maps to JSON `{"1538289":{"#":181773}}`.
 - Values are any RON value.
 - Whitespace or a value-start delimiter separates key and value.
 - Commas after values are optional separators.
