@@ -239,6 +239,19 @@
       "expectedCanonicalRONSHA256": "853ef91e0c809fa706794f588154a074e32d9996c6cb29b4a20c1bc6d83619d5"
     },
     {
+      "name": "ron_only/valid/object_scalar_like_keys",
+      "ronInputs": [
+        "valid/ron_only/valid/object_scalar_like_keys/input.ron",
+        "valid/ron_only/valid/object_scalar_like_keys/input_quoted.ron"
+      ],
+      "jsonInput": "valid/ron_only/valid/object_scalar_like_keys/input.json",
+      "expectedPrettyJSON": "valid/ron_only/valid/object_scalar_like_keys/expected.pretty.json",
+      "expectedCompactJSON": "valid/ron_only/valid/object_scalar_like_keys/expected.compact.json",
+      "expectedPrettyRON": "valid/ron_only/valid/object_scalar_like_keys/expected.pretty.ron",
+      "expectedCompactRON": "valid/ron_only/valid/object_scalar_like_keys/expected.compact.ron",
+      "expectedCanonicalRONSHA256": "ca0fb975c7704713cc47dac53a89e298024f9681d0ec12f0e4af373ee6bb9a2d"
+    },
+    {
       "name": "ron_only/valid/object_with_commas",
       "ronInputs": [
         "valid/ron_only/valid/object_with_commas/input.ron"
