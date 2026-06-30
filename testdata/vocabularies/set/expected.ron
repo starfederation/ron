@@ -1,0 +1,8 @@
+emptyBits {#bits []}
+emptySet {#set []}
+mixedScalars {#set ['10' admin 10 false null true]}
+nestedValues {#set [[1 2] [2 1] {a 1 b 2}]}
+normalizedBits {#bits [1 [3 7] 10 4294967295]}
+permissions {#bits [0 3 [10 14] 1538289]}
+roles {#set [admin reader writer]}
+singletonBits {#bits [42]}

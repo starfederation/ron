@@ -1,0 +1,10 @@
+{
+  "emptySet": {"#set": []},
+  "roles": {"#set": ["writer", "admin", "reader", "admin"]},
+  "mixedScalars": {"#set": [true, null, false, "10", 10, "admin"]},
+  "nestedValues": {"#set": [{"b": 2, "a": 1}, {"a": 1, "b": 2}, [2, 1], [1, 2]]},
+  "emptyBits": {"#bits": []},
+  "permissions": {"#bits": [0, 3, [10, 14], 1538289]},
+  "normalizedBits": {"#bits": [10, [3, 5], 1, 3, 4, [5, 7], 4294967295]},
+  "singletonBits": {"#bits": [42]}
+}
