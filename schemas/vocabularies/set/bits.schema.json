@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/set/v1/bits",
+  "title": "Uint32BitSet",
+  "description": "Finite set of uint32 bit indexes encoded as single indexes or inclusive ranges.",
+  "type": "object",
+  "required": [
+    "#bits"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#bits": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "uint32": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "range": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "title": "First",
+          "description": "Inclusive first bit index.",
+          "$ref": "#/$defs/uint32"
+        },
+        {
+          "title": "Last",
+          "description": "Inclusive last bit index. Must be greater than or equal to first.",
+          "$ref": "#/$defs/uint32"
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "entry": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/uint32"
+        },
+        {
+          "$ref": "#/$defs/range"
+        }
+      ]
+    },
+    "payload": {
+      "type": "array",
+      "description": "Bitset entries. Canonical renderers sort, deduplicate, merge overlap and adjacency, and render adjacent runs as ranges.",
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    }
+  }
+}

@@ -114,6 +114,25 @@
       ]
     },
     {
+      "uri": "https://ron.dev/vocab/set/v1",
+      "tags": [
+        {
+          "tag": "#set",
+          "typeName": "Set",
+          "payload": "any[]:canonical-json-set",
+          "schema": "schemas/vocabularies/set/set.schema.json",
+          "payloadSchema": "schemas/vocabularies/set/set.schema.json#/$defs/payload"
+        },
+        {
+          "tag": "#bits",
+          "typeName": "Uint32BitSet",
+          "payload": "uint32-or-range[]",
+          "schema": "schemas/vocabularies/set/bits.schema.json",
+          "payloadSchema": "schemas/vocabularies/set/bits.schema.json#/$defs/payload"
+        }
+      ]
+    },
+    {
       "uri": "https://ron.dev/vocab/math/v1",
       "tags": [
         {

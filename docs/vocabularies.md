@@ -37,6 +37,7 @@ A vocabulary profile declares which typed vocabularies a context requires. The s
   "vocabularies": {
     "https://ron.dev/vocab/core/v1": true,
     "https://ron.dev/vocab/time/v1": true,
+    "https://ron.dev/vocab/set/v1": false,
     "https://ron.dev/vocab/math/v1": false,
     "https://ron.dev/vocab/geo/v1": false,
     "https://example.com/vocab/invoice/v1": false
@@ -161,6 +162,64 @@ URI: `https://ron.dev/vocab/network/v1`
 | `#ip4` | IPv4 | string | dotted decimal IPv4 | `{#ip4 192.0.2.1}` |
 | `#ip6` | IPv6 | string | RFC 5952 IPv6 text | `{#ip6 2001:db8::1}` |
 | `#cdr` | CIDR | string | masked CIDR prefix | `{#cdr 192.0.2.0/24}` |
+
+### Set vocabulary
+
+URI: `https://ron.dev/vocab/set/v1`
+
+Set payloads describe logical finite sets, not implementation-specific storage. Implementations may back `#bits` with roaring bitmaps or another compressed bitmap internally, but the canonical RON/JSON representation is the logical set of bit indexes encoded as numbers and inclusive ranges.
+
+| Tag | Type | Payload | Canonical form | Example |
+| --- | --- | --- | --- | --- |
+| `#set` | Set | array of any JSON/RON values | duplicate-free array sorted by each element's RFC 8785 canonical JSON UTF-8 bytes | `{#set [admin reader writer]}` |
+| `#bits` | Uint32BitSet | array of uint32 indexes or inclusive `[first, last]` ranges | ascending, duplicate-free, non-overlapping, non-adjacent entries; adjacent runs as ranges; singletons as numbers | `{#bits [1 [3 5] 10]}` |
+
+`#set` is a finite set of JSON-compatible values. Empty sets are `{#set []}`. Value equality is based on canonical JSON bytes for each element after normal RON/JSON parsing and object-key canonicalization, so `{b 2 a 1}` and `{a 1 b 2}` are the same set element. Canonical ordering is lexicographic by those canonical JSON UTF-8 bytes.
+
+Example equivalent inputs:
+
+```ron
+{#set [writer admin reader admin]}
+{#set [reader writer admin]}
+{#set [admin reader writer]}
+```
+
+Canonical RON:
+
+```ron
+{#set [admin reader writer]}
+```
+
+Object values compare by canonical JSON, so these are duplicates:
+
+```ron
+{#set [{b 2 a 1} {a 1 b 2}]}
+```
+
+Canonical RON:
+
+```ron
+{#set [{a 1 b 2}]}
+```
+
+`#bits` is a finite set of uint32 bit indexes. The payload is an array whose entries are either uint32 numbers or inclusive two-element ranges `[first, last]`. Empty bitsets are `{#bits []}`. Reject non-array payloads, entries that are not uint32 numbers or two-element ranges, negative values, non-integers, values greater than `4294967295`, and ranges where `first > last`.
+
+Example equivalent inputs:
+
+```ron
+{#bits [1 [3 5] 10]}
+{#bits [1 3 4 5 10]}
+{#bits [[3 5] 1 10]}
+{#bits [1 [3 4] 5 10]}
+```
+
+Canonical RON:
+
+```ron
+{#bits [1 [3 5] 10]}
+```
+
+Do not use raw roaring bytes as the primary wire form. Binary bitmap serializations are not readable, hand-editable, or diff-friendly, and they tie the cross-language data model to roaring internals. Future tags such as `#bits64`, integer-set variants, and roaring transport optimizations are intentionally deferred.
 
 ### Math vocabulary
 

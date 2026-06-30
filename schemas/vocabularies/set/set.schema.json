@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/set/v1/set",
+  "title": "Set",
+  "description": "Finite set of JSON-compatible values.",
+  "type": "object",
+  "required": [
+    "#set"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#set": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "array",
+      "description": "Set elements. Canonical renderers remove duplicates and sort by RFC 8785 canonical JSON UTF-8 bytes."
+    }
+  }
+}

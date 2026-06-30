@@ -5,6 +5,7 @@
     "https://ron.dev/vocab/core/v1": true,
     "https://ron.dev/vocab/time/v1": true,
     "https://ron.dev/vocab/network/v1": true,
+    "https://ron.dev/vocab/set/v1": true,
     "https://ron.dev/vocab/math/v1": true,
     "https://ron.dev/vocab/spatial/v1": true,
     "https://ron.dev/vocab/color/v1": true,
@@ -35,6 +36,14 @@
       ],
       "inputJSON": "network/input.json",
       "expectedRON": "network/expected.ron"
+    },
+    {
+      "name": "set",
+      "vocabularies": [
+        "https://ron.dev/vocab/set/v1"
+      ],
+      "inputJSON": "set/input.json",
+      "expectedRON": "set/expected.ron"
     },
     {
       "name": "math",
@@ -214,6 +223,62 @@
       ],
       "inputJSON": "invalid/network/bad_cdr.json",
       "reason": "CIDR payload must be masked"
+    },
+    {
+      "name": "set/bad_set_payload",
+      "vocabularies": [
+        "https://ron.dev/vocab/set/v1"
+      ],
+      "inputJSON": "invalid/set/bad_set_payload.json",
+      "reason": "#set payload must be an array"
+    },
+    {
+      "name": "set/bad_bits_payload",
+      "vocabularies": [
+        "https://ron.dev/vocab/set/v1"
+      ],
+      "inputJSON": "invalid/set/bad_bits_payload.json",
+      "reason": "#bits payload must be an array"
+    },
+    {
+      "name": "set/bad_bits_negative",
+      "vocabularies": [
+        "https://ron.dev/vocab/set/v1"
+      ],
+      "inputJSON": "invalid/set/bad_bits_negative.json",
+      "reason": "#bits entries must be uint32 values"
+    },
+    {
+      "name": "set/bad_bits_fractional",
+      "vocabularies": [
+        "https://ron.dev/vocab/set/v1"
+      ],
+      "inputJSON": "invalid/set/bad_bits_fractional.json",
+      "reason": "#bits entries must be integers"
+    },
+    {
+      "name": "set/bad_bits_above_uint32",
+      "vocabularies": [
+        "https://ron.dev/vocab/set/v1"
+      ],
+      "inputJSON": "invalid/set/bad_bits_above_uint32.json",
+      "reason": "#bits entries must be at most 4294967295"
+    },
+    {
+      "name": "set/bad_bits_range_arity",
+      "vocabularies": [
+        "https://ron.dev/vocab/set/v1"
+      ],
+      "inputJSON": "invalid/set/bad_bits_range_arity.json",
+      "reason": "#bits ranges must have exactly two endpoints"
+    },
+    {
+      "name": "set/bad_bits_descending_range",
+      "vocabularies": [
+        "https://ron.dev/vocab/set/v1"
+      ],
+      "inputJSON": "invalid/set/bad_bits_descending_range.json",
+      "reason": "#bits ranges must not descend"
     },
     {
       "name": "math/bad_iv3_length",
