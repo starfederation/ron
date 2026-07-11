@@ -5,3 +5,17 @@ multiLineString {#geo {coordinates [[[0 0] [1 1]] [[2 2] [3 3]]] type MultiLineS
 multiPoint {#geo {coordinates [[-73.9857 40.7484] [-73.9851 40.749]] type MultiPoint}}
 multiPolygon {#geo {coordinates [[[[0 0] [1 0] [1 1] [0 0]]]] type MultiPolygon}}
 nullGeometryFeature {#geo {geometry null properties {name unplaced} type Feature}}
+quantizedTopology {#topo {
+  arcs [[[0 0] [10 0] [0 10] [-10 -10]]]
+  objects {
+    area {
+      arcs [[0]]
+      type Polygon
+    }
+  }
+  transform {
+    scale [0.1 0.1]
+    translate [-180 -90]
+  }
+  type Topology
+}}

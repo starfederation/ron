@@ -70,7 +70,8 @@ Official tags are terse, stable, and registry-backed. The wire form optimizes RO
 #dur
 #uid
 #rx
-#lla
+#geo
+#topo
 #m4x
 ```
 
@@ -248,11 +249,10 @@ Column-major matrix order matches WebGL and three.js element order.
 
 URI: `https://ron.dev/vocab/spatial/v1`
 
-Spatial payloads use meters for distances unless a tag states otherwise. Coordinate arrays use `[x, y]`, `[x, y, z]`, or `[longitudeDegrees, latitudeDegrees, altitudeMeters]` as documented.
+Spatial payloads use meters for distances unless a tag states otherwise. Coordinate arrays use `[x, y]` or `[x, y, z]` as documented.
 
 | Tag | Type | Payload | Example |
 | --- | --- | --- | --- |
-| `#lla` | LngLatAlt | `[longitudeDegrees, latitudeDegrees, altitudeMeters]` | `{#lla [-73.9857 40.7484 381]}` |
 | `#sph` | Spherical | `[radius, phi, theta]` | `{#sph [1 0 0]}` |
 | `#cyl` | Cylindrical | `[radius, theta, y]` | `{#cyl [1 0 2]}` |
 | `#bx2` | Box2 | `[minVec2, maxVec2]` | `{#bx2 [[0 0] [10 10]]}` |
@@ -297,17 +297,27 @@ URI: `https://ron.dev/vocab/geo/v1`
 
 | Tag | Type | Payload | Canonical form | Example |
 | --- | --- | --- | --- | --- |
-| `#geo` | GeoJSON | GeoJSON object | RFC 7946 GeoJSON Geometry, Feature, or FeatureCollection | `{#geo {type Point coordinates [-73.9857 40.7484]}}` |
+| `#geo` | GeoJSON | GeoJSON object | RFC 7946 GeoJSON Geometry, Feature, or FeatureCollection | `{#geo {type Point coordinates [-73.9857 40.7484 381]}}` |
+| `#topo` | TopoJSON | TopoJSON Topology object | preserve named geometries, shared arcs, arc indexes, and optional quantization transform | `{#topo {type Topology objects {route {type LineString arcs [0]}} arcs [[[0 0] [1 1]]]}}` |
 
 Everything under `#geo` follows GeoJSON semantics:
 
 - `type` determines the GeoJSON kind: `Point`, `MultiPoint`, `LineString`, `MultiLineString`, `Polygon`, `MultiPolygon`, `GeometryCollection`, `Feature`, or `FeatureCollection`.
-- Coordinates are `[longitudeDegrees, latitudeDegrees]` or `[longitudeDegrees, latitudeDegrees, altitudeMeters]`.
+- Positions are `[longitudeDegrees, latitudeDegrees]` or `[longitudeDegrees, latitudeDegrees, altitudeMeters]`; RFC 7946 Section 3.1.1 permits altitude or elevation as the optional third element.
 - Coordinate reference system is WGS84 per RFC 7946. Custom CRS values are not part of this vocabulary.
 - `bbox` is allowed.
 - Foreign members are preserved.
 - `Feature.properties` is arbitrary JSON. Typed RON values inside properties remain ordinary JSON objects unless another enabled vocabulary interprets them.
 - `#geo` codegen should map to a GeoJSON union type, not to one concrete geometry type.
+
+`#topo` follows the [TopoJSON Format Specification](https://github.com/topojson/topojson-specification):
+
+- The payload is one `Topology` object with named geometry `objects` and shared `arcs`.
+- Point and MultiPoint geometries use coordinate positions. Other geometry types reference shared arcs by zero-based integer index; a negative index means the referenced arc is reversed using ones' complement.
+- Positions contain at least two numbers and may contain additional dimensions. Unlike RFC 7946 GeoJSON positions, TopoJSON positions are not limited to three elements.
+- A topology with a `transform` uses two-element `scale` and `translate` arrays. The first two position elements are quantized integers, and the first two elements of each arc position are delta-encoded.
+- Canonical RON preserves the topology representation; it does not expand shared arcs, reverse negative indexes, decode delta encoding, or apply the quantization transform.
+- `#topo` codegen should map to a TopoJSON topology type, separate from the `#geo` GeoJSON union.
 
 ### Color vocabulary
 

@@ -287,17 +287,6 @@
       "uri": "https://ron.dev/vocab/spatial/v1",
       "tags": [
         {
-          "tag": "#lla",
-          "typeName": "LngLatAlt",
-          "payload": [
-            "longitudeDegrees",
-            "latitudeDegrees",
-            "altitudeMeters"
-          ],
-          "schema": "schemas/vocabularies/spatial/lla.schema.json",
-          "payloadSchema": "schemas/vocabularies/spatial/lla.schema.json#/$defs/payload"
-        },
-        {
           "tag": "#sph",
           "typeName": "Spherical",
           "payload": [
@@ -432,6 +421,13 @@
           "payload": "object:rfc7946-geojson",
           "schema": "schemas/vocabularies/geo/geo.schema.json",
           "payloadSchema": "schemas/vocabularies/geo/geo.schema.json#/$defs/payload"
+        },
+        {
+          "tag": "#topo",
+          "typeName": "TopoJSON",
+          "payload": "object:topojson-topology",
+          "schema": "schemas/vocabularies/geo/topo.schema.json",
+          "payloadSchema": "schemas/vocabularies/geo/topo.schema.json#/$defs/payload"
         }
       ]
     },
