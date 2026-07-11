@@ -27,3 +27,14 @@ polygon {#geo {
   coordinates [[[-73.9 40.7] [-73.8 40.7] [-73.8 40.8] [-73.9 40.7]]]
   type Polygon
 }}
+topology {#topo {
+  arcs [[[0 0] [1 1] [2 0]]]
+  objects {
+    route {
+      arcs [0]
+      properties {name A}
+      type LineString
+    }
+  }
+  type Topology
+}}

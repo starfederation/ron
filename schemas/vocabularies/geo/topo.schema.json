@@ -1,0 +1,290 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ron.dev/schema/vocab/geo/v1/topo",
+  "title": "TopoJSON",
+  "description": "TopoJSON topology containing shared arcs and named geometry objects.",
+  "type": "object",
+  "required": [
+    "#topo"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "#topo": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "payload": {
+      "type": "object",
+      "required": [
+        "type",
+        "objects",
+        "arcs"
+      ],
+      "properties": {
+        "type": {
+          "const": "Topology"
+        },
+        "objects": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/geometry"
+          }
+        },
+        "arcs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/arc"
+          }
+        },
+        "transform": {
+          "$ref": "#/$defs/transform"
+        },
+        "bbox": {
+          "$ref": "#/$defs/bbox"
+        }
+      }
+    },
+    "position": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 2
+    },
+    "arc": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/position"
+      },
+      "minItems": 2
+    },
+    "arcIndex": {
+      "type": "integer",
+      "minimum": -2147483648,
+      "maximum": 2147483647
+    },
+    "lineArcs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/arcIndex"
+      }
+    },
+    "polygonArcs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/lineArcs"
+      }
+    },
+    "multiPolygonArcs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/polygonArcs"
+      }
+    },
+    "transform": {
+      "type": "object",
+      "required": [
+        "scale",
+        "translate"
+      ],
+      "properties": {
+        "scale": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "translate": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "bbox": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 4
+    },
+    "commonGeometryProperties": {
+      "properties": {
+        "id": true,
+        "properties": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "bbox": {
+          "$ref": "#/$defs/bbox"
+        }
+      }
+    },
+    "point": {
+      "type": "object",
+      "required": [
+        "type",
+        "coordinates"
+      ],
+      "properties": {
+        "type": {
+          "const": "Point"
+        },
+        "coordinates": {
+          "$ref": "#/$defs/position"
+        }
+      },
+      "$ref": "#/$defs/commonGeometryProperties"
+    },
+    "multiPoint": {
+      "type": "object",
+      "required": [
+        "type",
+        "coordinates"
+      ],
+      "properties": {
+        "type": {
+          "const": "MultiPoint"
+        },
+        "coordinates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/position"
+          }
+        }
+      },
+      "$ref": "#/$defs/commonGeometryProperties"
+    },
+    "lineString": {
+      "type": "object",
+      "required": [
+        "type",
+        "arcs"
+      ],
+      "properties": {
+        "type": {
+          "const": "LineString"
+        },
+        "arcs": {
+          "$ref": "#/$defs/lineArcs"
+        }
+      },
+      "$ref": "#/$defs/commonGeometryProperties"
+    },
+    "multiLineString": {
+      "type": "object",
+      "required": [
+        "type",
+        "arcs"
+      ],
+      "properties": {
+        "type": {
+          "const": "MultiLineString"
+        },
+        "arcs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/lineArcs"
+          }
+        }
+      },
+      "$ref": "#/$defs/commonGeometryProperties"
+    },
+    "polygon": {
+      "type": "object",
+      "required": [
+        "type",
+        "arcs"
+      ],
+      "properties": {
+        "type": {
+          "const": "Polygon"
+        },
+        "arcs": {
+          "$ref": "#/$defs/polygonArcs"
+        }
+      },
+      "$ref": "#/$defs/commonGeometryProperties"
+    },
+    "multiPolygon": {
+      "type": "object",
+      "required": [
+        "type",
+        "arcs"
+      ],
+      "properties": {
+        "type": {
+          "const": "MultiPolygon"
+        },
+        "arcs": {
+          "$ref": "#/$defs/multiPolygonArcs"
+        }
+      },
+      "$ref": "#/$defs/commonGeometryProperties"
+    },
+    "geometryCollection": {
+      "type": "object",
+      "required": [
+        "type",
+        "geometries"
+      ],
+      "properties": {
+        "type": {
+          "const": "GeometryCollection"
+        },
+        "geometries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/geometry"
+          }
+        }
+      },
+      "$ref": "#/$defs/commonGeometryProperties"
+    },
+    "geometry": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/point"
+        },
+        {
+          "$ref": "#/$defs/multiPoint"
+        },
+        {
+          "$ref": "#/$defs/lineString"
+        },
+        {
+          "$ref": "#/$defs/multiLineString"
+        },
+        {
+          "$ref": "#/$defs/polygon"
+        },
+        {
+          "$ref": "#/$defs/multiPolygon"
+        },
+        {
+          "$ref": "#/$defs/geometryCollection"
+        }
+      ]
+    }
+  }
+}

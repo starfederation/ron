@@ -5,5 +5,6 @@
   "multiPolygon": {"#geo": {"type": "MultiPolygon", "coordinates": [[[[0, 0], [1, 0], [1, 1], [0, 0]]]]}},
   "geometryCollection": {"#geo": {"type": "GeometryCollection", "geometries": [{"type": "Point", "coordinates": [0, 0]}]}},
   "bboxForeign": {"#geo": {"type": "Point", "coordinates": [0, 0], "bbox": [0, 0, 0, 0], "title": "origin"}},
-  "nullGeometryFeature": {"#geo": {"type": "Feature", "geometry": null, "properties": {"name": "unplaced"}}}
+  "nullGeometryFeature": {"#geo": {"type": "Feature", "geometry": null, "properties": {"name": "unplaced"}}},
+  "quantizedTopology": {"#topo": {"type": "Topology", "transform": {"scale": [0.1, 0.1], "translate": [-180, -90]}, "objects": {"area": {"type": "Polygon", "arcs": [[0]]}}, "arcs": [[[0, 0], [10, 0], [0, 10], [-10, -10]]]}}
 }
