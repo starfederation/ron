@@ -83,11 +83,14 @@ function checkMarkdownPlugin() {
   assert(escaped.includes('<span class="ron-ident">a\\nb</span>'), "escaped control split a bare string");
 
   const edgeStrings = md.renderer.rules.fence([
-    token("ron", "empty ''\nunicode [a\u00a0b]\nrawDouble 'a\"b'\nrawLF 'a\nb'\n"),
+    token("ron", "empty ''\nunicode [a\u00a0b]\nrawDouble 'a\"b'\nrepeatedDouble \"\"\"a \"quoted\" phrase\"\"\"\nclosingDouble \"\"\"a\"\"\" tail\nescapedDouble 'a\\\"b'\nrawLF 'a\nb'\n"),
   ], 0, {}, {}, self);
   assert(edgeStrings.includes('<span class="ron-string">\'\'</span>'), "empty string split into apostrophe tokens");
   assert(edgeStrings.includes('<span class="ron-ident">a</span>\u00a0<span class="ron-ident">b</span>'), "Unicode whitespace did not split tokens");
-  assert(edgeStrings.includes('<span class="ron-invalid">\'a\"b\'</span>'), "raw double quote not marked invalid");
+  assert(edgeStrings.includes('<span class="ron-string">\'a\"b\'</span>'), "raw double quote split an apostrophe string");
+  assert(edgeStrings.includes('<span class="ron-string">\"\"\"a \"quoted\" phrase\"\"\"</span>'), "short quote runs split an N-quoted string");
+  assert(edgeStrings.includes('<span class="ron-string">\"\"\"a\"\"\"</span> <span class="ron-ident">tail</span>'), "full delimiter run did not close an N-quoted string");
+  assert(edgeStrings.includes('<span class="ron-string">\'a\\\"b\'</span>'), "escaped double quote closed an apostrophe string");
   assert(edgeStrings.includes('<span class="ron-invalid">\'a\nb\'</span>'), "raw control not marked invalid");
 
   const invalidBare = md.renderer.rules.fence([

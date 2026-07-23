@@ -5,7 +5,7 @@ This folder contains a VS Code language extension for RON, Readable Object Notat
 ## Features
 
 - `.ron` and `.ndron` language registration.
-- TextMate syntax highlighting for RON values, JSON string escapes, strings, numbers, variables, temp ids, typed tags, braces, and brackets.
+- TextMate syntax highlighting for RON values, JSON string escapes, delimiter-aware N-quoted strings, numbers, variables, temp ids, typed tags, braces, and brackets.
 - Bracket matching and quote auto-closing.
 - `ron` and `ndron` fenced code block highlighting for Markdown editor views and previews.
 

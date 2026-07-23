@@ -69,7 +69,7 @@
       "patterns": [
         {
           "name": "invalid.illegal.character.ron",
-          "match": "[\"\\x00-\\x1F]"
+          "match": "[\\x00-\\x1F]"
         }
       ]
     },
