@@ -75,6 +75,34 @@ function checkMarkdownPlugin() {
   assert(rendered.includes('<span class="ron-ident">01</span>'), "leading-zero strings should not be highlighted as numbers");
   assert(rendered.includes("&lt;tag&gt;"), "missing HTML escaping");
 
+  const escaped = md.renderer.rules.fence([
+    token("ron", "bare a\\\"b\nquoted \"a\\\"b\"\nline a\\nb\n"),
+  ], 0, {}, {}, self);
+  assert(escaped.includes('<span class="ron-ident">a\\\"b</span>'), "escaped quote split a bare string");
+  assert(escaped.includes('<span class="ron-string">\"a\\\"b\"</span>'), "escaped quote closed a quoted string");
+  assert(escaped.includes('<span class="ron-ident">a\\nb</span>'), "escaped control split a bare string");
+
+  const edgeStrings = md.renderer.rules.fence([
+    token("ron", "empty ''\nunicode [a\u00a0b]\nrawDouble 'a\"b'\nrawLF 'a\nb'\n"),
+  ], 0, {}, {}, self);
+  assert(edgeStrings.includes('<span class="ron-string">\'\'</span>'), "empty string split into apostrophe tokens");
+  assert(edgeStrings.includes('<span class="ron-ident">a</span>\u00a0<span class="ron-ident">b</span>'), "Unicode whitespace did not split tokens");
+  assert(edgeStrings.includes('<span class="ron-invalid">\'a\"b\'</span>'), "raw double quote not marked invalid");
+  assert(edgeStrings.includes('<span class="ron-invalid">\'a\nb\'</span>'), "raw control not marked invalid");
+
+  const invalidBare = md.renderer.rules.fence([
+    token("ron", "unknown a\\q\ncontrol a\u001eb\nsurrogate \\uD800\npair \\uD83D\\uDE00\n"),
+  ], 0, {}, {}, self);
+  assert(invalidBare.includes('<span class="ron-invalid">a\\q</span>'), "unknown bare escape not marked invalid");
+  assert(invalidBare.includes('<span class="ron-invalid">a\u001eb</span>'), "raw bare control not marked invalid");
+  assert(invalidBare.includes('<span class="ron-invalid">\\uD800</span>'), "unpaired surrogate not marked invalid");
+  assert(invalidBare.includes('<span class="ron-ident">\\uD83D\\uDE00</span>'), "valid surrogate pair marked invalid");
+
+  const ndron = md.renderer.rules.fence([
+    token("ndron", "id 1\nid 2\n"),
+  ], 0, {}, {}, self);
+  assert(ndron.includes("class=\"hljs language-ron\""), "missing NDRON markdown class");
+
   const withClass = md.renderer.rules.fence([
     token("ron", "name Ada\n", [["class", "language-text"]]),
   ], 0, {}, {}, self);

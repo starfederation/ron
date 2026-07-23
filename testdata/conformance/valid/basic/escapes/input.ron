@@ -1,0 +1,17 @@
+apostrophe '''''
+backspace \b
+carriageReturn \r
+commaControl ,\n
+escapedKeyword tr\u0075e
+escapedSpace a\u0020b
+formFeed \f
+line\nkey stale
+\u006cine\nkey value
+lineFeed a\nb
+literalBackslashN a\\nb
+nul \u0000
+quote \"
+recordSeparator \u001e
+slash \/
+tab a\tb
+unicode A\u03a9\uD83D\uDE00

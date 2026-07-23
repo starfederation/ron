@@ -3,7 +3,7 @@ decNegative {#dec '-123.45'}
 decZero {#dec '0'}
 refNumber {# 300}
 refString {# user/ada}
-regexNoFlags {#rx [(?<word>\w+)]}
+regexNoFlags {#rx [(?<word>\\w+)]}
 regexSpace {#rx ['hello world']}
 regexSticky {#rx [^item$ gy]}
 tagArray {#tag [2 [1 true text]]}

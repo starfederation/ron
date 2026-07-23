@@ -12,13 +12,15 @@ Accepted
 
 Large JSON-shaped documents are often noisy to author and expensive to include in LLM context. Repeated quotes, colons, commas, and braces add visual friction for humans and token overhead for models.
 
-RON, Readable Object Notation, keeps the JSON value model but removes avoidable syntax where the meaning is unambiguous. This repository is the format reference. It documents the decisions and carries conformance fixtures for both conversion directions:
+RON, Readable Object Notation, keeps the JSON value model but removes avoidable syntax where the meaning is unambiguous. This repository is the format reference. It documents the decisions and carries conformance fixtures for:
 
 - RON -> JSON.
 - JSON -> RON.
 - Compact output.
 - Pretty output.
 - Invalid input rejection.
+- Newline-delimited RON (NDRON).
+- RON text sequences.
 
 ## Decision
 
@@ -75,15 +77,15 @@ ASCII structural delimiters are:
 { } [ ] " ' , space tab LF CR
 ```
 
-Unicode whitespace also separates tokens. Non-ASCII non-whitespace bytes are token content.
+Unicode whitespace also separates tokens. Non-ASCII non-whitespace UTF-8 bytes are token content. Backslash is an escape introducer, not a delimiter. A scanner must consume a complete valid escape before testing the decoded character for whitespace or delimiter meaning. For example, the eight source bytes `a\u0020b` form one bare token whose value is `a b`.
 
-A bare value token is interpreted as:
+A bare value token is interpreted from its source bytes before escape decoding:
 
-1. `true`, `false`, or `null` when it exactly matches those bytes.
-2. A number when it matches the JSON number grammar used by the reference parser.
-3. A string otherwise.
+1. `true`, `false`, or `null` when it exactly matches those unescaped bytes.
+2. A number when the unescaped token matches the JSON number grammar used by the reference parser.
+3. A string otherwise; decode escapes after selecting the string type.
 
-Object keys are always strings. A bare object key such as `true`, `123`, or `null` is a string key, not a boolean, number, or null. Quoting is not needed or wanted for scalar-looking keys unless the key contains whitespace, structural delimiters, or is empty.
+Therefore `true` is a boolean, while `\u0074rue` is the string `true`. Object keys are always strings and always decode escapes. A bare object key such as `true`, `123`, or `null` is a string key, not a boolean, number, or null. Duplicate-key comparison happens after escape decoding, so `a` and `\u0061` name the same key.
 
 ### Numbers
 
@@ -99,27 +101,50 @@ Implementations should preserve number text when converting RON -> JSON and when
 
 ### Strings
 
-RON supports bare strings and quoted strings.
+RON supports bare strings and quoted strings. Escape decoding is part of every string token, independent of whether the token is bare, single-quoted, double-quoted, comma-prefixed, or used as an object key.
 
-Use a bare string value when it is non-empty, is not `true`, `false`, or `null`, is not a number, and contains no structural delimiter or whitespace. Object keys are already string context, so a non-empty key with no structural delimiter or whitespace is rendered bare even when it looks like a scalar value, for example `123`, `true`, or `null`.
+RON uses exactly the JSON escape sequences:
 
-Quoted strings use either `'` or `"` as a repeated delimiter. The opening delimiter is one or more copies of the same quote byte. The closing delimiter must use the same quote byte and at least the same run length. Content is raw bytes between delimiters; there are no backslash escapes. This repeated-delimiter string style is inspired by [Janet](https://janet-lang.org/docs/syntax.html).
+```text
+\"  \\  \/  \b  \f  \n  \r  \t  \uXXXX
+```
 
-Rendering uses single quote delimiters and chooses one more quote than the longest single-quote run inside the value.
+The four `\u` digits are hexadecimal and case-insensitive. A non-BMP character may use the JSON UTF-16 surrogate-pair form, such as `\uD83D\uDE00` for U+1F600. A high surrogate must be followed immediately by a low surrogate, and a low surrogate must follow a high surrogate; unpaired surrogates are invalid RON. Unknown escapes, truncated escapes, and unescaped U+0000 through U+001F characters inside string content are invalid. A literal backslash must therefore be written as `\\`. An unescaped double quote is syntax rather than string content; write `\"` in any string-token form.
+
+Quoting only frames a token; it does not select different escape behavior. These all encode the same three-character string containing an LF between `a` and `b`:
+
+```ron
+a\nb
+'a\nb'
+"a\nb"
+'''a\nb'''
+```
+
+Token classification precedes escape decoding. Consequently `tr\u0075e` is the string `true`, not a boolean, and `\u0031` is the string `1`, not a number.
+
+For rendering, first encode the string content with JSON escapes. Use `\b`, `\f`, `\n`, `\r`, and `\t` for those controls, lowercase `\u00xx` for other U+0000 through U+001F characters, `\\` for backslash, and `\"` for double quote. Do not escape `/` in canonical RON. Other Unicode characters render directly as UTF-8.
+
+Use the escaped content as a bare string value when it is non-empty, is not exactly `true`, `false`, or `null`, is not a number, and contains no unescaped structural delimiter or whitespace. Object keys are already string context, so non-empty escaped key content renders bare even when it looks like a scalar value. This permits control-containing strings to stay on one physical line, for example the JSON string `"a\nb"` renders as the four source characters `a\nb`.
+
+Otherwise, quote the escaped content. Quoted strings use either `'` or `"` as a repeated delimiter. The opening delimiter is one or more copies of the same quote byte. The closing delimiter must use the same quote byte and at least the same run length. Rendering uses single-quote delimiters and chooses one more quote than the longest single-quote run in the escaped content. This repeated-delimiter style is inspired by [Janet](https://janet-lang.org/docs/syntax.html).
 
 Examples:
 
-| JSON string | RON |
+| JSON string | Canonical RON |
 | --- | --- |
 | empty string | `''` |
 | `Ada Lovelace` | `'Ada Lovelace'` |
 | `true` | `'true'` |
 | `123` | `'123'` |
+| line feed between `a` and `b` | `a\nb` |
+| literal `a\nb` | `a\\nb` |
+| tab between `a` and `b` | `a\tb` |
+| `"` | `\"` |
 | `it's fine` | `''it's fine''` |
 | `'` | `'''''` |
 | `contains '' inside` | `'''contains '' inside'''` |
 
-A standalone apostrophe can also be the string token `'`. The conformance corpus covers quote-token edge cases.
+A standalone apostrophe can also be the string token `'`. The conformance corpus covers escapes, quote-token edge cases, and invalid escape rejection.
 
 ### Objects
 
@@ -163,6 +188,54 @@ This maps to:
 If elided-object parsing fails, the parser falls back to reading a single root value. This allows scalar roots such as `true`, `null`, `123`, and `hello`.
 
 Inputs that begin with `{` or `[` do not use elision. They are parsed directly as a single root object or array, so `[foo bar baz]` is a valid root array and maps to `["foo","bar","baz"]`.
+
+### Stream framing
+
+RON v1 defines two stream formats. Both depend on the string escape rules above: raw LF, CR, and RS bytes cannot occur in conforming encoded string content, while `\n`, `\r`, and `\u001e` preserve those string values without colliding with framing.
+
+#### Newline-delimited RON (NDRON)
+
+NDRON is the RON counterpart of [Newline Delimited JSON](https://github.com/ndjson/ndjson-spec). Each record is one complete RON text followed by LF:
+
+```text
+ndron = *(ron-text LF)
+```
+
+Rules:
+
+- The stream is UTF-8.
+- Encoders must emit each record on one physical line followed by LF. Compact RON is recommended; canonical ordering is optional.
+- A record must not contain raw LF or CR. String values containing them use `\n` and `\r`.
+- Parsers must accept LF and CRLF record endings. After removing an optional CR immediately before LF, they must reject any remaining raw CR in the record.
+- A parser may ignore empty lines, but that behavior must be documented and configurable.
+- An invalid non-empty record is an error. Whether processing stops after that error is an API policy.
+- The final record requires a line ending; an unterminated final line is incomplete input.
+
+The recommended media type is `application/x-ndron`, and the recommended file extension is `.ndron`.
+
+#### RON text sequences
+
+RON text sequences are the RON counterpart of [RFC 7464 JSON Text Sequences](https://www.rfc-editor.org/rfc/rfc7464). Encoder output is:
+
+```text
+ron-sequence = *(RS ron-text LF)
+RS = %x1E
+LF = %x0A
+```
+
+Rules:
+
+- The stream is UTF-8 and has binary encoding considerations because it contains RS.
+- Every record is prefixed by one ASCII RS byte and terminated by LF.
+- A string containing U+001E uses `\u001e`; raw RS cannot occur in a valid RON text and therefore remains an unambiguous resynchronization marker.
+- Sequence elements may use compact or pretty RON. The pretty renderer's trailing LF serves as the required record terminator; do not append a second LF.
+- A parser should report an invalid or incomplete element and continue from the next RS. Bytes before the first RS are an invalid preamble; report them, then recover at that RS. Consecutive RS bytes do not encode empty elements.
+- There is no end-of-sequence marker and no reliable positional identity after damaged or missing elements.
+- Elements ending without LF may be accepted only when the top-level RON value is self-delimited by a closing `}`, `]`, or quote delimiter. Bare scalars and top-level elided objects without terminating whitespace must be treated as potentially truncated and dropped.
+
+The recommended media type is `application/ron-seq`. No file extension is required.
+
+Security behavior follows RFC 7464: parsers must treat records as untrusted, limit record size and nesting, report skipped invalid elements by default, and never expose partial parse results as accepted records.
 
 ### Arrays
 
@@ -361,6 +434,7 @@ Rejected because RON intentionally has a small JSON-shaped value set.
 ## Consequences
 
 - RON v1 compatibility is defined by this ADR plus the conformance corpus.
-- New implementations should be built against `testdata/conformance/manifest.json`.
-- Format changes require a new ADR and new or versioned fixtures.
-- Pretty-format behavior is part of the reference, not an implementation detail.
+- New implementations should be built against `testdata/conformance/manifest.json` and stream implementations against `testdata/sequences/manifest.json`.
+- The universal JSON escape correction is part of RON v1, not a v2 format. Implementations of the earlier raw-backslash behavior must update; strings such as `^foo\d+$` now require `^foo\\d+$` in RON source.
+- Format changes require an ADR revision and matching fixtures.
+- Pretty-format and stream-framing behavior are part of the reference, not implementation details.

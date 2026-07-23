@@ -1,0 +1,12 @@
+[
+  {
+    "literalBackslash": "\\",
+    "message": "first\nsecond",
+    "quote": "\"",
+    "recordSeparator": "\u001e",
+    "tab": "a\tb"
+  },
+  true,
+  123,
+  "tail"
+]

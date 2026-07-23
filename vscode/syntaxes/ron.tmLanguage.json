@@ -6,7 +6,13 @@
       "include": "#punctuation-tokens"
     },
     {
+      "include": "#escapes"
+    },
+    {
       "include": "#strings"
+    },
+    {
+      "include": "#invalid-controls"
     },
     {
       "include": "#constants"
@@ -35,7 +41,35 @@
       "patterns": [
         {
           "name": "string.unquoted.punctuation.ron",
-          "match": "(?<![^\\s\\[\\]{}'\",])(?:'(?![^\\[\\]{}\\n]*')|,[^\\s\\[\\]{}'\",]*)"
+          "match": "(?<![^\\s\\[\\]{}'\",])(?:'(?![^\\[\\]{}\\n]*')|,(?:\\\\(?:[\"\\\\/bfnrt]|u(?:[dD][89aAbB][0-9A-Fa-f]{2}\\\\u[dD][c-fC-F][0-9A-Fa-f]{2}|(?![dD][89a-fA-F])[0-9A-Fa-f]{4}))|[^\\s\\[\\]{}'\",\\\\\\x00-\\x1F])*)"
+        }
+      ]
+    },
+    "escapes": {
+      "patterns": [
+        {
+          "name": "constant.character.escape.ron",
+          "match": "\\\\(?:[\"\\\\/bfnrt]|u(?:[dD][89aAbB][0-9A-Fa-f]{2}\\\\u[dD][c-fC-F][0-9A-Fa-f]{2}|(?![dD][89a-fA-F])[0-9A-Fa-f]{4}))"
+        },
+        {
+          "name": "invalid.illegal.escape.ron",
+          "match": "\\\\(?:u[0-9A-Fa-f]{4}|u[0-9A-Fa-f]{0,3}(?![0-9A-Fa-f])|.)?"
+        }
+      ]
+    },
+    "invalid-controls": {
+      "patterns": [
+        {
+          "name": "invalid.illegal.control.ron",
+          "match": "[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]"
+        }
+      ]
+    },
+    "invalid-string-content": {
+      "patterns": [
+        {
+          "name": "invalid.illegal.character.ron",
+          "match": "[\"\\x00-\\x1F]"
         }
       ]
     },
@@ -43,33 +77,49 @@
       "patterns": [
         {
           "name": "string.quoted.double.ron",
-          "begin": "(\"{1,})(?!\")",
+          "begin": "(?<!\\\\)(\"{1,})(?!\")",
           "beginCaptures": {
             "1": {
               "name": "punctuation.definition.string.begin.ron"
             }
           },
-          "end": "\\1",
+          "end": "(?<!\\\\)(?:\\\\\\\\)*\\1",
           "endCaptures": {
             "0": {
               "name": "punctuation.definition.string.end.ron"
             }
-          }
+          },
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#invalid-string-content"
+            }
+          ]
         },
         {
           "name": "string.quoted.single.ron",
-          "begin": "('{1,})(?!')",
+          "begin": "(?<!\\\\)('{1,})(?!')",
           "beginCaptures": {
             "1": {
               "name": "punctuation.definition.string.begin.ron"
             }
           },
-          "end": "\\1",
+          "end": "(?<!\\\\)(?:\\\\\\\\)*\\1",
           "endCaptures": {
             "0": {
               "name": "punctuation.definition.string.end.ron"
             }
-          }
+          },
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#invalid-string-content"
+            }
+          ]
         }
       ]
     },
@@ -141,7 +191,7 @@
       "patterns": [
         {
           "name": "string.unquoted.ron",
-          "match": "(?<![^\\s\\[\\]{}'\",])[^\\s\\[\\]{}'\",]+(?![^\\s\\[\\]{}'\",])"
+          "match": "(?<![^\\s\\[\\]{}'\",])(?:\\\\(?:[\"\\\\/bfnrt]|u(?:[dD][89aAbB][0-9A-Fa-f]{2}\\\\u[dD][c-fC-F][0-9A-Fa-f]{2}|(?![dD][89a-fA-F])[0-9A-Fa-f]{4}))|[^\\s\\[\\]{}'\",\\\\\\x00-\\x1F])+(?![^\\s\\[\\]{}'\",])"
         }
       ]
     }
