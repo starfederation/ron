@@ -166,7 +166,7 @@ function quotedContentIsInvalid(code, pos, end) {
       i = escapedEnd;
       continue;
     }
-    if (code[i] === "\"" || code.charCodeAt(i) <= 0x1f) {
+    if (code.charCodeAt(i) <= 0x1f) {
       return true;
     }
     i += 1;

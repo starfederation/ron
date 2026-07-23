@@ -9,7 +9,7 @@ line\nkey value
 lineFeed a\nb
 literalBackslashN a\\nb
 nul \u0000
-quote \"
+quote '"'
 recordSeparator \u001e
 slash /
 tab a\tb

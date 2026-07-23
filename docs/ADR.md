@@ -109,9 +109,9 @@ RON uses exactly the JSON escape sequences:
 \"  \\  \/  \b  \f  \n  \r  \t  \uXXXX
 ```
 
-The four `\u` digits are hexadecimal and case-insensitive. A non-BMP character may use the JSON UTF-16 surrogate-pair form, such as `\uD83D\uDE00` for U+1F600. A high surrogate must be followed immediately by a low surrogate, and a low surrogate must follow a high surrogate; unpaired surrogates are invalid RON. Unknown escapes, truncated escapes, and unescaped U+0000 through U+001F characters inside string content are invalid. A literal backslash must therefore be written as `\\`. An unescaped double quote is syntax rather than string content; write `\"` in any string-token form.
+The four `\u` digits are hexadecimal and case-insensitive. A non-BMP character may use the JSON UTF-16 surrogate-pair form, such as `\uD83D\uDE00` for U+1F600. A high surrogate must be followed immediately by a low surrogate, and a low surrogate must follow a high surrogate; unpaired surrogates are invalid RON. Unknown escapes, truncated escapes, and unescaped U+0000 through U+001F characters inside string content are invalid. A literal backslash must therefore be written as `\\`.
 
-Quoting only frames a token; it does not select different escape behavior. These all encode the same three-character string containing an LF between `a` and `b`:
+Quoting only frames a token; it does not select different escape decoding. These all encode the same three-character string containing an LF between `a` and `b`:
 
 ```ron
 a\nb
@@ -120,13 +120,20 @@ a\nb
 '''a\nb'''
 ```
 
+Quote framing is delimiter-aware. If the opening delimiter is `n` copies of `'` or `"`, an unescaped run of the same quote byte closes the string only when its length is at least `n`; shorter runs are content. The other quote byte is always content. Outside quoted strings, raw quote bytes remain structural. The `\"` escape remains accepted in every string form.
+
+```ron
+'{"coordinates":[12.5,-42.25],"type":"Point"}'
+"""a "quoted" phrase"""
+```
+
 Token classification precedes escape decoding. Consequently `tr\u0075e` is the string `true`, not a boolean, and `\u0031` is the string `1`, not a number.
 
-For rendering, first encode the string content with JSON escapes. Use `\b`, `\f`, `\n`, `\r`, and `\t` for those controls, lowercase `\u00xx` for other U+0000 through U+001F characters, `\\` for backslash, and `\"` for double quote. Do not escape `/` in canonical RON. Other Unicode characters render directly as UTF-8.
+For rendering, first encode backslashes and controls with JSON escape spelling. Use `\b`, `\f`, `\n`, `\r`, and `\t` for those controls, lowercase `\u00xx` for other U+0000 through U+001F characters, and `\\` for backslash. Keep double quotes and `/` unescaped in canonical RON. Other Unicode characters render directly as UTF-8.
 
 Use the escaped content as a bare string value when it is non-empty, is not exactly `true`, `false`, or `null`, is not a number, and contains no unescaped structural delimiter or whitespace. Object keys are already string context, so non-empty escaped key content renders bare even when it looks like a scalar value. This permits control-containing strings to stay on one physical line, for example the JSON string `"a\nb"` renders as the four source characters `a\nb`.
 
-Otherwise, quote the escaped content. Quoted strings use either `'` or `"` as a repeated delimiter. The opening delimiter is one or more copies of the same quote byte. The closing delimiter must use the same quote byte and at least the same run length. Rendering uses single-quote delimiters and chooses one more quote than the longest single-quote run in the escaped content. This repeated-delimiter style is inspired by [Janet](https://janet-lang.org/docs/syntax.html).
+Otherwise, quote the escaped content. Quoted strings use either `'` or `"` as a repeated delimiter. The opening delimiter is one or more copies of the same quote byte. Runs of that quote byte shorter than the opening delimiter are content; a run at least as long closes the string. Rendering uses single-quote delimiters and chooses one more quote than the longest single-quote run in the escaped content. This repeated-delimiter style is inspired by [Janet](https://janet-lang.org/docs/syntax.html).
 
 Examples:
 
@@ -139,7 +146,8 @@ Examples:
 | line feed between `a` and `b` | `a\nb` |
 | literal `a\nb` | `a\\nb` |
 | tab between `a` and `b` | `a\tb` |
-| `"` | `\"` |
+| `"` | `'"'` |
+| `a "quoted" phrase` | `'a "quoted" phrase'` |
 | `it's fine` | `''it's fine''` |
 | `'` | `'''''` |
 | `contains '' inside` | `'''contains '' inside'''` |
@@ -435,6 +443,6 @@ Rejected because RON intentionally has a small JSON-shaped value set.
 
 - RON v1 compatibility is defined by this ADR plus the conformance corpus.
 - New implementations should be built against `testdata/conformance/manifest.json` and stream implementations against `testdata/sequences/manifest.json`.
-- The universal JSON escape correction is part of RON v1, not a v2 format. Implementations of the earlier raw-backslash behavior must update; strings such as `^foo\d+$` now require `^foo\\d+$` in RON source.
+- The universal JSON escape and delimiter-aware quote corrections are part of RON v1, not a v2 format. Implementations of the earlier raw-backslash behavior must update; strings such as `^foo\d+$` now require `^foo\\d+$` in RON source. Implementations that reject raw double quotes inside apostrophe or longer double-quote delimiters must also update.
 - Format changes require an ADR revision and matching fixtures.
 - Pretty-format and stream-framing behavior are part of the reference, not implementation details.

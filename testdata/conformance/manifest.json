@@ -4,7 +4,7 @@
     "jsonPrefix": "",
     "jsonIndent": "  ",
     "ronIndent": "  ",
-    "stringEscapes": "JSON escapes in every string token",
+    "stringEscapes": "JSON escapes in every string token; quoted strings use delimiter-aware N-quote framing",
     "prettyRONTrailingNewline": true,
     "objectKeyOrder": "RFC 8785 UTF-16 code unit order",
     "canonicalRON": "compact RON with isCanonical=true",
@@ -46,7 +46,7 @@
       "expectedCompactJSON": "valid/basic/escapes/expected.compact.json",
       "expectedPrettyRON": "valid/basic/escapes/expected.pretty.ron",
       "expectedCompactRON": "valid/basic/escapes/expected.compact.ron",
-      "expectedCanonicalRONSHA256": "9ffb73c1ecdba3c2dc095952e1f0180ec01f64ac682147fefdfae424fb6334cc"
+      "expectedCanonicalRONSHA256": "c2b2cf6474af5ad601b144883841aa7bc0c507e5546f4341967e4ba80b9d268c"
     },
     {
       "name": "basic/comma_escapes",
@@ -58,7 +58,19 @@
       "expectedCompactJSON": "valid/basic/comma_escapes/expected.compact.json",
       "expectedPrettyRON": "valid/basic/comma_escapes/expected.pretty.ron",
       "expectedCompactRON": "valid/basic/comma_escapes/expected.compact.ron",
-      "expectedCanonicalRONSHA256": "d3ae0b90a8d82e203844c38daae79036978ccb8b0a3f3bde47cd71ea432a0891"
+      "expectedCanonicalRONSHA256": "1c177c21c1c547f24e69d128c3d554989269e4147455896a404efa91afa78ef7"
+    },
+    {
+      "name": "basic/delimiter_aware_strings",
+      "ronInputs": [
+        "valid/basic/delimiter_aware_strings/input.ron"
+      ],
+      "jsonInput": "valid/basic/delimiter_aware_strings/input.json",
+      "expectedPrettyJSON": "valid/basic/delimiter_aware_strings/expected.pretty.json",
+      "expectedCompactJSON": "valid/basic/delimiter_aware_strings/expected.compact.json",
+      "expectedPrettyRON": "valid/basic/delimiter_aware_strings/expected.pretty.ron",
+      "expectedCompactRON": "valid/basic/delimiter_aware_strings/expected.compact.ron",
+      "expectedCanonicalRONSHA256": "d6a5bbba249c504a674303dd2f87dda5f236ddffdeec420932e738e5896f240f"
     },
     {
       "name": "basic/strings",
@@ -70,7 +82,7 @@
       "expectedCompactJSON": "valid/basic/strings/expected.compact.json",
       "expectedPrettyRON": "valid/basic/strings/expected.pretty.ron",
       "expectedCompactRON": "valid/basic/strings/expected.compact.ron",
-      "expectedCanonicalRONSHA256": "5e6bbe7f15d150695d23df281490825eb21bd2eca2d9ae406a26a4d3b27017a6"
+      "expectedCanonicalRONSHA256": "f1b612badd76a244d0c388cb82f559ad7889eec675d0ff177973b903aeab1084"
     },
     {
       "name": "basic/write",
@@ -434,7 +446,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_quad_double_quotes/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_quad_double_quotes/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_string_quad_double_quotes/expected.compact.ron",
-      "expectedCanonicalRONSHA256": "80e3f1c026c29eeeec2952071f2b1b06c5b294fd6107eb3a867ab867ecff5654"
+      "expectedCanonicalRONSHA256": "5cb7c6a4b5f2ee83ecb6f862a3cc95105e5a2f7be2f4a06e1e50d8ff9232aa53"
     },
     {
       "name": "ron_only/valid/scalar_string_quad_single_quotes",
@@ -458,7 +470,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_repeated_double/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_repeated_double/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_string_repeated_double/expected.compact.ron",
-      "expectedCanonicalRONSHA256": "e5fac3735ca7e394681c2e794a226e56085c3440b8ea665385c53699a14c9369"
+      "expectedCanonicalRONSHA256": "5b3bad23faa5aeebd46dbdae06e625a66c2c565bfb95f7b48ae995f43dc42bc1"
     },
     {
       "name": "ron_only/valid/scalar_string_repeated_single",
@@ -470,7 +482,7 @@
       "expectedCompactJSON": "valid/ron_only/valid/scalar_string_repeated_single/expected.compact.json",
       "expectedPrettyRON": "valid/ron_only/valid/scalar_string_repeated_single/expected.pretty.ron",
       "expectedCompactRON": "valid/ron_only/valid/scalar_string_repeated_single/expected.compact.ron",
-      "expectedCanonicalRONSHA256": "4d7dd741b4465c326b85d0a563a608fef265f989c859f06b5757c17883686eea"
+      "expectedCanonicalRONSHA256": "aa7fb9170955930c6f499357eb10db2477c8fd59a6d004651b8deaf6e7ef2999"
     },
     {
       "name": "ron_only/valid/scalar_string_single_quoted",
