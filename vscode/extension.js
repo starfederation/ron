@@ -15,11 +15,51 @@ function pushToken(tokens, type, value) {
 }
 
 function isWhitespace(char) {
-  return char === " " || char === "\t" || char === "\r" || char === "\n";
+  return Boolean(char) && /^\p{White_Space}$/u.test(char);
 }
 
 function isDelimiter(char) {
   return !char || isWhitespace(char) || char === "{" || char === "}" || char === "[" || char === "]" || char === "\"" || char === "'" || char === ",";
+}
+
+function escapeEnd(code, pos) {
+  const simple = "\"\\/bfnrt";
+  const next = code[pos + 1];
+  if (next && simple.includes(next)) {
+    return pos + 2;
+  }
+  if (next === "u" && /^[0-9a-fA-F]{4}$/.test(code.slice(pos + 2, pos + 6))) {
+    const codeUnit = Number.parseInt(code.slice(pos + 2, pos + 6), 16);
+    if (codeUnit >= 0xd800 && codeUnit <= 0xdbff) {
+      if (code.slice(pos + 6, pos + 8) === "\\u" && /^[dD][c-fC-F][0-9a-fA-F]{2}$/.test(code.slice(pos + 8, pos + 12))) {
+        return pos + 12;
+      }
+      return pos + 1;
+    }
+    if (codeUnit >= 0xdc00 && codeUnit <= 0xdfff) {
+      return pos + 1;
+    }
+    return pos + 6;
+  }
+  return pos + 1;
+}
+
+function bareTokenEnd(code, pos) {
+  let end = pos;
+  while (end < code.length) {
+    if (code[end] === "\\") {
+      const escapedEnd = escapeEnd(code, end);
+      if (escapedEnd > end + 1) {
+        end = escapedEnd;
+        continue;
+      }
+    }
+    if (isDelimiter(code[end])) {
+      break;
+    }
+    end += 1;
+  }
+  return end;
 }
 
 function isTokenStart(code, pos) {
@@ -31,6 +71,9 @@ function isTokenStart(code, pos) {
 }
 
 function apostropheIsToken(code, pos) {
+  if (code[pos + 1] === "'") {
+    return false;
+  }
   if (code[pos + 1] && !isDelimiter(code[pos + 1])) {
     return false;
   }
@@ -54,35 +97,81 @@ function quotedEnd(code, pos) {
 
   const after = code[pos + count];
   if (isDelimiter(after)) {
-    if (count % 2 === 0 || (count >= 5 && (count - 2) % 3 === 0)) {
+    if (count % 2 === 0 || (quote === "'" && count >= 5 && (count - 2) % 3 === 0)) {
       return pos + count;
     }
   }
 
   let end = pos + count;
   while (end < code.length) {
-    const next = code.indexOf(quote, end);
-    if (next === -1) {
-      return code.length;
+    if (code[end] === "\\") {
+      const escapedEnd = escapeEnd(code, end);
+      if (escapedEnd > end + 1) {
+        end = escapedEnd;
+        continue;
+      }
+    }
+    if (code[end] !== quote) {
+      end += 1;
+      continue;
     }
     let run = 0;
-    while (code[next + run] === quote) {
+    while (code[end + run] === quote) {
       run += 1;
     }
     if (run >= count) {
-      return next + count;
+      return end + count;
     }
-    end = next + run;
+    end += run;
   }
   return code.length;
 }
 
 function commaPrefixedEnd(code, pos) {
-  let end = pos + 1;
-  while (end < code.length && !isDelimiter(code[end])) {
-    end += 1;
+  return bareTokenEnd(code, pos + 1);
+}
+
+function bareTokenIsInvalid(code, pos, end) {
+  for (let i = pos; i < end;) {
+    if (code[i] === "\\") {
+      const escapedEnd = escapeEnd(code, i);
+      if (escapedEnd === i + 1) {
+        return true;
+      }
+      i = escapedEnd;
+      continue;
+    }
+    if (code.charCodeAt(i) <= 0x1f) {
+      return true;
+    }
+    i += 1;
   }
-  return end;
+  return false;
+}
+
+function quotedContentIsInvalid(code, pos, end) {
+  const quote = code[pos];
+  let count = 0;
+  while (code[pos + count] === quote) {
+    count += 1;
+  }
+
+  const contentEnd = end - count;
+  for (let i = pos + count; i < contentEnd;) {
+    if (code[i] === "\\") {
+      const escapedEnd = escapeEnd(code, i);
+      if (escapedEnd === i + 1) {
+        return true;
+      }
+      i = escapedEnd;
+      continue;
+    }
+    if (code[i] === "\"" || code.charCodeAt(i) <= 0x1f) {
+      return true;
+    }
+    i += 1;
+  }
+  return false;
 }
 
 function highlightRON(code) {
@@ -94,7 +183,8 @@ function highlightRON(code) {
 
     if (rest[0] === "," && isTokenStart(code, i)) {
       const end = commaPrefixedEnd(code, i);
-      pushToken(tokens, "ron-ident", code.slice(i, end));
+      const type = bareTokenIsInvalid(code, i, end) ? "ron-invalid" : "ron-ident";
+      pushToken(tokens, type, code.slice(i, end));
       i = end;
       continue;
     }
@@ -107,41 +197,39 @@ function highlightRON(code) {
 
     if (rest[0] === "\"" || rest[0] === "'") {
       const end = quotedEnd(code, i);
-      pushToken(tokens, "ron-string", code.slice(i, end));
+      const type = quotedContentIsInvalid(code, i, end) ? "ron-invalid" : "ron-string";
+      pushToken(tokens, type, code.slice(i, end));
       i = end;
       continue;
     }
 
-    const match =
-      /^(true|false|null)(?![A-Za-z0-9_./!$%&*+=<>:-])/.exec(rest) ||
-      /^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?(?![A-Za-z0-9_./!$%&*+=<>:-])/.exec(rest) ||
-      /^\?[A-Za-z0-9_./!$%&*+=<>:-]+/.exec(rest) ||
-      /^#_[A-Za-z0-9_./!$%&*+=<>:-]+/.exec(rest) ||
-      /^#[A-Za-z0-9_./!$%&*+=<>:-]*/.exec(rest) ||
-      /^[{}]/.exec(rest) ||
-      /^[\[\]]/.exec(rest) ||
-      /^[^ \t\r\n[\]{}'",]+/.exec(rest);
+    const punctuation = /^[{}]/.exec(rest) || /^[\[\]]/.exec(rest);
+    if (punctuation) {
+      const value = punctuation[0];
+      pushToken(tokens, value === "{" || value === "}" ? "ron-brace" : "ron-bracket", value);
+      i += value.length;
+      continue;
+    }
 
-    if (match) {
-      const value = match[0];
-      let type = "ron-ident";
-      if (value === "true" || value === "false" || value === "null") {
-        type = "ron-literal";
-      } else if (/^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$/.test(value)) {
-        type = "ron-number";
-      } else if (value[0] === "?") {
-        type = "ron-var";
-      } else if (value.startsWith("#_")) {
-        type = "ron-tempid";
-      } else if (value[0] === "#") {
-        type = "ron-tag";
-      } else if (value === "{" || value === "}") {
-        type = "ron-brace";
-      } else if (value === "[" || value === "]") {
-        type = "ron-bracket";
+    if (!isDelimiter(rest[0])) {
+      const end = bareTokenEnd(code, i);
+      const value = code.slice(i, end);
+      let type = bareTokenIsInvalid(code, i, end) ? "ron-invalid" : "ron-ident";
+      if (type !== "ron-invalid") {
+        if (value === "true" || value === "false" || value === "null") {
+          type = "ron-literal";
+        } else if (/^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$/.test(value)) {
+          type = "ron-number";
+        } else if (value[0] === "?") {
+          type = "ron-var";
+        } else if (value.startsWith("#_")) {
+          type = "ron-tempid";
+        } else if (value[0] === "#") {
+          type = "ron-tag";
+        }
       }
       pushToken(tokens, type, value);
-      i += value.length;
+      i = end;
       continue;
     }
 
@@ -153,7 +241,8 @@ function highlightRON(code) {
 }
 
 function isRONFence(info) {
-  return info.trim().split(/\s+/, 1)[0].toLowerCase() === "ron";
+  const language = info.trim().split(/\s+/, 1)[0].toLowerCase();
+  return language === "ron" || language === "ndron";
 }
 
 function activate() {

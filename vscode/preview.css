@@ -33,3 +33,7 @@
 .markdown-body pre code.language-ron .ron-string {
   color: #98c379;
 }
+
+.markdown-body pre code.language-ron .ron-invalid {
+  color: #e06c75;
+}

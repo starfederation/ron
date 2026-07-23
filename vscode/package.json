@@ -43,7 +43,8 @@
           "ron"
         ],
         "extensions": [
-          ".ron"
+          ".ron",
+          ".ndron"
         ],
         "configuration": "./language-configuration.json"
       }
