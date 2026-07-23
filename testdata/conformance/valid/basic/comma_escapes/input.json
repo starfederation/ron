@@ -1,0 +1,12 @@
+{
+  "backslash": [",\\"],
+  "backspace": [",\b"],
+  "carriageReturn": [",\r"],
+  "formFeed": [",\f"],
+  "lineFeed": [",\n"],
+  "quote": [",\""],
+  "slash": [",/"],
+  "tab": [",\t"],
+  "unicodeBMP": [",A"],
+  "unicodePair": [",😀"]
+}

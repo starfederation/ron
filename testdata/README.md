@@ -3,7 +3,8 @@
 ## Layout
 
 ```text
-conformance/  Language-neutral RON fixture corpus.
+conformance/  Language-neutral single-text RON fixture corpus.
+sequences/    NDRON and RON text-sequence fixture corpus.
 rfc8785/      RFC 8785 canonical JSON fixture corpus.
 vocabularies/ Typed vocabulary fixture corpus.
 ```
@@ -89,6 +90,8 @@ generated RON
 
 The exact-text checks prove formatter compatibility. The manifest hash checks prove canonical byte stability. The semantic checks prove value compatibility.
 
+String cases additionally cover JSON escape decoding in every string form. Backslash escapes are semantic before bare/quoted presentation: `a\nb`, `'a\nb'`, and `"a\nb"` all contain an LF. Renderers must escape backslash, double quote, and controls canonically before selecting bare or quoted output.
+
 ## Exact Comparison Rules
 
 Exact means byte-for-byte against the fixture file using LF line endings.
@@ -132,6 +135,36 @@ jsonInput
 Pretty JSON-to-RON rendering of a root object emits root members at indentation level 0 with the normal pretty RON trailing newline. Empty root objects render as `{}` because there are no members to elide.
 
 A typed value hook is a rendering transform, not new syntax. Path elements are object keys or zero-based array indexes. `replaceWith` is the JSON value to render at that path. For example, replacing `"BE"` at path `["tx"]` with `{ "#": "BE" }` renders as `tx {# BE}`.
+
+## Sequence Fixtures
+
+`sequences/manifest.json` is the source of truth for NDRON and RON text-sequence fixtures. All paths in that manifest are relative to `testdata/sequences/`.
+
+NDRON valid cases provide a JSON array of record values and exact LF- or CRLF-delimited stream inputs. Encoders render every array element as one compact RON text followed by LF. Parsers decode every non-empty record independently. Invalid cases cover malformed escapes, raw multiline string content, and missing final LF.
+
+RON text-sequence valid cases provide a JSON array of record values and exact binary stream inputs containing RS (`0x1E`). Encoders prefix every element with RS and terminate it with LF. Recovery cases declare accepted values and the expected element-error count after malformed or truncated elements. Sequence parsers continue at the next RS and never publish partial values.
+
+Use this flow for valid stream cases:
+
+```text
+inputValuesJSON array
+  -> encode each element incrementally
+  -> exact compare expected stream bytes
+  -> parse stream incrementally
+  -> compare yielded values with inputValuesJSON array
+```
+
+Use this flow for recovery cases:
+
+```text
+input stream bytes
+  -> parse each RS-framed possible element
+  -> collect complete valid values
+  -> report malformed/truncated element errors
+  -> compare values and error count with manifest
+```
+
+NDRON uses text file comparison. RON text-sequence fixtures are binary even though each framed RON text is UTF-8.
 
 ## RFC 8785 Canonical JSON Fixtures
 

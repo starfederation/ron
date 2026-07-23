@@ -17,7 +17,13 @@ A complete implementation should expose these operations, using language-appropr
 ```text
 RONToJSON(source, options) -> JSON bytes
 JSONToRON(source, options) -> RON bytes
+ReadNDRON(stream, options) -> incremental values/errors
+WriteNDRON(stream, values, options)
+ReadRONSequence(stream, options) -> incremental values/errors
+WriteRONSequence(stream, values, options)
 ```
+
+Stream APIs should be incremental and bounded rather than reading an unbounded stream into memory. Iterator, callback, channel, async-iterator, and language-native reader/writer forms are all acceptable.
 
 Options should include formatting flags, exposed as booleans, an option struct, variadic options, or idiomatic equivalents for the target language:
 
@@ -50,9 +56,9 @@ Array([]Value)
 Object(map string Value)
 ```
 
-Use `Number(text)`, not a binary float, for parser and formatter paths. This preserves large integers and exponent text.
+Use `Number(text)`, not a binary float, for parser and formatter paths. This preserves large integers and exponent text. String values contain decoded characters; source escape spelling is not retained.
 
-When an object contains duplicate keys, keep the last value.
+When an object contains duplicate keys, decode key escapes before comparing keys and keep the last value.
 
 To support `isCanonical=false`, preserve object member order while parsing. If a duplicate key appears, the last occurrence wins and the surviving member should appear at the position of its last occurrence. Do not use unordered map iteration as given order.
 
@@ -105,11 +111,14 @@ else -> bare token
 
 Bare value token handling:
 
-1. `true` -> boolean true.
-2. `false` -> boolean false.
-3. `null` -> null.
-4. JSON-number-shaped token -> Number(token).
-5. Otherwise -> String(token).
+1. Scan the source token while consuming every backslash escape as one token atom, even when it decodes to whitespace or a structural delimiter.
+2. Unescaped source `true` -> boolean true.
+3. Unescaped source `false` -> boolean false.
+4. Unescaped source `null` -> null.
+5. Unescaped JSON-number-shaped source -> Number(source).
+6. Otherwise decode JSON escapes and return String(decoded).
+
+Classification happens before escape decoding. `tr\u0075e` and `\u0031` are strings, not a boolean and number.
 
 ### Object Keys
 
@@ -123,27 +132,47 @@ Object keys use string parsing only:
 else -> bare token as string
 ```
 
-Do not coerce key tokens to booleans, null, or numbers.
+Decode JSON escapes in every key form. Do not coerce decoded key tokens to booleans, null, or numbers. Detect duplicates after decoding.
+
+### String Escapes
+
+Every string form uses the JSON escape set:
+
+```text
+\"  \\  \/  \b  \f  \n  \r  \t  \uXXXX
+```
+
+Implement one escape scanner/decoder and reuse it for bare values, keys, comma-prefixed tokens, and quoted strings. It must:
+
+1. Reject a trailing backslash, unknown escape, short `\u` escape, or non-hex `\u` digit.
+2. Decode the simple escapes exactly as JSON does.
+3. Decode `\uXXXX`; combine a valid high/low UTF-16 surrogate pair into one non-BMP character.
+4. Reject unpaired high or low surrogates.
+5. Reject unescaped U+0000 through U+001F in string content.
+6. Treat an escape as one scanner atom before delimiter detection. Thus `a\u0020b`, `a\"b`, and `a\nb` are each one bare token.
+
+Do not decode escapes in booleans, null, or number tokens because only exact unescaped source forms select those types.
 
 ### Comma-Prefixed Tokens
 
 When a key or value starts with comma:
 
 1. Start the token at the comma.
-2. Consume bytes until a delimiter.
-3. Return the whole token as a string.
+2. Consume source atoms until an unescaped delimiter.
+3. Decode escapes across the whole token and return it as a string.
 
 Examples:
 
 ```text
-,     -> ","
-,@    -> ",@"
-,foo  -> ",foo"
+,       -> ","
+,@      -> ",@"
+,foo    -> ",foo"
+,\nfoo  -> the string containing comma, LF, "foo"
 ```
 
 ### Quoted Strings
 
-A quoted string starts with one or more copies of `'` or `"`.
+A quoted string starts with one or more copies of `'` or `"`. Quoting controls framing only; its content uses the same JSON escape decoder as every other string.
 
 Algorithm:
 
@@ -151,14 +180,13 @@ Algorithm:
 2. Count the opening run length `n`.
 3. If the run is followed by EOF or a delimiter:
    - If `n` is even, consume the run and return empty string.
-   - If `n >= 5` and `(n - 2) % 3 == 0`, consume the run and return `(n - 2) / 3` copies of `quote`.
+   - If `quote` is apostrophe, `n >= 5`, and `(n - 2) % 3 == 0`, consume the run and return `(n - 2) / 3` apostrophes. Double quotes as content must use `\"`; a double-quote run never uses this compatibility form.
 4. Otherwise, the string content starts after the opening run.
-5. Scan until a run of `quote` with length at least `n`.
-6. Return the bytes before that closing run as the string content.
-7. Consume exactly `n` quote bytes from the closing run.
-8. If EOF occurs first, return unterminated string error.
-
-There are no backslash escapes.
+5. Scan source atoms. When backslash appears, consume and validate the complete JSON escape before looking for a closing delimiter. Reject unescaped U+0000 through U+001F and an unescaped double quote in content.
+6. Stop at an unescaped run of `quote` with length at least `n`.
+7. Decode the collected content and return it.
+8. Consume exactly `n` quote bytes from the closing run.
+9. If EOF occurs first, return unterminated string error.
 
 Apostrophe has one extra compatibility rule: if apostrophe quoted-string parsing fails and the next byte is EOF or a delimiter, consume one apostrophe and return the string token `'`.
 
@@ -177,24 +205,38 @@ The conformance invalid JSON fixtures cover malformed objects, multiple roots, a
 
 ### String Rendering
 
-For object keys, render bare when the key is non-empty and has no structural rune or whitespace.
+First JSON-escape string content in this order:
 
-For values, render bare when the string is non-empty, has no structural rune or whitespace, is not `true`, `false`, or `null`, and is not a number.
+1. `"` -> `\"`.
+2. `\` -> `\\`.
+3. Backspace, form feed, LF, CR, and tab -> `\b`, `\f`, `\n`, `\r`, and `\t`.
+4. Other U+0000 through U+001F -> lowercase `\u00xx`.
+5. Keep `/` and all other Unicode characters unescaped.
+
+Apply the transformations by character, not by repeated textual replacement, so newly written backslashes are not escaped again.
+
+For object keys, render the escaped content bare when it is non-empty and has no unescaped structural rune or whitespace.
+
+For values, render escaped content bare when it is non-empty, has no unescaped structural rune or whitespace, is not exactly `true`, `false`, or `null`, and is not a number.
 
 Otherwise quote with single quotes:
 
 ```text
-delimiter = repeat("'", longest run of "'" in value + 1)
-output = delimiter + value + delimiter
+delimiter = repeat("'", longest run of "'" in escapedContent + 1)
+output = delimiter + escapedContent + delimiter
 ```
 
 Examples:
 
 ```text
-"hello" -> hello
-"true" -> 'true'
-"it's fine" -> ''it's fine''
-"'" -> '''''
+"hello"        -> hello
+"true"         -> 'true'
+"a<LF>b"       -> a\nb
+"a\\nb"        -> a\\nb
+"a<TAB>b"      -> a\tb
+"a\"b"         -> a\"b
+"it's fine"    -> ''it's fine''
+"'"            -> '''''
 ```
 
 ### Pretty RON
@@ -256,6 +298,31 @@ Exact compact canonical output examples live in `expected.compact.ron` fixture f
 
 Canonical RON is compact output with canonical ordering: `isPretty=false` and `isCanonical=true`. Canonical mode has an extra cost because every object may require sorting its keys before rendering. Non-canonical compact output can preserve source order and avoid that sort when source order is available. For each valid manifest case, hash the exact canonical RON bytes with SHA-256 and encode the result as 64 lowercase hexadecimal digits. The hash must match the manifest's `expectedCanonicalRONSHA256`.
 
+## Stream Framing
+
+### NDRON
+
+An NDRON encoder renders each value as one single-line RON text and writes one LF after it. Use compact RON unless the implementation has another guaranteed single-line mode. Canonical key ordering is independent and optional. Reject pre-rendered records containing raw LF or CR rather than emitting an ambiguous stream.
+
+An NDRON parser:
+
+1. Reads incrementally through LF.
+2. Removes one CR immediately before LF when present, then rejects any remaining raw CR in the record.
+3. Applies the documented configurable empty-line policy.
+4. Parses every non-empty line as one complete RON text.
+5. Reports an unterminated final line as incomplete input.
+6. Enforces configurable record-size and nesting limits.
+
+### RON text sequences
+
+A RON text-sequence encoder writes RS (`0x1E`), one complete RON text, and LF (`0x0A`) for each value. If pretty RON already ends in LF, that LF is the terminator; do not append another. Validate pre-rendered input before framing it.
+
+A sequence parser scans incrementally for RS. Report non-empty bytes before the first RS as an invalid preamble, then recover at that RS. Bytes through the next RS, or through EOF, are one possible element. Parse each possible element independently. On failure, report the element error and resume at the next RS unless the caller selected fail-fast behavior. Ignore consecutive RS bytes rather than yielding empty values.
+
+The LF terminator is a truncation canary. Without trailing RON whitespace, accept only values made self-delimiting by a closing object, array, or quote delimiter. Drop bare scalars and top-level elided objects that reach RS or EOF without trailing whitespace because they may be truncated. Never publish partial parser results before the full element is accepted.
+
+Raw RS cannot occur in valid RON string content: it is U+001E and must render as `\u001e`. This is what makes resynchronization safe.
+
 ## JSON Rendering
 
 ### Pretty JSON
@@ -300,7 +367,7 @@ RON's normal JSON renderer preserves number text when practical. RFC 8785 canoni
 
 ## Conformance Harness
 
-Use `testdata/conformance/manifest.json`. The manifest declares:
+Use `testdata/conformance/manifest.json` for single RON texts. The manifest declares:
 
 ```text
 expectedPrettyOptions: isPretty=true, isCanonical=true
@@ -319,6 +386,14 @@ For each valid case:
 8. Parse all produced JSON and compare values with `jsonInput`.
 9. Parse produced RON back to JSON and compare values with `jsonInput`.
 
+String conformance cases must additionally prove:
+
+- Every JSON escape works in bare, single-quoted, double-quoted, repeated-delimiter, comma-prefixed, and key contexts where applicable.
+- Escaped whitespace and delimiters remain in one token.
+- Classification occurs before decoding.
+- Backslashes and control characters render with canonical escapes.
+- Unknown, truncated, malformed Unicode, unpaired-surrogate, and raw-control inputs fail.
+
 For each case in `jsonToRONRendering`:
 
 1. Read `jsonInput`.
@@ -331,6 +406,8 @@ For invalid cases:
 
 - Every `invalidRON` path must fail RON parsing.
 - Every `invalidJSON` path must fail JSON -> RON conversion.
+
+Use `testdata/sequences/manifest.json` for NDRON and RON text-sequence cases. Exact-match encoded stream bytes, parse all valid streams into the declared JSON value array, and run malformed/truncated recovery cases according to the manifest's expected values and error counts.
 
 Use `testdata/vocabularies/manifest.json` for typed vocabulary cases. For each valid vocabulary case:
 
@@ -345,23 +422,31 @@ For each invalid vocabulary case, parse `inputJSON`, apply vocabulary-aware vali
 ## Implementation Order
 
 1. Implement number-shape detection.
-2. Implement token scanning and whitespace handling.
-3. Implement RON parser to the JSON value model.
-4. Implement compact JSON output.
-5. Implement pretty JSON output.
-6. Implement JSON parser to the same value model.
-7. Implement string rendering.
-8. Implement pretty RON output.
-9. Implement compact RON output.
-10. Add pretty root object elision for JSON-to-RON output.
-11. Add typed value hook support for JSON-to-RON rendering.
-12. Add SHA-256 checks for canonical RON output.
-13. Wire a manifest-based conformance runner.
+2. Implement JSON escape scanning, decoding, and canonical encoding.
+3. Implement token scanning and whitespace handling with escape atoms.
+4. Implement RON parser to the JSON value model.
+5. Implement compact JSON output.
+6. Implement pretty JSON output.
+7. Implement JSON parser to the same value model.
+8. Implement escaped string rendering.
+9. Implement pretty RON output.
+10. Implement compact RON output.
+11. Add pretty root object elision for JSON-to-RON output.
+12. Add typed value hook support for JSON-to-RON rendering.
+13. Add SHA-256 checks for canonical RON output.
+14. Wire the single-text manifest-based conformance runner.
+15. Add incremental NDRON readers and writers.
+16. Add incremental RON text-sequence readers and writers.
+17. Wire the sequence manifest-based conformance runner.
 
 ## Gotchas
 
 - Top-level elided objects are tried before scalar parsing.
-- Object keys never coerce to numbers, booleans, or null.
+- Object keys never coerce to numbers, booleans, or null, but their escapes must decode before duplicate detection.
+- Type classification uses unescaped source spelling; escape decoding happens only after selecting a string.
+- Backslash always starts a JSON escape in every string form. Literal backslashes require `\\`.
+- Escape-aware scanners must consume `\"` and `\u0020` before delimiter checks.
+- Unescaped C0 controls are invalid string content; this invariant makes LF, CR, and RS framing safe.
 - Comma is a separator after a value but a string token at the start of a value.
 - The standalone apostrophe token is a string with value `'`.
 - JSON values must be compared structurally unless the fixture is an exact text golden.
@@ -370,5 +455,8 @@ For each invalid vocabulary case, parse `inputJSON`, apply vocabulary-aware vali
 - Compact output is not necessarily canonical unless `isCanonical=true`.
 - Canonical hash input is compact canonical RON bytes, not pretty RON, non-canonical compact RON, or JSON bytes.
 - Pretty RON has a trailing newline; pretty JSON golden files do not require one.
+- NDRON records are always single-line and LF-terminated; pretty RON is not an NDRON record mode.
+- A pretty RON text's existing trailing LF is the RON text-sequence terminator.
+- RON text-sequence parsers recover at RS and must not publish partial values from invalid elements.
 - Pretty root object elision is a JSON-to-RON rendering behavior, not a parsing mode.
 - Typed value hooks intentionally change rendered output values; compare typed-hook round trips against the transformed value.

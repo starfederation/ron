@@ -113,7 +113,7 @@ URI: `https://ron.dev/vocab/core/v1`
 | --- | --- | --- | --- | --- |
 | `#uid` | UUID | string | lowercase dashed UUID text; no version restriction | `{#uid 00112233-4455-6677-8899-aabbccddeeff}` |
 | `#url` | URL | string | absolute URL string; no normalization beyond validation | `{#url https://example.com/docs?q=ron#intro}` |
-| `#rx` | RegExp | array `[source]` or `[source, flags]` | JavaScript RegExp source string plus optional sorted unique flags | `{#rx ['^foo\d+$' i]}` |
+| `#rx` | RegExp | array `[source]` or `[source, flags]` | JavaScript RegExp source string plus optional sorted unique flags | `{#rx [^foo\\d+$ i]}` |
 | `#dec` | Decimal | string | finite base-10 decimal, no exponent, no plus, no redundant trailing fraction zeroes | `{#dec '123.45'}` |
 | `#b64` | Bytes | string | RFC 4648 base64url without padding | `{#b64 3q2-7w}` |
 | `#sha256` | SHA256 | string | 64 lowercase hex characters | `{#sha256 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855}` |
@@ -124,7 +124,7 @@ URI: `https://ron.dev/vocab/core/v1`
 
 `#url` validates that the payload is an absolute URL. URL normalization is application-specific; canonical RON preserves the payload string supplied by the vocabulary-aware renderer.
 
-`#rx` represents a JavaScript regular expression. The payload is `[source]` or `[source, flags]`, where `source` is the string passed to `new RegExp(source, flags)` and does not include slash delimiters. When omitted, `flags` defaults to the empty string. When present, `flags` is a string containing sorted unique JavaScript flags in this order: `d`, `g`, `i`, `m`, `s`, `u`, `v`, `y`. The `u` and `v` flags are mutually exclusive. Canonical RON preserves the source string and omits flags when empty.
+`#rx` represents a JavaScript regular expression. The payload is `[source]` or `[source, flags]`, where `source` is the string passed to `new RegExp(source, flags)` and does not include slash delimiters. Because every RON string decodes JSON escapes, each regex backslash is doubled in RON source; JavaScript `\d` is written as RON `\\d`. When omitted, `flags` defaults to the empty string. When present, `flags` is a string containing sorted unique JavaScript flags in this order: `d`, `g`, `i`, `m`, `s`, `u`, `v`, `y`. The `u` and `v` flags are mutually exclusive. Canonical RON preserves the source string and omits flags when empty.
 
 `#tag` is an escape hatch for implementation-defined tagged values. The second array element is any JSON/RON value whose validity is defined by the custom implementation; it is not required to be base64 or binary. Prefer a namespaced custom tag when the value has documented semantics.
 

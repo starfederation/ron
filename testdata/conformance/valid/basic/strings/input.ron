@@ -4,11 +4,11 @@
   ''
   ""
   "it's fine"
-  'contains "" inside'
-  ""a "quoted" phrase""
+  'contains \"\" inside'
+  ""a \"quoted\" phrase""
   '''contains '' inside'''
   ''''contains ''' inside''''
-  """"contains """ inside and " too""""
+  """"contains \"\"\" inside and \" too""""
   ?name
   'Ada Lovelace'
   'true'
@@ -17,5 +17,5 @@
   #_ada
   -ada
   '{# 200} [x y]'
-  'She said "hello", then "goodbye".'
+  'She said \"hello\", then \"goodbye\".'
 ]
