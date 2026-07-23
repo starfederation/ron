@@ -66,7 +66,7 @@ nix build .#vscode-extension-vsix
 The VSIX is written to:
 
 ```text
-result/share/vscode/extensions/ron-language-0.1.0.vsix
+result/share/vscode/extensions/ron-language-0.1.1.vsix
 ```
 
 Run flake checks:
@@ -87,7 +87,7 @@ npm run package
 Install the Nix-built extension locally:
 
 ```sh
-code --install-extension result/share/vscode/extensions/ron-language-0.1.0.vsix
+code --install-extension result/share/vscode/extensions/ron-language-0.1.1.vsix
 ```
 
 ## Quick Start

@@ -17,7 +17,7 @@ From the repository root:
 nix build .#vscode-extension-vsix
 ```
 
-The VSIX is written to `result/share/vscode/extensions/ron-language-0.1.0.vsix`.
+The VSIX is written to `result/share/vscode/extensions/ron-language-0.1.1.vsix`.
 
 ## Verify and package in a dev shell
 
@@ -30,20 +30,20 @@ npm run check
 npm run package
 ```
 
-The local VSIX is written to `vscode/dist/ron-language-0.1.0.vsix`. The dev shell supplies `node` and `vsce`.
+The local VSIX is written to `vscode/dist/ron-language-0.1.1.vsix`. The dev shell supplies `node` and `vsce`.
 
 ## Install locally
 
 After `nix build` from the repository root:
 
 ```sh
-code --install-extension result/share/vscode/extensions/ron-language-0.1.0.vsix
+code --install-extension result/share/vscode/extensions/ron-language-0.1.1.vsix
 ```
 
 After `npm run package` from `vscode/`:
 
 ```sh
-code --install-extension dist/ron-language-0.1.0.vsix
+code --install-extension dist/ron-language-0.1.1.vsix
 ```
 
 For Cursor or another VS Code-compatible binary, replace `code` with `cursor`.

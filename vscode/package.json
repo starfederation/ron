@@ -2,7 +2,7 @@
   "name": "ron-language",
   "displayName": "RON",
   "description": "Syntax highlighting and editor support for Readable Object Notation.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "starfederation",
   "license": "MIT",
   "repository": {
