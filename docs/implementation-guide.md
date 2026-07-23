@@ -180,10 +180,10 @@ Algorithm:
 2. Count the opening run length `n`.
 3. If the run is followed by EOF or a delimiter:
    - If `n` is even, consume the run and return empty string.
-   - If `quote` is apostrophe, `n >= 5`, and `(n - 2) % 3 == 0`, consume the run and return `(n - 2) / 3` apostrophes. Double quotes as content must use `\"`; a double-quote run never uses this compatibility form.
+   - If `quote` is apostrophe, `n >= 5`, and `(n - 2) % 3 == 0`, consume the run and return `(n - 2) / 3` apostrophes. A double-quote run never uses this compatibility form.
 4. Otherwise, the string content starts after the opening run.
-5. Scan source atoms. When backslash appears, consume and validate the complete JSON escape before looking for a closing delimiter. Reject unescaped U+0000 through U+001F and an unescaped double quote in content.
-6. Stop at an unescaped run of `quote` with length at least `n`.
+5. Scan source atoms. When backslash appears, consume and validate the complete JSON escape before looking for a closing delimiter. Reject unescaped U+0000 through U+001F.
+6. When an unescaped run of `quote` appears, treat a run shorter than `n` as content and stop at a run of at least `n`. The other quote byte is ordinary content.
 7. Decode the collected content and return it.
 8. Consume exactly `n` quote bytes from the closing run.
 9. If EOF occurs first, return unterminated string error.
@@ -205,13 +205,12 @@ The conformance invalid JSON fixtures cover malformed objects, multiple roots, a
 
 ### String Rendering
 
-First JSON-escape string content in this order:
+First escape backslashes and controls in string content:
 
-1. `"` -> `\"`.
-2. `\` -> `\\`.
-3. Backspace, form feed, LF, CR, and tab -> `\b`, `\f`, `\n`, `\r`, and `\t`.
-4. Other U+0000 through U+001F -> lowercase `\u00xx`.
-5. Keep `/` and all other Unicode characters unescaped.
+1. `\` -> `\\`.
+2. Backspace, form feed, LF, CR, and tab -> `\b`, `\f`, `\n`, `\r`, and `\t`.
+3. Other U+0000 through U+001F -> lowercase `\u00xx`.
+4. Keep `"`, `/`, and all other Unicode characters unescaped.
 
 Apply the transformations by character, not by repeated textual replacement, so newly written backslashes are not escaped again.
 
@@ -234,7 +233,7 @@ Examples:
 "a<LF>b"       -> a\nb
 "a\\nb"        -> a\\nb
 "a<TAB>b"      -> a\tb
-"a\"b"         -> a\"b
+"a\"b"         -> 'a"b'
 "it's fine"    -> ''it's fine''
 "'"            -> '''''
 ```
@@ -390,8 +389,10 @@ String conformance cases must additionally prove:
 
 - Every JSON escape works in bare, single-quoted, double-quoted, repeated-delimiter, comma-prefixed, and key contexts where applicable.
 - Escaped whitespace and delimiters remain in one token.
+- Apostrophe strings accept raw double quotes, and N-quoted strings preserve same-quote runs shorter than N.
+- Runs of the active quote at least as long as N close an N-quoted string.
 - Classification occurs before decoding.
-- Backslashes and control characters render with canonical escapes.
+- Backslashes and control characters render with canonical escapes while double quotes render raw inside apostrophe delimiters.
 - Unknown, truncated, malformed Unicode, unpaired-surrogate, and raw-control inputs fail.
 
 For each case in `jsonToRONRendering`:
@@ -446,6 +447,7 @@ For each invalid vocabulary case, parse `inputJSON`, apply vocabulary-aware vali
 - Type classification uses unescaped source spelling; escape decoding happens only after selecting a string.
 - Backslash always starts a JSON escape in every string form. Literal backslashes require `\\`.
 - Escape-aware scanners must consume `\"` and `\u0020` before delimiter checks.
+- Raw quotes are content only inside a quoted string when they differ from the active delimiter or form a run shorter than that delimiter.
 - Unescaped C0 controls are invalid string content; this invariant makes LF, CR, and RS framing safe.
 - Comma is a separator after a value but a string token at the start of a value.
 - The standalone apostrophe token is a string with value `'`.

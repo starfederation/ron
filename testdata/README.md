@@ -90,7 +90,7 @@ generated RON
 
 The exact-text checks prove formatter compatibility. The manifest hash checks prove canonical byte stability. The semantic checks prove value compatibility.
 
-String cases additionally cover JSON escape decoding in every string form. Backslash escapes are semantic before bare/quoted presentation: `a\nb`, `'a\nb'`, and `"a\nb"` all contain an LF. Renderers must escape backslash, double quote, and controls canonically before selecting bare or quoted output.
+String cases additionally cover JSON escape decoding in every string form. Backslash escapes are semantic before bare/quoted presentation: `a\nb`, `'a\nb'`, and `"a\nb"` all contain an LF. Quote framing is delimiter-aware: apostrophe strings accept raw double quotes, and an N-quoted string treats same-quote runs shorter than N as content. Renderers escape backslashes and controls canonically, keep double quotes raw, and then select bare or repeated-apostrophe output.
 
 ## Exact Comparison Rules
 
@@ -140,7 +140,7 @@ A typed value hook is a rendering transform, not new syntax. Path elements are o
 
 `sequences/manifest.json` is the source of truth for NDRON and RON text-sequence fixtures. All paths in that manifest are relative to `testdata/sequences/`.
 
-NDRON valid cases provide a JSON array of record values and exact LF- or CRLF-delimited stream inputs. Encoders render every array element as one compact RON text followed by LF. Parsers decode every non-empty record independently. Invalid cases cover malformed escapes, raw multiline string content, and missing final LF.
+NDRON valid cases provide a JSON array of record values and exact LF- or CRLF-delimited stream inputs. Encoders render every array element as one compact RON text followed by LF. Parsers decode every non-empty record independently. Invalid cases cover malformed escapes, raw multiline string content, and missing final LF. Single-text invalid quote fixtures cover raw quotes outside quoted strings and active-delimiter runs that close before trailing data.
 
 RON text-sequence valid cases provide a JSON array of record values and exact binary stream inputs containing RS (`0x1E`). Encoders prefix every element with RS and terminate it with LF. Recovery cases declare accepted values and the expected element-error count after malformed or truncated elements. Sequence parsers continue at the next RS and never publish partial values.
 

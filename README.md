@@ -113,7 +113,7 @@ metadata {
 }
 name Ada
 quoted {
-  double ""a \"quoted\" phrase""
+  double """a "quoted" phrase"""
   empty ''
   escapedLine a\nb
   literalBackslash a\\nb
@@ -202,9 +202,11 @@ literalBackslash a\\nb
 tab a\tb
 recordSeparator \u001e
 quoted 'a\nb'
+embeddedJSON '{"coordinates":[12.5,-42.25],"type":"Point"}'
+repeatedDouble """a "quoted" phrase"""
 ```
 
-Backslash always introduces one of `\"`, `\\`, `\/`, `\b`, `\f`, `\n`, `\r`, `\t`, or `\uXXXX`. Unknown or truncated escapes are invalid. Quoting controls token framing only; it does not change escape behavior. See [`docs/ADR.md`](docs/ADR.md#strings) for the normative rules.
+Backslash always introduces one of `\"`, `\\`, `\/`, `\b`, `\f`, `\n`, `\r`, `\t`, or `\uXXXX`. Unknown or truncated escapes are invalid. Quoting controls token framing, not escape decoding. Inside an N-quote delimiter, same-quote runs shorter than N and every occurrence of the other quote byte are content; a same-quote run of at least N closes the string. Outside quoted strings, raw quotes remain structural. See [`docs/ADR.md`](docs/ADR.md#strings) for the normative rules.
 
 ## Streaming formats
 
