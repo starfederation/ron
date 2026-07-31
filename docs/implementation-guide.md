@@ -17,13 +17,7 @@ A complete implementation should expose these operations, using language-appropr
 ```text
 RONToJSON(source, options) -> JSON bytes
 JSONToRON(source, options) -> RON bytes
-ReadNDRON(stream, options) -> incremental values/errors
-WriteNDRON(stream, values, options)
-ReadRONSequence(stream, options) -> incremental values/errors
-WriteRONSequence(stream, values, options)
 ```
-
-Stream APIs should be incremental and bounded rather than reading an unbounded stream into memory. Iterator, callback, channel, async-iterator, and language-native reader/writer forms are all acceptable.
 
 Options should include one output mode, exposed as an enum, string, option struct, or idiomatic equivalent:
 
@@ -298,31 +292,6 @@ Canonical RON is compact UTF-8 RON for an RFC 8785 I-JSON value. It is not key s
 
 `mode=canonical` renders compact RON. `mode=pretty` and `mode=compact` are non-canonical. Hash canonical RON with SHA-256. The `testdata/rfc8785/manifest.json` entries contain exact RON bytes and hashes. The Appendix B number entries contain exact scalar RON bytes and hashes.
 
-## Stream Framing
-
-### NDRON
-
-An NDRON encoder renders each value as one single-line RON text and writes one LF after it. Use `mode=compact` or `mode=canonical`. Reject pre-rendered records containing raw LF or CR rather than emitting an ambiguous stream.
-
-An NDRON parser:
-
-1. Reads incrementally through LF.
-2. Removes one CR immediately before LF when present, then rejects any remaining raw CR in the record.
-3. Applies the documented configurable empty-line policy.
-4. Parses every non-empty line as one complete RON text.
-5. Reports an unterminated final line as incomplete input.
-6. Enforces configurable record-size and nesting limits.
-
-### RON text sequences
-
-A RON text-sequence encoder writes RS (`0x1E`), one complete RON text, and LF (`0x0A`) for each value. If pretty RON already ends in LF, that LF is the terminator; do not append another. Validate pre-rendered input before framing it.
-
-A sequence parser scans incrementally for RS. Report non-empty bytes before the first RS as an invalid preamble, then recover at that RS. Bytes through the next RS, or through EOF, are one possible element. Parse each possible element independently. On failure, report the element error and resume at the next RS unless the caller selected fail-fast behavior. Ignore consecutive RS bytes rather than yielding empty values.
-
-The LF terminator is a truncation canary. Without trailing RON whitespace, accept only values made self-delimiting by a closing object, array, or quote delimiter. Drop bare scalars and top-level elided objects that reach RS or EOF without trailing whitespace because they may be truncated. Never publish partial parser results before the full element is accepted.
-
-Raw RS cannot occur in valid RON string content: it is U+001E and must render as `\u001e`. This is what makes resynchronization safe.
-
 ## JSON Rendering
 
 ### Pretty JSON
@@ -412,8 +381,6 @@ For invalid cases:
 - Every `invalidRON` path must fail RON parsing.
 - Every `invalidJSON` path must fail JSON -> RON conversion.
 
-Use `testdata/sequences/manifest.json` for NDRON and RON text-sequence cases. Exact-match encoded stream bytes, parse all valid streams into the declared JSON value array, and run malformed/truncated recovery cases according to the manifest's expected values and error counts.
-
 Use `testdata/vocabularies/manifest.json` for typed vocabulary cases. For each valid vocabulary case:
 
 1. Read `inputJSON`.
@@ -440,9 +407,6 @@ For each invalid vocabulary case, parse `inputJSON`, apply vocabulary-aware vali
 12. Add typed value hook support for JSON-to-RON rendering.
 13. Add SHA-256 checks for canonical RON output.
 14. Wire the single-text manifest-based conformance runner.
-15. Add incremental NDRON readers and writers.
-16. Add incremental RON text-sequence readers and writers.
-17. Wire the sequence manifest-based conformance runner.
 
 ## Gotchas
 
@@ -461,8 +425,5 @@ For each invalid vocabulary case, parse `inputJSON`, apply vocabulary-aware vali
 - `mode=canonical` validates and canonicalizes the value.
 - Canonical hash input is the compact canonical RON bytes from the RFC 8785 corpus.
 - Pretty RON has a trailing newline; pretty JSON golden files do not require one.
-- NDRON records are always single-line and LF-terminated; pretty RON is not an NDRON record mode.
-- A pretty RON text's existing trailing LF is the RON text-sequence terminator.
-- RON text-sequence parsers recover at RS and must not publish partial values from invalid elements.
 - Pretty root object elision is a JSON-to-RON rendering behavior, not a parsing mode.
 - Typed value hooks intentionally change rendered output values; compare typed-hook round trips against the transformed value.

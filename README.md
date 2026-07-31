@@ -2,7 +2,7 @@
 
 RON means Readable Object Notation.
 
-This repository is the language-neutral reference for the RON format. RON keeps the JSON data model while making large JSON-shaped documents easier to write, easier to read, and cheaper in LLM tokens. It contains the format decision record, an implementation guide, and conformance fixtures for RON -> JSON, JSON -> RON, newline-delimited RON (NDRON), and RON text sequences, including pretty-format golden files.
+This repository is the language-neutral reference for the RON format. RON keeps the JSON data model while making large JSON-shaped documents easier to write, easier to read, and cheaper in LLM tokens. It contains the format decision record, an implementation guide, and conformance fixtures for RON -> JSON and JSON -> RON, including pretty-format golden files.
 
 This RON is not [Rusty Object Notation](https://github.com/ron-rs/ron).
 
@@ -17,14 +17,13 @@ Use this order:
 - Concepts
     - [Formatting modes](#formatting-modes): pretty, compact, and canonical output. Pretty and compact preserve source/member order.
     - [String escapes](#string-escapes): universal JSON escape behavior across bare and quoted strings.
-    - [Streaming formats](#streaming-formats): NDRON and RS-framed RON text sequences.
     - [Expressions and related formats](#expressions-and-related-formats): the JSON-shaped expression model, plus EDN/Clojure, JSON5, and YAML comparisons.
     - [Typed vocabularies](#typed-vocabularies): optional semantic tags such as `#utc`, `#url`, `#vN`, and `#geo`.
 - Reference
     - Format
         - [`docs/ADR.md`](docs/ADR.md): normative syntax details.
             - Values, tokens, whitespace, numbers, strings, and escapes.
-            - Objects, arrays, top-level object elision, stream framing, and formatting.
+            - Objects, arrays, top-level object elision, and formatting.
             - Corpus decisions, alternatives, and consequences.
         - [`docs/implementation-guide.md`](docs/implementation-guide.md): parser, renderer, formatter, and implementation order guidance.
     - Typed values
@@ -33,7 +32,6 @@ Use this order:
     - Test corpus
         - [Conformance](#conformance): fixture runner requirements.
         - [`testdata/conformance/`](testdata/conformance/): single-text RON fixture corpus.
-        - [`testdata/sequences/`](testdata/sequences/): NDRON and RON text-sequence fixture corpus.
         - [`testdata/rfc8785/`](testdata/rfc8785/): RFC 8785 canonical JSON fixture corpus.
         - [`testdata/vocabularies/`](testdata/vocabularies/): typed vocabulary fixtures.
 - Ecosystem
@@ -45,8 +43,7 @@ Use this order:
 flowchart TD
   quick[Quick Start] --> formatting[Formatting modes]
   formatting --> escaping[String escapes]
-  escaping --> streaming[Streaming formats]
-  streaming --> expressions[Expressions]
+  escaping --> expressions[Expressions]
   expressions --> typed[Typed vocabularies]
   typed --> reference[Reference]
   reference --> format[Format reference]
@@ -209,15 +206,6 @@ repeatedDouble """a "quoted" phrase"""
 
 Backslash always introduces one of `\"`, `\\`, `\/`, `\b`, `\f`, `\n`, `\r`, `\t`, or `\uXXXX`. Unknown or truncated escapes are invalid. Quoting controls token framing, not escape decoding. Inside an N-quote delimiter, same-quote runs shorter than N and every occurrence of the other quote byte are content; a same-quote run of at least N closes the string. Outside quoted strings, raw quotes remain structural. See [`docs/ADR.md`](docs/ADR.md#strings) for the normative rules.
 
-## Streaming formats
-
-RON v1 supports two incremental formats:
-
-- **NDRON**: one single-line RON text followed by LF. Recommended media type: `application/x-ndron`; extension: `.ndron`.
-- **RON text sequences**: each RON text is prefixed by ASCII RS (`0x1E`) and terminated by LF, following the recovery model of RFC 7464. Recommended media type: `application/ron-seq`.
-
-Escaping makes framing unambiguous: LF, CR, and RS string values render as `\n`, `\r`, and `\u001e`, never as framing bytes. See [`docs/ADR.md`](docs/ADR.md#stream-framing), [`docs/implementation-guide.md`](docs/implementation-guide.md#stream-framing), and [`testdata/sequences/`](testdata/sequences/).
-
 ## Expressions and related formats
 
 A RON expression is a JSON value written with lighter syntax: scalars, arrays, objects, top-level object members, and single-key tagged typed values. The model stays JSON-shaped so exact RON <-> JSON conversion remains the contract.
@@ -232,10 +220,10 @@ Typed vocabularies are optional semantic layers over JSON-compatible single-key 
 
 ## Implementations
 
-| Implementation | Language | Base RON | NDRON | RON text sequences | RFC 8785 canonical JSON |
-| --- | --- | --- | --- | --- | --- |
-| [starfederation/ron-go](https://github.com/starfederation/ron-go) | Go | [Escape update required](https://github.com/starfederation/ron-go/issues/40) | [Planned](https://github.com/starfederation/ron-go/issues/41) | [Planned](https://github.com/starfederation/ron-go/issues/41) | Yes |
-| [mbolli/php-ron](https://github.com/mbolli/php-ron) | PHP | [Escape update required](https://github.com/mbolli/php-ron/issues/1) | [Planned](https://github.com/mbolli/php-ron/issues/2) | [Planned](https://github.com/mbolli/php-ron/issues/2) | Yes |
+| Implementation | Language | Base RON | RFC 8785 canonical JSON |
+| --- | --- | --- | --- |
+| [starfederation/ron-go](https://github.com/starfederation/ron-go) | Go | [Escape update required](https://github.com/starfederation/ron-go/issues/40) | Yes |
+| [mbolli/php-ron](https://github.com/mbolli/php-ron) | PHP | [Escape update required](https://github.com/mbolli/php-ron/issues/1) | Yes |
 
 ### Typed vocabulary support
 
@@ -262,8 +250,6 @@ Use `testdata/conformance/manifest.json` as the test runner input. For each vali
 10. Run `jsonToRONRendering` cases for root object elision and typed value hooks when those hooks are supported.
 
 For invalid cases, every `invalidRON[]` file must fail RON parsing and every `invalidJSON[]` file must fail JSON -> RON conversion.
-
-Use `testdata/sequences/manifest.json` for NDRON and RON text sequences. Implementations must exact-match valid encoded streams, parse them to the declared JSON value arrays, reject malformed NDRON records, and recover from malformed or truncated RS-framed elements as declared.
 
 Use `testdata/rfc8785/manifest.json` for RFC 8785 canonical JSON and canonical RON vectors. Implementations must exact-match both byte forms, expected JSON UTF-8 hex, Appendix B number serialization samples, I-JSON rejection cases, and SHA-256 hashes.
 
