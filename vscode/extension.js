@@ -242,7 +242,7 @@ function highlightRON(code) {
 
 function isRONFence(info) {
   const language = info.trim().split(/\s+/, 1)[0].toLowerCase();
-  return language === "ron" || language === "ndron";
+  return language === "ron";
 }
 
 function activate() {

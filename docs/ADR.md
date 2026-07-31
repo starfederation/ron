@@ -19,8 +19,6 @@ RON, Readable Object Notation, keeps the JSON value model but removes avoidable 
 - Compact output.
 - Pretty output.
 - Invalid input rejection.
-- Newline-delimited RON (NDRON).
-- RON text sequences.
 
 ## Decision
 
@@ -196,54 +194,6 @@ This maps to:
 If elided-object parsing fails, the parser falls back to reading a single root value. This allows scalar roots such as `true`, `null`, `123`, and `hello`.
 
 Inputs that begin with `{` or `[` do not use elision. They are parsed directly as a single root object or array, so `[foo bar baz]` is a valid root array and maps to `["foo","bar","baz"]`.
-
-### Stream framing
-
-RON v1 defines two stream formats. Both depend on the string escape rules above: raw LF, CR, and RS bytes cannot occur in conforming encoded string content, while `\n`, `\r`, and `\u001e` preserve those string values without colliding with framing.
-
-#### Newline-delimited RON (NDRON)
-
-NDRON is the RON counterpart of [Newline Delimited JSON](https://github.com/ndjson/ndjson-spec). Each record is one complete RON text followed by LF:
-
-```text
-ndron = *(ron-text LF)
-```
-
-Rules:
-
-- The stream is UTF-8.
-- Encoders must emit each record on one physical line followed by LF. Compact RON is recommended; canonical ordering is optional.
-- A record must not contain raw LF or CR. String values containing them use `\n` and `\r`.
-- Parsers must accept LF and CRLF record endings. After removing an optional CR immediately before LF, they must reject any remaining raw CR in the record.
-- A parser may ignore empty lines, but that behavior must be documented and configurable.
-- An invalid non-empty record is an error. Whether processing stops after that error is an API policy.
-- The final record requires a line ending; an unterminated final line is incomplete input.
-
-The recommended media type is `application/x-ndron`, and the recommended file extension is `.ndron`.
-
-#### RON text sequences
-
-RON text sequences are the RON counterpart of [RFC 7464 JSON Text Sequences](https://www.rfc-editor.org/rfc/rfc7464). Encoder output is:
-
-```text
-ron-sequence = *(RS ron-text LF)
-RS = %x1E
-LF = %x0A
-```
-
-Rules:
-
-- The stream is UTF-8 and has binary encoding considerations because it contains RS.
-- Every record is prefixed by one ASCII RS byte and terminated by LF.
-- A string containing U+001E uses `\u001e`; raw RS cannot occur in a valid RON text and therefore remains an unambiguous resynchronization marker.
-- Sequence elements may use compact or pretty RON. The pretty renderer's trailing LF serves as the required record terminator; do not append a second LF.
-- A parser should report an invalid or incomplete element and continue from the next RS. Bytes before the first RS are an invalid preamble; report them, then recover at that RS. Consecutive RS bytes do not encode empty elements.
-- There is no end-of-sequence marker and no reliable positional identity after damaged or missing elements.
-- Elements ending without LF may be accepted only when the top-level RON value is self-delimited by a closing `}`, `]`, or quote delimiter. Bare scalars and top-level elided objects without terminating whitespace must be treated as potentially truncated and dropped.
-
-The recommended media type is `application/ron-seq`. No file extension is required.
-
-Security behavior follows RFC 7464: parsers must treat records as untrusted, limit record size and nesting, report skipped invalid elements by default, and never expose partial parse results as accepted records.
 
 ### Arrays
 
@@ -442,7 +392,7 @@ Rejected because RON intentionally has a small JSON-shaped value set.
 ## Consequences
 
 - RON v1 compatibility is defined by this ADR plus the conformance corpus.
-- New implementations should be built against `testdata/conformance/manifest.json` and stream implementations against `testdata/sequences/manifest.json`.
+- New implementations should be built against `testdata/conformance/manifest.json`.
 - The universal JSON escape and delimiter-aware quote corrections are part of RON v1, not a v2 format. Implementations of the earlier raw-backslash behavior must update; strings such as `^foo\d+$` now require `^foo\\d+$` in RON source. Implementations that reject raw double quotes inside apostrophe or longer double-quote delimiters must also update.
 - Format changes require an ADR revision and matching fixtures.
-- Pretty-format and stream-framing behavior are part of the reference, not implementation details.
+- Pretty-format behavior is part of the reference, not an implementation detail.

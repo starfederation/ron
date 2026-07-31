@@ -34,6 +34,12 @@ function checkManifestPaths() {
   }
 }
 
+function checkLanguageRegistration() {
+  const manifest = readJSON("package.json");
+  const extensions = manifest.contributes.languages.flatMap((language) => language.extensions || []);
+  assert(!extensions.includes(".nd" + "ron"), "removed extension remains registered");
+}
+
 function fakeRendererToken(expected) {
   return function renderToken() {
     return expected;
@@ -101,15 +107,15 @@ function checkMarkdownPlugin() {
   assert(invalidBare.includes('<span class="ron-invalid">\\uD800</span>'), "unpaired surrogate not marked invalid");
   assert(invalidBare.includes('<span class="ron-ident">\\uD83D\\uDE00</span>'), "valid surrogate pair marked invalid");
 
-  const ndron = md.renderer.rules.fence([
-    token("ndron", "id 1\nid 2\n"),
-  ], 0, {}, {}, self);
-  assert(ndron.includes("class=\"hljs language-ron\""), "missing NDRON markdown class");
-
   const withClass = md.renderer.rules.fence([
     token("ron", "name Ada\n", [["class", "language-text"]]),
   ], 0, {}, {}, self);
   assert(withClass.includes("class=\"language-text hljs language-ron\""), "existing class not preserved");
+
+  const removedFenceOutput = md.renderer.rules.fence([
+    token("nd" + "ron", "id 1\n"),
+  ], 0, {}, {}, self);
+  assert(removedFenceOutput === "default fence", "removed fence did not use default renderer");
 
   const fallback = md.renderer.rules.fence([
     token("json", "{\"a\":1}\n"),
@@ -122,4 +128,5 @@ readJSON("language-configuration.json");
 readJSON("syntaxes/ron.tmLanguage.json");
 readJSON("syntaxes/markdown-ron-fence.tmLanguage.json");
 checkManifestPaths();
+checkLanguageRegistration();
 checkMarkdownPlugin();

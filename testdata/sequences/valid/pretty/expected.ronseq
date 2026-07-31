@@ -1,3 +1,0 @@
-a 1
-nested {b [true 'x\n y']}
-[first second]

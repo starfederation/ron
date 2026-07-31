@@ -1,9 +1,0 @@
-[
-  {
-    "nested": {
-      "b": [true, "x\n y"]
-    },
-    "a": 1
-  },
-  ["first", "second"]
-]
