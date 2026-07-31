@@ -171,7 +171,7 @@ Rules:
 - Whitespace or a value-start delimiter separates key and value.
 - Commas after values are optional separators.
 - Duplicate keys are allowed while parsing; the last value wins.
-- Canonical JSON and RON formatters sort object keys lexicographically.
+- Canonical RON sorts object keys lexicographically by RFC 8785 UTF-16 code units.
 
 ### Top-level object elision
 
@@ -256,52 +256,47 @@ maps to this JSON:
 
 ### Formatting
 
-RON formatting has two independent options. Implementations should expose them as flags, option structs, variadic options, or idiomatic equivalents for the target language.
+RON uses one output mode:
 
-- `isPretty`: render multiline pretty output when true, compact output when false.
-- `isCanonical`: sort object keys lexicographically by RFC 8785 UTF-16 code unit order when true; preserve object member order from the parsed source when false and that order is available.
+- `pretty` renders multiline output. It is the default.
+- `compact` renders single-line output.
+- `canonical` applies [RFC 8785](https://www.rfc-editor.org/rfc/rfc8785) and I-JSON rules to the selected target format.
 
-If an object contains duplicate keys, the last occurrence wins. In non-canonical given-order output, the surviving member appears at the position of its last occurrence.
+`pretty` and `compact` preserve source/member order when it is available. They do not sort object keys. An implementation that receives an unordered host map must use and document a deterministic fallback order. That fallback is not source order or canonical output. Canonical RON is compact RON. Canonical JSON is RFC 8785 JSON.
 
-If source order is unavailable because the host JSON value is an unordered map, implementations should either reject `isCanonical=false` as unsupported for that value or document a deterministic fallback. They must not call unordered map iteration "given" order.
+Duplicate keys remain a base RON parsing rule where the last value wins. Canonical RON rejects a value with duplicate object member names before rendering.
 
-#### Pretty JSON
+#### Canonical RON
 
-- Prefix: empty string.
-- Indent: two spaces.
-- Objects and arrays are multiline when non-empty.
-- Corpus fixtures use canonical object order.
-- No trailing newline is required in golden files.
+Canonical RON retains RON syntax. It is compact UTF-8 RON for an I-JSON value. It has one exact byte form. RFC 7493 Section 2.1 rejects surrogate code points and Unicode noncharacters in direct and escaped source text. Canonical input parsing retains ordered object members and decoded names through duplicate-name validation. It must not collapse a base RON last-wins object before that check.
 
-#### Compact JSON
+1. Validate the value under RFC 8785 Sections 3.1 and 3.2.2.2. Reject duplicate object member names, invalid Unicode, lone surrogates, NaN, and infinities. Reject a source number when conversion to IEEE 754 double precision produces a non-finite value.
+2. Serialize every number with the ECMAScript `JSON.stringify()` number algorithm required by RFC 8785 Section 3.2.2.3. A finite source number can round during conversion. Normalize minus zero to `0`. Do not preserve input number spelling.
+3. Preserve Unicode scalar values without normalization. Apply the RON canonical string renderer after validation. It escapes backslash and C0 controls, uses the shortest specified control escape, renders other Unicode as UTF-8, and selects the exact RON bare or repeated-apostrophe delimiter form.
+4. Sort every object recursively by raw key UTF-16 code units, as RFC 8785 Section 3.2.3 requires.
+5. Render compact RON with root-object brace elision. Hash the exact bytes with SHA-256 when a hash is needed.
 
-- No insignificant whitespace.
-- Corpus fixtures use canonical object order.
-- Duplicate object keys have already collapsed to the last value.
+The reference corpus for canonical RON is `testdata/rfc8785/manifest.json`. Its valid cases provide canonical JSON and canonical RON output. Its Appendix B vectors provide canonical number output. Its I-JSON cases must fail canonical RON conversion. `testdata/conformance/manifest.json` adds RON-source-only canonical boundaries.
 
 #### Pretty RON
 
-- Enabled by `isPretty=true`.
+- Selected by `mode=pretty`. It is the default.
 - Indent: two spaces.
 - Output ends with a trailing newline.
 - Root object members render at indentation level 0 without outer braces.
 - Empty root objects render as `{}` because there are no members to elide.
-- Object key order is selected by `isCanonical`.
+- Object key order preserves source/member order when available.
 - Empty arrays and objects render as `[]` and `{}`.
 - Arrays inline when every element can inline and the rendered size is at most 80 bytes.
 - Objects inline only when they have one key, the value can inline, and the rendered size is at most 80 bytes.
 
 #### Compact RON
 
-- Enabled by `isPretty=false`.
+- Selected by `mode=compact`.
 - No newlines.
 - Root object braces are elided.
-- Object key order is selected by `isCanonical`.
+- Object key order preserves source/member order when available.
 - Key/value space is omitted before array, object, or quoted-string values when unambiguous.
-
-Canonical RON is the byte form rendered with `isPretty=false` and `isCanonical=true`. Canonical mode has an extra cost because every object may require key sorting. Use it when stable bytes or hashes matter. Non-canonical compact output can preserve source order and avoid sorting. Canonical RON hashes are SHA-256 of the exact canonical RON bytes, encoded as 64 lowercase hexadecimal digits. The corpus stores each expected hash in the manifest as `expectedCanonicalRONSHA256`.
-
-Canonical JSON means RFC 8785 JSON Canonicalization Scheme (JCS) bytes encoded as UTF-8. RFC 8785 fixtures live under `testdata/rfc8785/` and include `expectedCanonicalJSONSHA256` hashes using the same SHA-256 encoding.
 
 JSON-to-RON renderers should expose a typed value hook for application-specific examples and APIs that want JSON-compatible inputs to render as typed RON object forms. The hook maps a value by path before formatting. Paths use object keys and array indexes from the original JSON tree. A hook may replace the value with any JSON value; returned objects such as `{"#":"BE"}` and `{"#utc":"2026-06-13T00:00:00Z"}` render as ordinary RON objects like `{# BE}` and `{#utc 2026-06-13T00:00:00Z}`. Hooks are a rendering API only; they do not change RON parsing or make marker objects special in the base data model.
 
@@ -309,17 +304,21 @@ Typed vocabularies are optional semantic layers over JSON-compatible single-key 
 
 ## Corpus Decision
 
-Keep language-neutral conformance fixtures indexed by `testdata/conformance/manifest.json`. Pretty fixtures use `isPretty=true` and `isCanonical=true`; compact fixtures use `isPretty=false` and `isCanonical=true`.
+Keep language-neutral formatting fixtures indexed by `testdata/conformance/manifest.json`. Each ordinary case has pretty, compact, and canonical JSON and RON output. Pretty and compact output preserve input member order. Canonical output uses `mode=canonical`. The specialized RFC 8785 corpus contains primary vectors and rejection cases.
 
-Each valid conformance case contains:
+Each ordinary valid conformance case contains:
 
 - RON input variants.
 - JSON input.
-- Expected compact JSON.
 - Expected pretty JSON.
-- Expected compact canonical RON.
-- Expected pretty canonical RON.
-- Expected canonical RON SHA-256 hash.
+- Expected compact JSON.
+- Expected canonical JSON.
+- Expected pretty RON in source/member order.
+- Expected compact RON in source/member order.
+- Expected canonical RON.
+- SHA-256 hashes for canonical JSON and canonical RON.
+
+All six expected outputs are explicit files in the ordinary case directory. `testdata/rfc8785/manifest.json` remains the specialized canonical JSON and RON corpus. It contains RFC valid cases and Appendix B numbers. The single-text manifest adds RON-source-only canonical boundaries.
 
 Additional JSON-to-RON rendering cases cover root object elision and typed value hooks. Typed vocabulary fixtures live under `testdata/vocabularies/`.
 

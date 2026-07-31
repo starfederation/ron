@@ -6,7 +6,8 @@
     "definition": "RFC 8785 canonical JSON bytes encoded as UTF-8",
     "hashAlgorithm": "SHA-256, lowercase hex",
     "hashEncoding": "64 lowercase hexadecimal digits",
-    "objectKeyOrder": "RFC 8785 UTF-16 code unit order"
+    "objectKeyOrder": "RFC 8785 UTF-16 code unit order",
+    "mode": "canonical"
   },
   "valid": [
     {
@@ -15,7 +16,9 @@
       "inputJSON": "canonical/primitive_serialization.input.json",
       "expectedCanonicalJSON": "canonical/primitive_serialization.expected.json",
       "expectedCanonicalUTF8Hex": "canonical/primitive_serialization.expected.hex",
-      "expectedCanonicalJSONSHA256": "2d5e01a318d0f0879ab568c4be289c8b1f64ef8921a53c6277d5e069978baacb"
+      "expectedCanonicalJSONSHA256": "2d5e01a318d0f0879ab568c4be289c8b1f64ef8921a53c6277d5e069978baacb",
+      "expectedCanonicalRON": "canonical/primitive_serialization.expected.ron",
+      "expectedCanonicalRONSHA256": "79c2b3839d62d7c9a88ee575b13f8e183529dc2f574a80a51d87369e1e4db78b"
     },
     {
       "name": "property_sorting",
@@ -23,7 +26,9 @@
       "inputJSON": "canonical/property_sorting.input.json",
       "expectedCanonicalJSON": "canonical/property_sorting.expected.json",
       "expectedCanonicalUTF8Hex": "canonical/property_sorting.expected.hex",
-      "expectedCanonicalJSONSHA256": "5e321556d22018a9656991a9e94f77ec175fa193e52a2429d312f8419ec8b08c"
+      "expectedCanonicalJSONSHA256": "5e321556d22018a9656991a9e94f77ec175fa193e52a2429d312f8419ec8b08c",
+      "expectedCanonicalRON": "canonical/property_sorting.expected.ron",
+      "expectedCanonicalRONSHA256": "a3c15df525cb960abb8fb67f8c1bd13da48f6f617d949f9bebcb4cec38168404"
     },
     {
       "name": "recursive_sorting",
@@ -31,7 +36,19 @@
       "inputJSON": "canonical/recursive_sorting.input.json",
       "expectedCanonicalJSON": "canonical/recursive_sorting.expected.json",
       "expectedCanonicalUTF8Hex": "canonical/recursive_sorting.expected.hex",
-      "expectedCanonicalJSONSHA256": "0fae9d65871954d5a3cc12d41933277842c99635283f23709531e52ea9a2db8a"
+      "expectedCanonicalJSONSHA256": "0fae9d65871954d5a3cc12d41933277842c99635283f23709531e52ea9a2db8a",
+      "expectedCanonicalRON": "canonical/recursive_sorting.expected.ron",
+      "expectedCanonicalRONSHA256": "d47136b2cfc32e0ae8de6fefcab7dd2f336fe5ecaeb0bf71e37e6dc5aa6c2c5f"
+    },
+    {
+      "name": "rounded_integer",
+      "source": "RFC 8785 Section 3.1 and RFC 7493 Section 2.2",
+      "inputJSON": "canonical/rounded_integer.input.json",
+      "expectedCanonicalJSON": "canonical/rounded_integer.expected.json",
+      "expectedCanonicalRON": "canonical/rounded_integer.expected.ron",
+      "expectedCanonicalRONSHA256": "ee422839c534af1984656dba1fb2f2ec0e2fbdb965f0feaa2d16a01148d4492a",
+      "expectedCanonicalUTF8Hex": "canonical/rounded_integer.expected.hex",
+      "expectedCanonicalJSONSHA256": "66c87d9cb3014e05a11baa97df62282d89d425f22ee15816577c84534e2ef1bb"
     }
   ],
   "numberSerialization": "numbers/appendix-b.json",
@@ -49,10 +66,39 @@
       "reason": "JSON string data must be valid Unicode and lone surrogates must be rejected."
     },
     {
-      "name": "integer_not_exact_ieee754_double",
+      "name": "nonfinite_ieee754_number",
       "source": "RFC 8785 Section 3.1",
-      "inputJSON": "invalid/integer_not_exact_ieee754_double.json",
-      "reason": "JSON number data must be expressible as IEEE 754 double precision."
+      "inputJSON": "invalid/nonfinite_ieee754_number.json",
+      "reason": "Conversion to IEEE 754 double precision produces a non-finite value."
+    },
+    {
+      "name": "duplicate_decoded_property_names",
+      "source": "RFC 8785 Section 3.1",
+      "inputJSON": "invalid/duplicate_decoded_property_names.json",
+      "reason": "Decoded JSON object member names must be unique."
+    },
+    {
+      "name": "direct_noncharacter",
+      "source": "RFC 7493 Section 2.1",
+      "inputJSON": "invalid/direct_noncharacter.json",
+      "reason": "I-JSON strings and object member names must not include Unicode noncharacters."
+    },
+    {
+      "name": "escaped_noncharacter",
+      "source": "RFC 7493 Section 2.1",
+      "inputJSON": "invalid/escaped_noncharacter.json",
+      "reason": "I-JSON rejects Unicode noncharacters in escaped string data."
     }
-  ]
+  ],
+  "canonicalRON": {
+    "definition": "Compact RON for an RFC 8785 and I-JSON value. It uses the RON grammar and canonical RON string rendering.",
+    "valueConstraints": "RFC 8785 Section 3.1 and RFC 7493 Section 2.1. Reject duplicate decoded object names, invalid Unicode, Unicode noncharacters, and source numbers whose IEEE 754 double-precision conversion is non-finite. Finite source numbers can round during conversion.",
+    "numberSerialization": "ECMAScript JSON.stringify number serialization required by RFC 8785 Section 3.2.2.3.",
+    "stringSerialization": "Use the RON canonical string renderer after RFC 8785 string validation. Do not normalize Unicode.",
+    "objectKeyOrder": "RFC 8785 UTF-16 code unit order, recursively.",
+    "hashAlgorithm": "SHA-256, lowercase hex",
+    "hashEncoding": "64 lowercase hexadecimal digits",
+    "inputMemberTracking": "Canonical input parsing must retain ordered object members and decoded names until duplicate-name validation completes. Do not collapse a base RON last-wins object before canonical validation.",
+    "mode": "canonical"
+  }
 }

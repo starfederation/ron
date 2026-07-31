@@ -1,32 +1,32 @@
 {
+  "users": [
+    {
+      "id": 100,
+      "name": "Ada",
+      "roles": [
+        "admin",
+        "writer"
+      ],
+      "active": true
+    },
+    {
+      "id": 200,
+      "name": "Grace",
+      "roles": [
+        "compiler"
+      ],
+      "active": false
+    }
+  ],
   "settings": {
     "retry": {
-      "backoffMs": 250,
-      "max": 3
+      "max": 3,
+      "backoffMs": 250
     },
     "tags": [
       "llm",
       "json",
       "compact"
     ]
-  },
-  "users": [
-    {
-      "active": true,
-      "id": 100,
-      "name": "Ada",
-      "roles": [
-        "admin",
-        "writer"
-      ]
-    },
-    {
-      "active": false,
-      "id": 200,
-      "name": "Grace",
-      "roles": [
-        "compiler"
-      ]
-    }
-  ]
+  }
 }
