@@ -35,7 +35,7 @@
       "expectedNDRON": "valid/empty/expected.ndron",
       "options": {
         "isPretty": false,
-        "isCanonical": true
+        "sortKeys": true
       }
     },
     {
@@ -48,7 +48,7 @@
       "expectedNDRON": "valid/mixed/expected.ndron",
       "options": {
         "isPretty": false,
-        "isCanonical": true
+        "sortKeys": true
       }
     }
   ],
@@ -68,7 +68,7 @@
       "expectedRONSequence": "valid/empty/expected.ronseq",
       "options": {
         "isPretty": false,
-        "isCanonical": true
+        "sortKeys": true
       }
     },
     {
@@ -80,7 +80,7 @@
       "expectedRONSequence": "valid/mixed/expected.ronseq",
       "options": {
         "isPretty": false,
-        "isCanonical": true
+        "sortKeys": true
       }
     },
     {
@@ -92,7 +92,7 @@
       "expectedRONSequence": "valid/pretty/expected.ronseq",
       "options": {
         "isPretty": true,
-        "isCanonical": true
+        "sortKeys": true
       }
     }
   ],
