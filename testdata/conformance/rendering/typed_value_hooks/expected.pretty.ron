@@ -1,9 +1,9 @@
+status ok
+tx {# BE}
 committed {#utc 2026-06-13T00:00:00Z}
 events [
   {
-    committed 2026-06-14T00:00:00Z
     tx {# CA}
+    committed 2026-06-14T00:00:00Z
   }
 ]
-status ok
-tx {# BE}

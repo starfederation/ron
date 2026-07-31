@@ -34,8 +34,7 @@
       ],
       "expectedNDRON": "valid/empty/expected.ndron",
       "options": {
-        "isPretty": false,
-        "isCanonical": true
+        "mode": "compact"
       }
     },
     {
@@ -47,8 +46,7 @@
       ],
       "expectedNDRON": "valid/mixed/expected.ndron",
       "options": {
-        "isPretty": false,
-        "isCanonical": true
+        "mode": "compact"
       }
     }
   ],
@@ -67,8 +65,7 @@
       ],
       "expectedRONSequence": "valid/empty/expected.ronseq",
       "options": {
-        "isPretty": false,
-        "isCanonical": true
+        "mode": "compact"
       }
     },
     {
@@ -79,8 +76,7 @@
       ],
       "expectedRONSequence": "valid/mixed/expected.ronseq",
       "options": {
-        "isPretty": false,
-        "isCanonical": true
+        "mode": "compact"
       }
     },
     {
@@ -91,8 +87,7 @@
       ],
       "expectedRONSequence": "valid/pretty/expected.ronseq",
       "options": {
-        "isPretty": true,
-        "isCanonical": true
+        "mode": "pretty"
       }
     }
   ],

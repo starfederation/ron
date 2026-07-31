@@ -1,7 +1,7 @@
 {
+  "name": "Ada",
   "age": 37,
   "manager": {
     "#": 200
-  },
-  "name": "Ada"
+  }
 }

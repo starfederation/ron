@@ -15,7 +15,7 @@ Use this order:
 - Orientation
     - [Quick Start](#quick-start): read this before running conformance commands; compare RON with equivalent JSON.
 - Concepts
-    - [Formatting modes](#formatting-modes): pretty, compact, canonical, and source-order output.
+    - [Formatting modes](#formatting-modes): pretty, compact, and canonical output. Pretty and compact preserve source/member order.
     - [String escapes](#string-escapes): universal JSON escape behavior across bare and quoted strings.
     - [Streaming formats](#streaming-formats): NDRON and RS-framed RON text sequences.
     - [Expressions and related formats](#expressions-and-related-formats): the JSON-shaped expression model, plus EDN/Clojure, JSON5, and YAML comparisons.
@@ -179,16 +179,17 @@ temp #_tmp
 
 ## Formatting modes
 
-RON formatting has independent options. Use flags, option structs, variadic options, or idiomatic equivalents for the target language:
+RON formatting uses one output mode. Use an enum, string, or idiomatic equivalent:
 
-- `isPretty`: render multiline pretty output when true, compact output when false.
-- `isCanonical`: sort object keys in RFC 8785 UTF-16 code unit order for stable byte-for-byte output when true; preserve source object member order when false and the parser has it.
+- `pretty`: multiline output. This is the default.
+- `compact`: single-line output.
+- `canonical`: canonical output for the selected target format.
 
-Compact is not automatically canonical. Canonical RON is compact RON rendered with `isPretty=false` and `isCanonical=true`. Use canonical mode when stable bytes or hashes matter. It has extra cost because each object may need key sorting; non-canonical compact output can preserve source order and avoid that sort.
+`pretty` and `compact` preserve source/member order when it is available. They do not sort object keys. An implementation that receives an unordered host map must use and document a deterministic fallback order. That fallback is not source order or canonical output.
 
-Canonical JSON means RFC 8785 JSON Canonicalization Scheme (JCS) bytes encoded as UTF-8. Its fixtures live under `testdata/rfc8785/`.
+Canonical RON retains RON syntax and is compact. Canonical JSON is RFC 8785 JSON. Both apply the RFC 8785 and I-JSON contract. Canonical RON rejects duplicate decoded names, invalid Unicode, and Unicode noncharacters. RFC 7493 Section 2.1 applies to direct and escaped source text. It rejects source numbers when conversion to IEEE 754 double precision produces a non-finite value. Finite values can round during conversion. Canonical input parsing retains ordered object members and decoded names through duplicate-name validation. It does not collapse a base RON last-wins object first. Canonical RON uses ECMAScript number serialization and canonical RON string rendering. It uses recursive UTF-16 key order, compact UTF-8 output, and root-object brace elision. It does not preserve input number spelling.
 
-Canonical hashes use SHA-256, encoded as 64 lowercase hexadecimal digits. RON conformance cases hash exact canonical RON bytes in `expectedCanonicalRONSHA256`. RFC 8785 cases hash exact canonical JSON bytes in `expectedCanonicalJSONSHA256`. Testdata declares `expectedPrettyOptions` as `isPretty=true, isCanonical=true` and `expectedCompactOptions` as `isPretty=false, isCanonical=true`.
+Each ordinary case in `testdata/conformance/manifest.json` has explicit pretty, compact, and canonical JSON and RON output. The specialized `testdata/rfc8785/` corpus contains primary RFC vectors, Appendix B numbers, and I-JSON rejection cases. Each canonical output has a SHA-256 value. The conformance manifest also adds RON-source-only canonical boundaries. Its `formatting` section declares `pretty` as the default mode.
 
 Pretty JSON-to-RON rendering emits root JSON object members at top level by default. JSON-to-RON renderers should also expose typed value hooks for application-specific examples. Hooks map JSON values by path to replacement JSON values before RON formatting, so a string at `tx` can render as `{# BE}` by replacing it with `{"#":"BE"}`.
 
@@ -250,19 +251,20 @@ When adding an implementation, list each supported vocabulary URI or short name 
 Use `testdata/conformance/manifest.json` as the test runner input. For each valid case:
 
 1. Convert every `ronInputs[]` file to JSON.
-2. Compare compact output with `expectedCompactJSON` if compact mode is supported.
-3. Compare pretty output with canonical order against `expectedPrettyJSON` if pretty mode is supported.
-4. Convert `jsonInput` to RON.
-5. Compare pretty canonical RON with `expectedPrettyRON`.
-6. Compare compact canonical RON with `expectedCompactRON` if compact mode is supported.
-7. Hash compact canonical RON with SHA-256 and compare lowercase hex with `expectedCanonicalRONSHA256`.
-8. Parse generated RON back to JSON and compare JSON values, not text.
-9. Run `jsonToRONRendering` cases for root object elision and typed value hooks when those hooks are supported.
+2. Compare `pretty` output with `expectedPrettyJSON`.
+3. Compare `compact` output with `expectedCompactJSON`.
+4. Compare `canonical` output with `expectedCanonicalJSON` and its SHA-256 hash.
+5. Convert `jsonInput` to RON.
+6. Compare `pretty` RON with `expectedPrettyRON`.
+7. Compare `compact` RON with `expectedCompactRON`.
+8. Compare `canonical` RON with `expectedCanonicalRON` and its SHA-256 hash.
+9. Parse generated RON back to JSON and compare JSON values, not text.
+10. Run `jsonToRONRendering` cases for root object elision and typed value hooks when those hooks are supported.
 
 For invalid cases, every `invalidRON[]` file must fail RON parsing and every `invalidJSON[]` file must fail JSON -> RON conversion.
 
 Use `testdata/sequences/manifest.json` for NDRON and RON text sequences. Implementations must exact-match valid encoded streams, parse them to the declared JSON value arrays, reject malformed NDRON records, and recover from malformed or truncated RS-framed elements as declared.
 
-Use `testdata/rfc8785/manifest.json` for RFC 8785 canonical JSON vectors. Implementations must exact-match canonical JSON bytes, expected UTF-8 hex when present, Appendix B number serialization samples, I-JSON rejection cases, and SHA-256 hashes.
+Use `testdata/rfc8785/manifest.json` for RFC 8785 canonical JSON and canonical RON vectors. Implementations must exact-match both byte forms, expected JSON UTF-8 hex, Appendix B number serialization samples, I-JSON rejection cases, and SHA-256 hashes.
 
 Use `testdata/vocabularies/manifest.json` for typed vocabulary fixtures. Vocabulary-aware implementations should validate and map enabled typed tags; base implementations may treat the same files as ordinary JSON/RON round-trip cases.
