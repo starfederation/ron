@@ -16,7 +16,7 @@ vocabularies/ Typed vocabulary fixture corpus.
 Top-level fields:
 
 - `version`: corpus version.
-- `formatting`: reference formatting knobs and ordinary formatter options.
+- `formatting`: reference formatting knobs, the default mode, and mode expectations.
 - `valid`: valid ordinary RON conversion cases.
 - `canonicalRON`: RON-source-only canonical RON cases. The RFC 8785 manifest defines JSON-source canonical RON cases.
 - `invalidRON`: RON files that must fail RON parsing.
@@ -36,11 +36,15 @@ Each case is a set of different textual views of one JSON value:
 - `input.ron`: primary RON input.
 - `input_*.ron`: alternate valid RON inputs for the same JSON value.
 - `input.json`: JSON input for JSON -> RON.
-- `expected.compact.json`: compact JSON output for RON -> JSON.
 - `expected.pretty.json`: pretty JSON output for RON -> JSON.
-- `expected.compact.ron`: sorted compact non-canonical RON output for JSON -> RON.
-- `expected.pretty.ron`: sorted pretty non-canonical RON output for JSON -> RON.
-- `expectedCanonicalRON`: a manifest reference to canonical RON bytes. It reuses `expected.compact.ron` only when those bytes are canonical.
+- `expected.compact.json`: compact JSON output for RON -> JSON.
+- `expected.canonical.json`: canonical JSON output for RON -> JSON.
+- `expected.pretty.ron`: pretty RON output for JSON -> RON.
+- `expected.compact.ron`: compact RON output for JSON -> RON.
+- `expected.canonical.ron`: canonical RON output for JSON -> RON.
+- `expectedCanonicalJSON`: the manifest path to `expected.canonical.json`.
+- `expectedCanonicalJSONSHA256`: SHA-256 of `expectedCanonicalJSON`, encoded as 64 lowercase hexadecimal digits.
+- `expectedCanonicalRON`: the manifest path to `expected.canonical.ron`.
 - `expectedCanonicalRONSHA256`: SHA-256 of `expectedCanonicalRON`, encoded as 64 lowercase hexadecimal digits.
 
 A language implementation should generate its own actual outputs in memory or in its own temporary/build directory. Do not write generated outputs back into this corpus during normal test runs.
@@ -53,30 +57,26 @@ For each entry in `valid`, use this flow.
 ronInputs[]
   -> parse RON
   -> JSON value model
-  -> emit compact JSON
-  -> exact compare with expectedCompactJSON
-
-ronInputs[]
-  -> parse RON
-  -> JSON value model
   -> emit pretty JSON
   -> exact compare with expectedPrettyJSON
-
-jsonInput
-  -> parse JSON
-  -> JSON value model
-  -> emit sorted compact RON
-  -> exact compare with expectedCompactRON
-  -> emit canonical RON
-  -> exact compare with expectedCanonicalRON
-  -> hash canonical RON bytes with SHA-256
-  -> exact compare lowercase hex with expectedCanonicalRONSHA256
+  -> emit compact JSON
+  -> exact compare with expectedCompactJSON
+  -> emit canonical JSON
+  -> exact compare with expectedCanonicalJSON
+  -> hash canonical JSON bytes with SHA-256
+  -> exact compare lowercase hex with expectedCanonicalJSONSHA256
 
 jsonInput
   -> parse JSON
   -> JSON value model
   -> emit pretty RON
   -> exact compare with expectedPrettyRON
+  -> emit compact RON
+  -> exact compare with expectedCompactRON
+  -> emit canonical RON
+  -> exact compare with expectedCanonicalRON
+  -> hash canonical RON bytes with SHA-256
+  -> exact compare lowercase hex with expectedCanonicalRONSHA256
 ```
 
 Then run semantic round-trip checks:
@@ -100,19 +100,21 @@ String cases additionally cover JSON escape decoding in every string form. Backs
 
 Exact means byte-for-byte against the fixture file using LF line endings.
 
-- Pretty JSON and pretty RON use `formatting.expectedPrettyOptions`: `isPretty=true`, `sortKeys=true`.
-- Compact JSON and compact RON use `formatting.expectedCompactOptions`: `isPretty=false`, `sortKeys=true`.
+- `formatting.defaultMode` is `pretty`.
+- Pretty JSON and pretty RON use `formatting.expectedPrettyOutput`: `mode=pretty`.
+- Compact JSON and compact RON use `formatting.expectedCompactOutput`: `mode=compact`.
+- Canonical JSON and canonical RON use `formatting.expectedCanonicalOutput`: `mode=canonical`.
 - Pretty JSON uses `formatting.jsonPrefix` and `formatting.jsonIndent` from the manifest.
 - Pretty RON uses `formatting.ronIndent` from the manifest.
 - Pretty RON files include the trailing newline when `formatting.prettyRONTrailingNewline` is true.
-- Object keys are emitted in sorted order described by `formatting.objectKeyOrder`.
+- Pretty and compact output preserve source/member order when available.
 - Compact JSON emits no insignificant whitespace.
 - Compact RON emits no newlines and may elide root object braces.
 - `expectedCompactRON` and `expectedPrettyRON` test non-canonical formatting.
-- Every valid case also references exact canonical RON bytes and a SHA-256 hash.
-- Canonical RON uses `isCanonical=true`, requires compact output, and follows the RFC 8785 corpus.
+- Every valid case has six explicit expected-output paths and SHA-256 hashes for both canonical outputs.
+- Canonical RON is compact and follows the RFC 8785 corpus.
 
-Formatters may also expose non-canonical given-order output with `sortKeys=false`. Given-order output is intentionally not part of this shared fixture corpus because it depends on source text order.
+If an implementation receives an unordered host map, it must use and document a deterministic fallback order. That fallback is not source order or canonical output.
 
 If an implementation does not support one output mode yet, mark that mode unsupported in that implementation's own test suite. Do not change these fixtures to match a partial implementation.
 
@@ -139,7 +141,7 @@ Each `canonicalRON.invalidRON` input must parse as base RON when applicable but 
 The `jsonToRONRendering` manifest entries are option-specific JSON -> RON cases. Each entry includes:
 
 - `jsonInput`: JSON source file.
-- `options`: ordinary rendering options such as `isPretty` and `sortKeys`.
+- `options`: one rendering `mode`: `pretty`, `compact`, or `canonical`.
 - `typedValueHooks`: optional path replacement rules for typed rendering.
 - `expectedRON`: exact RON output.
 
@@ -312,4 +314,4 @@ When the reference format changes or a new edge case is added:
 5. Verify each valid case still represents one JSON value across all RON and JSON files.
 6. Verify invalid cases still fail for the intended reason.
 
-A new ordinary valid case is complete when it has compact JSON, pretty JSON, sorted compact RON, and sorted pretty RON. A new canonical RON case is complete when it has exact compact RON bytes and a SHA-256 hash.
+A new ordinary valid case is complete only when its directory contains `expected.pretty.json`, `expected.compact.json`, `expected.canonical.json`, `expected.pretty.ron`, `expected.compact.ron`, and `expected.canonical.ron`. The manifest records every path and both canonical SHA-256 hashes. RFC vectors, Appendix B vectors, invalid cases, and RON-source canonical boundaries are specialized test groups.

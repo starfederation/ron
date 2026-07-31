@@ -6,7 +6,8 @@
     "definition": "RFC 8785 canonical JSON bytes encoded as UTF-8",
     "hashAlgorithm": "SHA-256, lowercase hex",
     "hashEncoding": "64 lowercase hexadecimal digits",
-    "objectKeyOrder": "RFC 8785 UTF-16 code unit order"
+    "objectKeyOrder": "RFC 8785 UTF-16 code unit order",
+    "mode": "canonical"
   },
   "valid": [
     {
@@ -97,6 +98,7 @@
     "objectKeyOrder": "RFC 8785 UTF-16 code unit order, recursively.",
     "hashAlgorithm": "SHA-256, lowercase hex",
     "hashEncoding": "64 lowercase hexadecimal digits",
-    "inputMemberTracking": "Canonical input parsing must retain ordered object members and decoded names until duplicate-name validation completes. Do not collapse a base RON last-wins object before canonical validation."
+    "inputMemberTracking": "Canonical input parsing must retain ordered object members and decoded names until duplicate-name validation completes. Do not collapse a base RON last-wins object before canonical validation.",
+    "mode": "canonical"
   }
 }

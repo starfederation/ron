@@ -165,5 +165,6 @@
       "ieee754Hex": "7ff0000000000000",
       "reason": "Infinity is not permitted in JSON by RFC 8785 Section 3.2.2.3"
     }
-  ]
+  ],
+  "mode": "canonical"
 }
