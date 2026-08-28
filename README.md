@@ -224,6 +224,7 @@ Typed vocabularies are optional semantic layers over JSON-compatible single-key 
 | --- | --- | --- | --- |
 | [starfederation/ron-go](https://github.com/starfederation/ron-go) | Go | [Escape update required](https://github.com/starfederation/ron-go/issues/40) | Yes |
 | [mbolli/php-ron](https://github.com/mbolli/php-ron) | PHP | [Escape update required](https://github.com/mbolli/php-ron/issues/1) | Yes |
+| [outskirtslabs/ron-clj](https://github.com/outskirtslabs/ron-clj) | Clojure | Yes | Yes |
 
 ### Typed vocabulary support
 
