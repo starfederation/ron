@@ -133,7 +133,7 @@ inputRON
   -> exact compare lowercase hex with expectedCanonicalRONSHA256
 ```
 
-Each `canonicalRON.invalidRON` input must parse as base RON when applicable but fail canonical RON conversion. These cases cover literal and escaped duplicate names, direct and escaped Unicode noncharacters, and nonfinite IEEE 754 values. Canonical input implementations must retain ordered members and decoded names through duplicate-name validation. They must not collapse a base RON last-wins object first.
+Each `canonicalRON.invalidRON` input must parse as base RON when applicable but fail canonical RON conversion. These cases cover literal and escaped duplicate names, direct and escaped Unicode noncharacters, and nonfinite IEEE 754 values. Canonical input implementations must retain ordered members and decoded names through duplicate-name validation.
 
 ## JSON-to-RON Rendering Option Cases
 

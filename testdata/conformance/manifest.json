@@ -734,7 +734,7 @@
       "canonical/invalid/direct_noncharacter.ron",
       "canonical/invalid/escaped_noncharacter.ron"
     ],
-    "inputMemberTracking": "Canonical input parsing must retain ordered object members and decoded names until duplicate-name validation completes. Do not collapse a base RON last-wins object before canonical validation.",
+    "inputMemberTracking": "Canonical input parsing must retain ordered object members and decoded names until duplicate-name validation completes.",
     "mode": "canonical"
   }
 }

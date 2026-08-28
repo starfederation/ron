@@ -170,7 +170,9 @@ Rules:
 - Values are any RON value.
 - Whitespace or a value-start delimiter separates key and value.
 - Commas after values are optional separators.
-- Duplicate keys are allowed while parsing; the last value wins.
+- Object names SHOULD be unique, as specified by RFC 8259 Section 4.
+- Base RON does not define a result for duplicate decoded names.
+- Canonical RON rejects duplicate decoded names.
 - Canonical RON sorts object keys lexicographically by RFC 8785 UTF-16 code units.
 
 ### Top-level object elision
@@ -264,11 +266,11 @@ RON uses one output mode:
 
 `pretty` and `compact` preserve source/member order when it is available. They do not sort object keys. An implementation that receives an unordered host map must use and document a deterministic fallback order. That fallback is not source order or canonical output. Canonical RON is compact RON. Canonical JSON is RFC 8785 JSON.
 
-Duplicate keys remain a base RON parsing rule where the last value wins. Canonical RON rejects a value with duplicate object member names before rendering.
+Base RON uses the RFC 8259 duplicate-name rule. Implementations can preserve all members, report one member, or reject the object. Canonical RON rejects duplicate decoded names before rendering.
 
 #### Canonical RON
 
-Canonical RON retains RON syntax. It is compact UTF-8 RON for an I-JSON value. It has one exact byte form. RFC 7493 Section 2.1 rejects surrogate code points and Unicode noncharacters in direct and escaped source text. Canonical input parsing retains ordered object members and decoded names through duplicate-name validation. It must not collapse a base RON last-wins object before that check.
+Canonical RON retains RON syntax. It is compact UTF-8 RON for an I-JSON value. It has one exact byte form. RFC 7493 Section 2.1 rejects surrogate code points and Unicode noncharacters in direct and escaped source text. Canonical input parsing retains ordered object members and decoded names through duplicate-name validation.
 
 1. Validate the value under RFC 8785 Sections 3.1 and 3.2.2.2. Reject duplicate object member names, invalid Unicode, lone surrogates, NaN, and infinities. Reject a source number when conversion to IEEE 754 double precision produces a non-finite value.
 2. Serialize every number with the ECMAScript `JSON.stringify()` number algorithm required by RFC 8785 Section 3.2.2.3. A finite source number can round during conversion. Normalize minus zero to `0`. Do not preserve input number spelling.

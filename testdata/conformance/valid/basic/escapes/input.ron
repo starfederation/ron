@@ -5,7 +5,6 @@ commaControl ,\n
 escapedKeyword tr\u0075e
 escapedSpace a\u0020b
 formFeed \f
-line\nkey stale
 \u006cine\nkey value
 lineFeed a\nb
 literalBackslashN a\\nb

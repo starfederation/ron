@@ -51,9 +51,11 @@ Object(map string Value)
 
 Use `Number(text)`, not a binary float, for parser and formatter paths. This preserves large integers and exponent text. String values contain decoded characters; source escape spelling is not retained.
 
-When an object contains duplicate keys, decode key escapes before comparing keys and keep the last value.
+Base RON follows RFC 8259 Section 4 for duplicate object names. Object names SHOULD be unique.
 
-Preserve object member order while parsing. If a duplicate key appears, the last occurrence wins and the surviving member should appear at the position of its last occurrence. For an unordered host map, use and document a deterministic fallback order. Do not call that fallback source order or canonical output.
+Base RON does not define which member wins when decoded names are not unique. Implementations can preserve all members, report one member, or reject the object. Applications must not depend on one duplicate-name result.
+
+Preserve object member order while parsing when the host representation permits it. For an unordered host map, use and document a deterministic fallback order. Do not call that fallback source order or canonical output.
 
 ## RON Parser Algorithm
 
@@ -125,7 +127,7 @@ Object keys use string parsing only:
 else -> bare token as string
 ```
 
-Decode JSON escapes in every key form. Do not coerce decoded key tokens to booleans, null, or numbers. Detect duplicates after decoding.
+Decode JSON escapes in every key form. Do not coerce decoded key tokens to booleans, null, or numbers. Canonical validation compares names after decoding.
 
 ### String Escapes
 
@@ -288,7 +290,7 @@ Exact compact output examples live in `expected.compact.ron` fixture files.
 
 ### Canonical RON
 
-Canonical RON is compact UTF-8 RON for an RFC 8785 I-JSON value. It is not key sorting alone. Canonical input parsing must retain ordered object members and decoded names through duplicate-name validation. Do not collapse a base RON last-wins object first. Before rendering, reject duplicate decoded object names, invalid Unicode, and lone surrogates. Reject direct or escaped Unicode noncharacters, NaN, and infinities. Reject a source number when conversion to IEEE 754 double precision produces a non-finite value. RFC 7493 Section 2.1 defines the noncharacter rule. A finite source number can round during conversion. Serialize numbers with the RFC 8785 ECMAScript algorithm, including minus-zero normalization. Do not normalize Unicode. Then apply the canonical RON string renderer and recursively sort keys by UTF-16 code units.
+Canonical RON is compact UTF-8 RON for an RFC 8785 I-JSON value. It is not key sorting alone. Canonical input parsing must retain ordered object members and decoded names through duplicate-name validation. Before rendering, reject duplicate decoded object names, invalid Unicode, and lone surrogates. Reject direct or escaped Unicode noncharacters, NaN, and infinities. Reject a source number when conversion to IEEE 754 double precision produces a non-finite value. RFC 7493 Section 2.1 defines the noncharacter rule. A finite source number can round during conversion. Serialize numbers with the RFC 8785 ECMAScript algorithm, including minus-zero normalization. Do not normalize Unicode. Then apply the canonical RON string renderer and recursively sort keys by UTF-16 code units.
 
 `mode=canonical` renders compact RON. `mode=pretty` and `mode=compact` are non-canonical. Hash canonical RON with SHA-256. The `testdata/rfc8785/manifest.json` entries contain exact RON bytes and hashes. The Appendix B number entries contain exact scalar RON bytes and hashes.
 
