@@ -225,15 +225,15 @@ Typed vocabularies are optional semantic layers over JSON-compatible single-key 
 | Implementation | Language | Base RON | RFC 8785 canonical JSON |
 | --- | --- | --- | --- |
 | [starfederation/ron-go](https://github.com/starfederation/ron-go) | Go | [Escape update required](https://github.com/starfederation/ron-go/issues/40) | Yes |
-| [mbolli/php-ron](https://github.com/mbolli/php-ron) | PHP | [Escape update required](https://github.com/mbolli/php-ron/issues/1) | Yes |
+| [mbolli/php-ron](https://github.com/mbolli/php-ron) | PHP | Yes | Yes |
 | [outskirtslabs/ron-clj](https://github.com/outskirtslabs/ron-clj) | Clojure | Yes | Yes |
 
 ### Typed vocabulary support
 
-| Implementation | Core | Time | Network | Math | Spatial | Geo | Color | Custom |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [starfederation/ron-go](https://github.com/starfederation/ron-go) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| [mbolli/php-ron](https://github.com/mbolli/php-ron) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Implementation | Core | Time | Network | Set | Math | Spatial | Geo | Color | Custom |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [starfederation/ron-go](https://github.com/starfederation/ron-go) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| [mbolli/php-ron](https://github.com/mbolli/php-ron) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 When adding an implementation, list each supported vocabulary URI or short name from `docs/vocabularies.md`, for example `core`, `time`, `math`, or `geo`. Use `:white_check_mark:` for supported vocabularies.
 
